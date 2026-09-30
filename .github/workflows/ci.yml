@@ -1,0 +1,38 @@
+name: Backend checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: {version: 11.19.0}
+      - uses: actions/setup-node@v4
+        with: {node-version: '24', cache: pnpm}
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      - run: pnpm test
+      - run: pnpm build
+  research:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg17
+        env: {POSTGRES_USER: agents, POSTGRES_PASSWORD: ci-only, POSTGRES_DB: agents}
+        ports: ['5432:5432']
+        options: --health-cmd "pg_isready -U agents -d agents" --health-interval 5s --health-timeout 3s --health-retries 20
+    env:
+      RESEARCH_DATABASE_URL: postgresql://agents:ci-only@localhost:5432/agents
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install -r services/research/requirements-dev.lock && pip install --no-deps -e ./services/research
+      - run: ruff check services/research
+      - run: mypy --config-file services/research/pyproject.toml services/research/src
+      - run: pytest services/research/tests
+      - run: alembic -c services/research/alembic.ini upgrade head
+      - run: alembic -c services/research/alembic.ini downgrade base
+      - run: alembic -c services/research/alembic.ini upgrade head

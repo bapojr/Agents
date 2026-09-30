@@ -4,3 +4,15 @@
 !.env.example
 !.env.*.example
 *.log
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+node_modules/
+.next/
+coverage/
+*.tsbuildinfo
+.pnpm-store/
+.local/

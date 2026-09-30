@@ -1,0 +1,12 @@
+{
+  "name": "agents",
+  "private": true,
+  "scripts": {
+    "dev": "node --env-file=.env apps/web/node_modules/next/dist/bin/next dev apps/web --hostname 127.0.0.1",
+    "build": "pnpm --dir apps/web build",
+    "check": "pnpm --dir apps/web check",
+    "test": "pnpm --dir apps/web test"
+  },
+  "engines": { "node": ">=22.0.0" },
+  "packageManager": "pnpm@11.19.0"
+}
