@@ -1,0 +1,51 @@
+"use client";
+
+import { useEffect, useId, useRef, type ReactNode, type KeyboardEvent } from "react";
+
+export function Popover({ label, open, onOpenChange, trigger, children, className = "", menu = true }: {
+  label: string; open: boolean; onOpenChange: (open: boolean) => void;
+  trigger: ReactNode; children: ReactNode; className?: string; menu?: boolean;
+}) {
+  const root = useRef<HTMLDivElement>(null);
+  const button = useRef<HTMLButtonElement>(null);
+  const panel = useRef<HTMLDivElement>(null);
+  const id = useId();
+
+  useEffect(() => {
+    if (!open) return;
+    panel.current?.querySelector<HTMLElement>("[aria-checked=true], button, input")?.focus();
+    const dismiss = (event: PointerEvent) => {
+      if (event.target instanceof Node && !root.current?.contains(event.target)) onOpenChange(false);
+    };
+    document.addEventListener("pointerdown", dismiss);
+    return () => document.removeEventListener("pointerdown", dismiss);
+  }, [open, onOpenChange]);
+
+  function keyDown(event: KeyboardEvent) {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      onOpenChange(false);
+      button.current?.focus();
+      return;
+    }
+    if (!menu || !["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    if (!open) { onOpenChange(true); return; }
+    const items = Array.from(panel.current?.querySelectorAll<HTMLButtonElement>("[role^=menuitem]:not(:disabled)") || []);
+    const index = items.indexOf(document.activeElement as HTMLButtonElement);
+    const next = event.key === "Home" ? 0 : event.key === "End" ? items.length - 1
+      : (index + (event.key === "ArrowDown" ? 1 : -1) + items.length) % items.length;
+    items[next]?.focus();
+  }
+
+  return <div ref={root} className={`popover ${className}`} onKeyDown={keyDown}
+    onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) onOpenChange(false); }}>
+    <button ref={button} type="button" className="selector" aria-label={label}
+      aria-haspopup={menu ? "menu" : "dialog"} aria-expanded={open} aria-controls={open ? id : undefined}
+      onClick={() => onOpenChange(!open)}>{trigger}</button>
+    {open && <div ref={panel} id={id} className="popover-panel" role={menu ? "menu" : "dialog"} aria-label={label}
+      onClick={(event) => {
+        if (menu && (event.target as HTMLElement).closest('[role^="menuitem"]')) button.current?.focus();
+      }}>{children}</div>}
+  </div>;
+}

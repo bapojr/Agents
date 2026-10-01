@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "node scripts/dev.mjs",
     "build": "pnpm --dir apps/web build",
+    "build:pages": "node scripts/build-pages.mjs",
     "check": "pnpm --dir apps/web check",
     "test": "pnpm --dir apps/web test"
   },

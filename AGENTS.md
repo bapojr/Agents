@@ -8,10 +8,10 @@
 ## Paperpal design system — required before any screen
 - Use the Paperpal design system for all UI.
 - Source priority: (1) user-provided tokens/theme file or repository, (2) user-provided Figma file, Storybook, or component library package, (3) user-provided token and component summary.
-- The source references in PRD Section 10a are placeholders. No authoritative source or token/component summary has been supplied yet.
+- The user supplied Figma file `FgnpnRGUrLM52yxKYWJ1vP`, frame `349:48909`, as the first-screen source. See `docs/FIGMA-HANDOFF.md` for inspected styles, components, user-directed changes, and the pending confirmation. The original PRD source fields remain placeholders; do not mistake that for a missing Figma source.
 - Locate the authoritative source and present the available colors, type scale, spacing, radii, and reusable components to the user before building any screen.
 - If the source cannot be found, stop and ask the user. Never approximate or invent tokens, or treat another project's styles as authoritative without confirmation.
-- Wait for the user's confirmation before building the first screen.
+- The user approved the inspected Figma values and explicitly authorized building the first screen: "yeah yeah build it. no confirmation required now". Proceed within this approved design without another confirmation. Preserve the source-based design rules below.
 - Use only design-system tokens. Do not hard-code colors, font sizes, or spacing values.
 - Reuse existing components before creating new ones; flag every proposed new component.
 - The suggested Tailwind/shadcn stack in the PRD does not authorize default styling that bypasses Paperpal tokens or components.

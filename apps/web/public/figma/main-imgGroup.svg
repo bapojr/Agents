@@ -1,0 +1,21 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="18.1296" height="24.1683" viewBox="0 0 18.1296 24.1683" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group" opacity="0.1">
+<path id="Vector" fill-rule="evenodd" clip-rule="evenodd" d="M1.51043 0H9.06257V24.1683H1.51043C0.67557 24.1683 0 23.4913 0 22.6579V1.51043C0 0.675567 0.676994 0 1.51043 0Z" fill="url(#paint0_linear_0_8295)"/>
+<path id="Vector_2" fill-rule="evenodd" clip-rule="evenodd" d="M9.06563 0L18.1296 9.06255L9.06563 11.3283V0Z" fill="url(#paint1_linear_0_8295)"/>
+<path id="Vector_3" fill-rule="evenodd" clip-rule="evenodd" d="M1.51185 0H9.06397L0 9.06397V1.51185C0 0.676991 0.676991 0.00142147 1.51043 0.00142147L1.51185 0Z" fill="url(#paint2_linear_0_8295)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_8295" x1="4.50142" y1="11.9967" x2="8.77056" y2="22.5628" gradientUnits="userSpaceOnUse">
+<stop stop-opacity="0"/>
+<stop offset="1"/>
+</linearGradient>
+<linearGradient id="paint1_linear_0_8295" x1="9.01014" y1="5.62785" x2="18.1581" y2="5.62785" gradientUnits="userSpaceOnUse">
+<stop stop-opacity="0"/>
+<stop offset="1"/>
+</linearGradient>
+<linearGradient id="paint2_linear_0_8295" x1="-0.0028445" y1="4.49715" x2="9.00855" y2="4.49715" gradientUnits="userSpaceOnUse">
+<stop stop-opacity="0"/>
+<stop offset="1"/>
+</linearGradient>
+</defs>
+</svg>

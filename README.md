@@ -5,8 +5,8 @@ PDF conversations, and extraction tables. Requirements are in [docs/PRD.md](docs
 
 ## Current status
 
-**M0 backend foundation in progress.** The user will supply the UI. No product screens,
-Paperpal styles, search pipelines, or generated research answers have been built.
+**M0 foundation in progress.** The first Agents screen uses the approved Paperpal Figma
+frame and reusable UI components. Search pipelines and generated research answers are not built.
 M0 is not complete until sign-up, login, and the approved empty dashboard work together.
 Later milestones remain blocked by the PRD's milestone gate.
 
@@ -39,7 +39,7 @@ pnpm dev
 The setup script creates an ignored, mode-0600 `.env` with random local secrets. It never
 prints or overwrites secrets. Compose starts PostgreSQL, Redis, applies the migration,
 and starts the internal research service. Next.js runs separately on localhost:3000.
-Only API routes exist; the root URL has no product screen yet.
+The root URL displays the Agents research landing screen alongside the existing API routes.
 
 ### UI preview workflow
 
@@ -53,8 +53,8 @@ regular browser. Next.js refreshes the preview as files change. Review each scre
 and its interactions there before approving it. The preview is available while the
 development server is running; it is not a public or shareable deployment.
 
-Before the first approved Paperpal screen exists, verify server availability with
-`http://localhost:3000/api/health/live`. A healthy response is `{"status":"ok"}`.
+Verify server availability with `http://localhost:3000/api/health/live`.
+A healthy response is `{"status":"ok"}`.
 This only checks the web server; sign-in and data operations additionally need
 PostgreSQL and Redis from the Docker setup above.
 
@@ -112,6 +112,37 @@ against PostgreSQL 17. The Docker stack must additionally be verified on a Docke
   dimensions and model-specific indexes are deliberately deferred until model selection.
 - Deleting account rows does not remove object-store files automatically. A durable cleanup
   job is required before uploads ship in M3.
-- Paperpal tokens and components must be supplied and confirmed before any screen is built.
+- The first-screen Figma values and components have been supplied and approved; use the
+  source-backed tokens and handoff for subsequent changes.
+
+## Hosted UI preview
+
+The GitHub Pages preview is **https://bapojr.github.io/Agents/**. The `Publish Agents UI`
+workflow builds and deploys it on pushes to `main`; it can also be run manually.
+
+```sh
+pnpm build:pages
+```
+
+This exports the same `src/app/page.tsx`, `layout.tsx`, `src/ui`, and local public assets
+into `apps/web/.pages/out` with the `/Agents` base path. The generated `.pages` directory
+is ignored. The exporter copies only these UI sources: no API routes, `.env` files,
+database code, or server secrets. The normal `pnpm build` continues to build the full
+Next.js server application without changing its configuration.
+
+The preview includes Search papers as the default, reusable dropdowns, publication-year
+filters behind a Font Awesome Filters control, suggestion-to-prompt selection, sidebar
+expansion, new-research reset, and recent queries for the current page session. PDF
+selection is local only; files are not uploaded. Voice input uses the browser's speech
+recognition when supported and needs the user's microphone permission.
+
+Search submission preserves a recent query and explicitly reports that live results are
+not available. Authentication, library storage, connectors, document checks, and billing
+are not connected to this static preview. The greeting uses the Figma example name Akash;
+it is not a signed-in identity. Source-menu catalog copy is retained from Figma, not a
+claim that an index has already been ingested. No research answers or papers are fabricated.
+
+Design provenance and component IDs: [docs/FIGMA-HANDOFF.md](docs/FIGMA-HANDOFF.md).
+Validation notes: [docs/UI-VALIDATION.md](docs/UI-VALIDATION.md).
 
 See [docs/BACKEND.md](docs/BACKEND.md) for architecture decisions and remaining M0 work.

@@ -5,10 +5,12 @@
 Follow the PRD: Next.js/TypeScript handles public HTTP endpoints and authentication;
 FastAPI will handle ingestion, parsing, embeddings, and orchestration. PostgreSQL owns
 durable state, pgvector stores embeddings, and Redis handles throttling and later queues.
-Auth.js is one of the PRD's permitted authentication choices. No hosting provider, paid
-service, LLM, or embedding model has been selected or provisioned.
+Auth.js is one of the PRD's permitted authentication choices. GitHub Pages is selected
+for the static UI preview only. No backend host, paid service, LLM, or embedding model
+has been selected or provisioned.
 
-M0 currently implements the backend slice only. Creating database tables for later
+M0 currently implements the backend foundation and an approved research landing UI.
+Authentication UI is not yet connected. Creating database tables for later
 features is part of the core-schema foundation; those features are not implemented.
 
 ## Identity and request boundaries
@@ -53,7 +55,8 @@ Do not execute migrations concurrently; deployment runs a single migration job f
 1. Validate Compose and migration up/down/up against the deployed PostgreSQL version.
 2. Supply Google OAuth client credentials and verify redirect/session/sign-out behavior.
 3. Add account verification/recovery and a session-revocation strategy before public release.
-4. Receive Paperpal tokens/components and the user's first-screen confirmation.
+4. Paperpal Figma components and first-screen values are received and approved; the
+   research landing screen is implemented (see FIGMA-HANDOFF.md).
 5. Connect approved sign-up/login/dashboard screens and run M0 acceptance checks.
 
 Do not begin M1 ingestion/search until M0 acceptance passes unless the user explicitly
