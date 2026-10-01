@@ -41,6 +41,23 @@ prints or overwrites secrets. Compose starts PostgreSQL, Redis, applies the migr
 and starts the internal research service. Next.js runs separately on localhost:3000.
 Only API routes exist; the root URL has no product screen yet.
 
+### UI preview workflow
+
+Use `pnpm dev` to start the local preview at **http://localhost:3000**. This command
+loads the private root `.env`, binds only to this Mac, and uses port 3000 explicitly
+so preview and authentication addresses stay aligned. If that port is occupied,
+resolve the conflict rather than silently switching to another port.
+
+During UI work, keep this address open in Codex's browser beside the chat or in a
+regular browser. Next.js refreshes the preview as files change. Review each screen
+and its interactions there before approving it. The preview is available while the
+development server is running; it is not a public or shareable deployment.
+
+Before the first approved Paperpal screen exists, verify server availability with
+`http://localhost:3000/api/health/live`. A healthy response is `{"status":"ok"}`.
+This only checks the web server; sign-in and data operations additionally need
+PostgreSQL and Redis from the Docker setup above.
+
 For Google OAuth, configure a Google OAuth client in the deployment account, set
 `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET` in `.env`, and register
 `http://localhost:3000/api/auth/callback/google` for local development. Google sign-in
