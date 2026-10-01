@@ -14,6 +14,7 @@ Status: inspected and approved. The user authorized implementation without anoth
 - Use this Figma appearance for the left sidebar; preserve applicable PP Illustrate sidebar interactions.
 - Default mode is Search papers.
 - Rename Publication year to Filters and replace its calendar icon with a Font Awesome filter icon.
+- Follow-up: fit the Filters button to its label and use the outlined `filter` asset from the connected Editage Design System (New) library (component key `04b65a5384e5e63a61c7825ad13c54c399a0da32`). The exported SVG is preserved in `public/figma/library-filter-regular.svg` at its original dimensions.
 - Implement the supplied component states, not merely a flat picture of the landing screen.
 - Publish a static UI preview through GitHub Pages. Keep the Next.js backend intact; Pages cannot execute its server endpoints.
 

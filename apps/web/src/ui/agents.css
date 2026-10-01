@@ -26,7 +26,7 @@
   --pp-sidebar-width: 48px; --pp-sidebar-expanded: 282px; --pp-sidebar-header: 56px;
   --pp-topbar-height: 76px; --pp-composer-width: 963px; --pp-composer-height: 174px;
   --pp-suggestion-width: 750px; --pp-menu-width: 214px; --pp-menu-row-height: 50px;
-  --pp-agent-width: 151px; --pp-source-width: 187px; --pp-filter-width: 149px;
+  --pp-agent-width: 151px; --pp-source-width: 187px;
   --pp-login-width: 80px; --pp-signup-width: 147px; --pp-upgrade-width: 195px;
   --pp-hero-gap: 30px; --pp-question-gap: 42px;
   --pp-brand-width: 18px; --pp-brand-height: 24px; --pp-brand-full-width: 85.8px;
@@ -128,10 +128,9 @@ h1 { margin: 0; font-family: var(--pp-serif); font-size: var(--pp-text-heading);
 .selector { display: flex; align-items: center; gap: var(--pp-s4); height: var(--pp-s32); border: var(--pp-border); border-radius: var(--pp-radius-4); padding: var(--pp-s4) var(--pp-s6); font-size: var(--pp-text-sm); font-weight: var(--pp-medium); background: var(--pp-white); white-space: nowrap; }
 .mode-picker .selector { min-width: var(--pp-agent-width); }
 .source-picker .selector { min-width: var(--pp-source-width); }
-.filter-picker .selector { min-width: var(--pp-filter-width); }
+.filter-picker .selector { min-width: 0; }
 .selector:hover, .selector[aria-expanded=true] { background: var(--pp-gray-2); border-color: var(--pp-blue-9); }
 .selector .chevron { margin-left: auto; }
-.filter-icon { font-size: var(--pp-text-base); }
 .popover-panel { position: absolute; z-index: 30; left: 0; top: calc(100% + var(--pp-s4)); width: var(--pp-menu-width); border: var(--pp-s1) solid var(--pp-blue-9); padding: var(--pp-s6); border-radius: var(--pp-radius-10); background: var(--pp-white); box-shadow: var(--pp-menu-shadow); max-height: min(60dvh, var(--pp-composer-width)); overflow-y: auto; }
 .menu-option { display: block; width: 100%; min-height: var(--pp-menu-row-height); border-radius: var(--pp-radius-6); text-align: left; padding: var(--pp-s4); font-size: var(--pp-text-base); font-weight: var(--pp-medium); }
 .menu-option.selected, .menu-option:hover, .menu-option:focus-visible { background: var(--pp-blue-3); }

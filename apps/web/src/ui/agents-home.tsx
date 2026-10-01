@@ -1,13 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { config } from "@fortawesome/fontawesome-svg-core";
-import { faFilter } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FigmaAsset, Icon, icons, PaperpalLogo } from "./figma-assets";
 import { Popover } from "./popover";
-
-config.autoAddCss = false;
 
 const modes = [
   { id: "search", label: "Search papers", description: "Find relevant research.", icon: icons.search },
@@ -208,7 +203,7 @@ export function AgentsHome() {
                 <button role="menuitem" className="menu-option compact" onClick={() => notify("No collections yet. Collections will be available with your paper library.")}><span className="menu-title"><Icon name={icons.collection} />Choose Collections</span></button>
               </Popover>
               <Popover label={`Filters: ${filter.kind === "all" ? "All years" : filterLabel}`} open={open === "filters"} onOpenChange={toggleFilter} className="filter-picker" menu={false}
-                trigger={<><span className="icon-slot filter-icon"><FontAwesomeIcon icon={faFilter} /></span><span>{filterLabel}</span><Chevron /></>}>
+                trigger={<><Icon name="library-filter-regular" /><span>{filterLabel}</span><Chevron /></>}>
                 <FilterMenu value={filter} onChange={(value) => { setFilter(value); setOpen(null); }} />
               </Popover>
               <div className="toolbar-end">

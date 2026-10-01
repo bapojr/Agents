@@ -1,5 +1,12 @@
 [
   {
+    "key": "library-filter-regular",
+    "file": "library-filter-regular.svg",
+    "width": "17.6002",
+    "height": "18.0027",
+    "viewBox": "0 0 17.6002 18.0027"
+  },
+  {
     "key": "main-imgSidebarFlip",
     "file": "main-imgSidebarFlip.svg",
     "width": "14",
