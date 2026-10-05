@@ -130,8 +130,9 @@ is ignored. The exporter copies only these UI sources: no API routes, `.env` fil
 database code, or server secrets. The normal `pnpm build` continues to build the full
 Next.js server application without changing its configuration.
 
-The preview includes Search papers as the default, reusable dropdowns, publication-year
-filters behind a Font Awesome Filters control, suggestion-to-prompt selection, sidebar
+The preview includes Search papers as the default, reusable dropdowns, a Figma-based
+Filters dialog (years, PDF availability, open access, citations, fields of study, and SJR
+quartiles), suggestion-to-prompt selection, sidebar
 expansion, new-research reset, and recent queries for the current page session. PDF
 selection is local only; files are not uploaded. Voice input uses the browser's speech
 recognition when supported and needs the user's microphone permission.

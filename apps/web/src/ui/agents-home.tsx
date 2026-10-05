@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FigmaAsset, Icon, icons, PaperpalLogo } from "./figma-assets";
 import { Popover } from "./popover";
+import { FilterDialog } from "./filter-dialog";
+import { emptyFilters, filterSummary, type ResearchFilters } from "./research-filters";
 
 const modes = [
   { id: "search", label: "Search papers", description: "Find relevant research.", icon: icons.search },
@@ -19,8 +21,7 @@ const suggestions = [
   { label: "Ask questions", prompt: "What are the main mechanisms discussed across these papers on antibiotic resistance?", icon: icons.questions, mode: "chat" },
 ] as const;
 
-type YearFilter = { kind: "all" } | { kind: "last"; years: number } | { kind: "custom"; from: number; to: number };
-type Recent = { query: string; mode: ModeId; source: string; filter: YearFilter };
+type Recent = { query: string; mode: ModeId; source: string; filter: ResearchFilters };
 type SpeechSession = {
   lang: string; interimResults: boolean; continuous: boolean;
   onresult: ((event: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null;
@@ -31,55 +32,13 @@ type SpeechWindow = Window & { SpeechRecognition?: new () => SpeechSession; webk
 
 function Chevron() { return <FigmaAsset name="main-imgChevronDown" className="chevron" />; }
 
-function FilterMenu({ value, onChange }: { value: YearFilter; onChange: (value: YearFilter) => void }) {
-  const [kind, setKind] = useState(value.kind);
-  const [years, setYears] = useState(value.kind === "last" ? String(value.years) : "5");
-  const [from, setFrom] = useState(value.kind === "custom" ? String(value.from) : "");
-  const [to, setTo] = useState(value.kind === "custom" ? String(value.to) : "");
-  const [error, setError] = useState("");
-  const currentYear = new Date().getFullYear();
-  return <form className="filter-form" onSubmit={(event) => {
-    event.preventDefault();
-    if (kind === "all") { onChange({ kind: "all" }); return; }
-    if (kind === "last") {
-      const number = Number(years);
-      if (!Number.isInteger(number) || number < 1 || number > currentYear) { setError("Enter a valid number of years."); return; }
-      onChange({ kind: "last", years: number }); return;
-    }
-    const start = Number(from), end = Number(to);
-    if (!from || !to || !Number.isInteger(start) || !Number.isInteger(end) || start < 1 || end > currentYear || start > end) {
-      setError(`Enter a valid range ending by ${currentYear}.`); return;
-    }
-    onChange({ kind: "custom", from: start, to: end });
-  }}>
-    <span className="menu-heading">Publication year</span>
-    <button type="button" className={`menu-option compact ${kind === "all" ? "selected" : ""}`}
-      aria-pressed={kind === "all"} onClick={() => { setKind("all"); onChange({ kind: "all" }); }}>All years</button>
-    <label className={`year-option ${kind === "last" ? "selected" : ""}`}>
-      <input type="radio" name="year-kind" checked={kind === "last"} onChange={() => { setKind("last"); setError(""); }} />
-      Last <input className="year-number last-years" type="number" aria-label="Number of years" min="1" max={currentYear}
-        value={years} onFocus={() => setKind("last")} onChange={(e) => setYears(e.target.value)} /> years
-    </label>
-    <label className={`year-option ${kind === "custom" ? "selected" : ""}`}>
-      <input type="radio" name="year-kind" checked={kind === "custom"} onChange={() => { setKind("custom"); setError(""); }} />Custom
-    </label>
-    {kind === "custom" && <div className="year-range">
-      <input className="year-number" aria-label="From year" type="number" min="1" max={currentYear} placeholder="From" value={from} onChange={(e) => setFrom(e.target.value)} />
-      <span>to</span>
-      <input className="year-number" aria-label="To year" type="number" min="1" max={currentYear} placeholder="To" value={to} onChange={(e) => setTo(e.target.value)} />
-    </div>}
-    {error && <p role="alert" className="filter-error">{error}</p>}
-    {kind !== "all" && <button type="submit" className="primary-button apply-filter">Apply filters</button>}
-  </form>;
-}
-
 export function AgentsHome() {
   const [expanded, setExpanded] = useState(false);
   const [query, setQuery] = useState("");
   const [mode, setMode] = useState<ModeId>("search");
   const [source, setSource] = useState("Public Research Papers");
   const [selectedSuggestion, setSelectedSuggestion] = useState<number | null>(0);
-  const [filter, setFilter] = useState<YearFilter>({ kind: "all" });
+  const [filter, setFilter] = useState<ResearchFilters>(emptyFilters);
   const [open, setOpen] = useState<string | null>(null);
   const [notice, setNotice] = useState("");
   const [attachments, setAttachments] = useState<File[]>([]);
@@ -91,13 +50,12 @@ export function AgentsHome() {
   const selectedMode = modes.find((item) => item.id === mode)!;
   const toggleMode = useCallback((value: boolean) => setOpen(value ? "mode" : null), []);
   const toggleSource = useCallback((value: boolean) => setOpen(value ? "source" : null), []);
-  const toggleFilter = useCallback((value: boolean) => setOpen(value ? "filters" : null), []);
   useEffect(() => () => { speech.current?.abort(); }, []);
 
   const notify = (text: string) => { setNotice(text); setOpen(null); };
   const reset = () => {
     speech.current?.abort(); setListening(false); setQuery(""); setAttachments([]); setMode("search");
-    setSelectedSuggestion(0); setFilter({ kind: "all" }); setSource("Public Research Papers"); setOpen(null); setNotice("");
+    setSelectedSuggestion(0); setFilter(emptyFilters()); setSource("Public Research Papers"); setOpen(null); setNotice("");
     textarea.current?.focus();
   };
   const submit = () => {
@@ -122,7 +80,7 @@ export function AgentsHome() {
     session.onend = () => setListening(false);
     try { session.start(); setListening(true); setNotice(""); } catch { notify("Voice input could not start. Please try again."); }
   };
-  const filterLabel = filter.kind === "all" ? "Filters" : filter.kind === "last" ? `Last ${filter.years} years` : `${filter.from}–${filter.to}`;
+  const filterLabel = filterSummary(filter);
 
   return <div className={`agents-shell ${expanded ? "sidebar-expanded" : ""}`}>
     <a className="skip-link" href="#research-question">Skip to research question</a>
@@ -202,10 +160,8 @@ export function AgentsHome() {
                 <button role="menuitemradio" aria-checked={source === "All Collections"} className={`menu-option ${source === "All Collections" ? "selected" : ""}`} onClick={() => { setSource("All Collections"); notify("Your library is empty. Saved papers will appear here when library access is available."); }}><span className="menu-title"><Icon name={icons.library} />All Collections</span><span className="menu-description">Search all your saved papers</span></button>
                 <button role="menuitem" className="menu-option compact" onClick={() => notify("No collections yet. Collections will be available with your paper library.")}><span className="menu-title"><Icon name={icons.collection} />Choose Collections</span></button>
               </Popover>
-              <Popover label={`Filters: ${filter.kind === "all" ? "All years" : filterLabel}`} open={open === "filters"} onOpenChange={toggleFilter} className="filter-picker" menu={false}
-                trigger={<><Icon name="library-filter-regular" /><span>{filterLabel}</span><Chevron /></>}>
-                <FilterMenu value={filter} onChange={(value) => { setFilter(value); setOpen(null); }} />
-              </Popover>
+              <div className="filter-picker"><button type="button" className="selector filter-trigger" aria-label={`Filters: ${filterLabel}`} title={filterLabel}
+                aria-haspopup="dialog" aria-expanded={open === "filters"} onClick={() => setOpen("filters")}><Icon name="filter-sliders" /><span>Filters</span></button></div>
               <div className="toolbar-end">
                 <button className={`icon-button voice-button ${listening ? "is-listening" : ""}`} aria-label={listening ? "Stop voice input" : "Start voice input"} aria-pressed={listening} title={listening ? "Stop listening" : "Voice input"} onClick={voice}><FigmaAsset name="main-imgMicrophone" /></button>
                 <button className="icon-button submit-button" aria-label="Submit research question" title="Send question" disabled={!query.trim()} onClick={submit}><FigmaAsset name="main-imgArrowTurnDownLeft" /></button>
@@ -223,6 +179,7 @@ export function AgentsHome() {
           </button>)}
         </section>
       </main>
+      {open === "filters" && <FilterDialog value={filter} onClose={() => setOpen(null)} onApply={value => { setFilter(value); setOpen(null); }} />}
     </div>
   </div>;
 }

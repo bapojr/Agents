@@ -25,3 +25,12 @@ The browser preview is static; backend integration remains a separate milestone.
 
 Voice capture was not activated because doing so would request microphone access. PDF
 analysis, remote search, login, and payments are deliberately not claimed as functional.
+
+## Filters dialog update — 2026-10-05
+
+- Production static export and TypeScript passed; 39 web tests passed, including 18 filter validation/summary checks.
+- Desktop comparison at 1440×777: modal 587×572 centered at x=426.5/y=102.5. Local sliders, radio, toggle, close, stepper, and accordion assets loaded at exported sizes.
+- All 24 field checkboxes and Q1–Q4 reachable; expanded content scrolls while Apply Filters stays visible. Scrollbar responds to Home/End and reflects scroll position.
+- Combined custom year, PDF, open-access, citations, multiple subjects, and quartiles apply together and remain on reopening. Reversed years produce an error. Escape discards draft changes and restores trigger focus.
+- Responsive check at 390×844: modal stays within viewport; SVG shadow overflow is clipped horizontally without resizing assets; long subject labels wrap.
+- Applying filters does not claim live search integration in the static preview.

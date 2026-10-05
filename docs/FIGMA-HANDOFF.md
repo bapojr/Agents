@@ -80,4 +80,15 @@ Inspected the user-authorized reference at /Users/sushrut.baporikar/Documents/Ne
 
 ## Implementation boundary
 
+### Filters update — 2026-10-05
+
+- Source frame `1592:121393`, dialog instance `1592:122518`, expanded/scroll variant `1592:8924`.
+- Reuse `FigmaAsset`, `Icon`, primary button styling, IBM Plex Sans, and Paperpal tokens. New `FilterDialog` composes radios, switches, checkboxes, expandable sections, a native modal, and a functional scrollbar.
+- Source measurements: dialog 587×572, header 64, footer 72, content inset 20, year block 112, metadata block 190, accordion rows 54, scrollbar width 6 / thumb 84 / radius 24. Type: 12/14/16/20, weights 400/500/600. Radii: 12 for dialog/input/button, 3 for checkboxes. New source colors: Gray/4 `#EDF2FA`, Gray/7 `#CAD5E7`, category text `#717F99`; existing Blue/9 `#0062FF`, Gray/11 `#5D6A81`, Gray/12 `#13161B`.
+- The funnel is superseded by the exact sliders asset from `1592:120707`, exported at 13.3342×11.1111 in a 24px slot. All filter SVGs are local and retain root dimensions.
+- All 24 subjects across seven groups match the expanded component. User approved Q1–Q4 checkboxes for SJR on 2026-10-05 with the same checkbox styling; custom year inputs reuse the supplied input styling.
+- Filter content and header scroll as in variant 2; Apply Filters stays fixed. Scrollbar supports pointer dragging and keyboard controls; the viewport supports wheel/touch.
+- Apply commits the full draft; Escape, close, or backdrop cancel it. Recent queries retain the complete applied state; new research resets it. Live search integration remains separate.
+- Clipped legacy illustration fields (Color Palette, GLP-1 title, elements to illustrate) are unrelated remnants absent from the expanded filter variant and are not exposed.
+
 After design confirmation, build the first screen with reusable components and verified Figma assets, preserving the existing backend. No invented research results, working authentication claims on Pages, or additional unapproved screens. Verify default selection, dropdown/component states, sidebar behavior, keyboard interactions, and visual match before publication.

@@ -1,0 +1,74 @@
+/* Paperpal filter dialog: Figma 1592:122518 and scroll variant 1592:8924. */
+:root {
+  --pp-gray-4: #edf2fa; --pp-gray-7: #cad5e7; --pp-gray-10: #717f99;
+  --pp-filter-overlay: rgb(19.32 21.90 26.68 / 40%);
+  --pp-dialog-shadow: 0 0 16px 8px rgb(0 0 0 / 5%);
+  --pp-filter-width: 587px; --pp-filter-height: 572px; --pp-filter-header: 64px;
+  --pp-filter-footer: 72px; --pp-filter-scroll-start: 136px; --pp-filter-thumb: 84px;
+  --pp-filter-years-height: 112px; --pp-filter-metadata-height: 190px;
+  --pp-filter-row: 42px; --pp-filter-input-height: 40px; --pp-filter-section-height: 54px;
+  --pp-filter-group-heading: 28px; --pp-filter-expanded-heading: 44px;
+  --pp-filter-last-width: 31px; --pp-filter-step: 9px; --pp-filter-leading: 18px;
+  --pp-filter-control-border: 0.75px; --pp-filter-checkbox-radius: 3px;
+  --pp-filter-switch-size: 18px; --pp-filter-switch-shadow-x: -24px; --pp-filter-switch-shadow-y: -30px;
+  --pp-filter-toggle-travel: 12px;
+}
+.filter-trigger { width: var(--pp-year-width); }
+.filter-dialog { margin: auto; padding: 0; width: var(--pp-filter-width); max-width: calc(100vw - var(--pp-s32)); height: var(--pp-filter-height); max-height: calc(100dvh - var(--pp-s32)); border: var(--pp-border); border-radius: var(--pp-radius-12); background: var(--pp-white); color: var(--pp-gray-12); box-shadow: var(--pp-dialog-shadow); overflow: hidden; }
+.filter-dialog::backdrop { background: var(--pp-filter-overlay); }
+.filter-dialog-form { height: 100%; display: flex; flex-direction: column; position: relative; }
+.filter-scroll-viewport { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; scrollbar-width: none; }
+.filter-scroll-viewport::-webkit-scrollbar { display: none; }
+.filter-dialog-header { position: relative; height: var(--pp-filter-header); display: flex; align-items: center; padding: var(--pp-s16) var(--pp-s20); overflow: hidden; }
+.filter-dialog-header h2 { margin: 0; font-size: var(--pp-text-lead); line-height: var(--pp-s32); font-weight: var(--pp-medium); }
+.filter-close { position: absolute; right: var(--pp-s16); top: var(--pp-s24); width: var(--pp-s16); height: var(--pp-s16); }
+.filter-header-divider { position: absolute; left: 0; bottom: 0; }
+.filter-dialog-body { padding: var(--pp-s16) var(--pp-s20) var(--pp-s8); font-weight: var(--pp-medium); line-height: var(--pp-filter-leading); }
+.filter-years { border: 0; padding: 0 0 calc(var(--pp-filter-years-height) - 4 * var(--pp-filter-leading) - 3 * var(--pp-filter-step)); margin: 0; min-height: var(--pp-filter-years-height); display: flex; flex-direction: column; gap: var(--pp-filter-step); }
+.filter-years legend { padding: 0; margin-bottom: var(--pp-filter-step); }
+.filter-radio-label { display: inline-flex; align-items: center; gap: var(--pp-s8); color: var(--pp-gray-11); cursor: pointer; width: fit-content; }
+.filter-radio { display: inline-flex; position: relative; width: var(--pp-s12); height: var(--pp-s12); flex: none; }
+.filter-radio input, .filter-checkbox input { opacity: 0; position: absolute; inset: 0; margin: 0; width: 100%; height: 100%; cursor: pointer; }
+.filter-radio-dot { position: absolute; top: var(--pp-s2); left: var(--pp-s2); pointer-events: none; }
+.filter-radio .figma-asset, .filter-checkbox-box { pointer-events: none; }
+.filter-radio:has(input:focus-visible), .filter-checkbox:has(input:focus-visible) { outline: var(--pp-focus); outline-offset: var(--pp-s2); border-radius: var(--pp-radius-2); }
+.filter-last-row { display: flex; align-items: center; gap: var(--pp-s5); color: var(--pp-gray-11); }
+.filter-last-number { position: relative; width: var(--pp-filter-last-width); height: var(--pp-filter-leading); }
+.filter-last-number input { appearance: textfield; width: 100%; height: 100%; border: 0; padding: 0; background: transparent; text-align: center; }
+.filter-last-number .figma-asset { position: absolute; bottom: var(--pp-s3); left: 0; pointer-events: none; }
+.filter-dialog input[type=number]::-webkit-inner-spin-button, .filter-dialog input[type=number]::-webkit-outer-spin-button { appearance: none; margin: 0; }
+.filter-stepper { display: flex; flex-direction: column; width: var(--pp-filter-step); }
+.filter-stepper button { height: var(--pp-filter-step); width: var(--pp-filter-step); }
+.filter-custom-years { display: flex; align-items: center; gap: var(--pp-s8); padding-left: var(--pp-s20); }
+.filter-custom-years input { width: 0; min-width: 0; flex: 1; height: var(--pp-filter-input-height); border: var(--pp-s1) solid var(--pp-gray-7); border-radius: var(--pp-radius-12); padding: var(--pp-s8); font-size: var(--pp-text-base); }
+.filter-metadata { min-height: var(--pp-filter-metadata-height); padding-bottom: var(--pp-s24); }
+.filter-toggle-row, .filter-citations-label { display: flex; height: var(--pp-filter-row); align-items: center; justify-content: space-between; }
+.filter-switch { position: relative; flex: none; width: var(--pp-s30); height: var(--pp-filter-switch-size); border: var(--pp-filter-control-border) solid var(--pp-gray-5); border-radius: var(--pp-filter-switch-size); background: var(--pp-gray-2); }
+.filter-switch[aria-checked=true] { background: var(--pp-blue-9); border-color: var(--pp-blue-9); }
+.filter-switch-knob { position: absolute; top: calc(-1 * var(--pp-filter-control-border)); left: calc(-1 * var(--pp-filter-control-border)); width: var(--pp-filter-switch-size); height: var(--pp-filter-switch-size); pointer-events: none; }
+.filter-switch-knob .figma-asset { position: absolute; top: var(--pp-filter-switch-shadow-y); left: var(--pp-filter-switch-shadow-x); }
+.filter-switch[aria-checked=true] .filter-switch-knob { transform: translateX(var(--pp-filter-toggle-travel)); }
+.filter-citations { width: 100%; height: var(--pp-filter-input-height); border: var(--pp-s1) solid var(--pp-gray-7); border-radius: var(--pp-radius-12); padding: var(--pp-s8) var(--pp-s15); background: var(--pp-white); font-size: var(--pp-text-button); font-weight: var(--pp-regular); appearance: textfield; }
+.filter-citations::placeholder, .filter-custom-years input::placeholder { color: var(--pp-gray-11); opacity: 1; }
+.filter-section { border-top: var(--pp-s1) solid var(--pp-gray-4); }
+.filter-section:last-child { border-bottom: var(--pp-s1) solid var(--pp-gray-4); }
+.filter-section.is-expanded { border-color: var(--pp-gray-7); }
+.filter-section-heading { height: calc(var(--pp-filter-section-height) - var(--pp-s1)); width: 100%; display: flex; align-items: center; justify-content: space-between; text-align: left; font-weight: var(--pp-medium); }
+.filter-section:last-child .filter-section-heading { height: calc(var(--pp-filter-section-height) - var(--pp-s2)); }
+.filter-section.is-expanded .filter-section-heading { height: var(--pp-filter-expanded-heading); }
+.filter-section-chevron { transform: rotate(90deg); }
+.is-expanded .filter-section-chevron { transform: rotate(-90deg); }
+.filter-journal-icon { width: var(--pp-s20); height: var(--pp-s20); display: flex; align-items: center; justify-content: center; }
+.filter-field-groups { padding-bottom: var(--pp-s15); display: flex; flex-direction: column; gap: var(--pp-s8); }
+.filter-field-groups fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.filter-field-groups legend { padding: 0; height: var(--pp-filter-group-heading); line-height: var(--pp-leading-button); font-size: var(--pp-text-sm); font-weight: var(--pp-medium); color: var(--pp-gray-10); }
+.filter-checkbox-label { display: flex; align-items: center; gap: var(--pp-s10); min-height: var(--pp-s24); font-size: var(--pp-text-sm); font-weight: var(--pp-regular); line-height: var(--pp-leading-button); cursor: pointer; }
+.filter-checkbox { flex: none; width: var(--pp-s16); height: var(--pp-s16); position: relative; }
+.filter-checkbox-box { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: var(--pp-blue-2); border: var(--pp-s1) solid var(--pp-gray-7); border-radius: var(--pp-filter-checkbox-radius); }
+.filter-checkbox:has(input:checked) .filter-checkbox-box { background: var(--pp-blue-9); border-color: var(--pp-blue-9); }
+.filter-journal-options { padding-bottom: var(--pp-s16); }
+.filter-dialog-footer { flex: none; min-height: var(--pp-filter-footer); padding: var(--pp-s12) var(--pp-s20); background: var(--pp-white); z-index: 1; }
+.filter-apply { width: 100%; height: var(--pp-s48); border-radius: var(--pp-radius-12); font-size: var(--pp-text-button); line-height: var(--pp-leading-button); font-weight: var(--pp-semibold); }
+.filter-validation { margin: 0 0 var(--pp-s8); font-size: var(--pp-text-sm); line-height: var(--pp-leading-base); color: var(--pp-blue-12); }
+.filter-scroll-track { position: absolute; right: var(--pp-s3); top: var(--pp-filter-scroll-start); bottom: calc(var(--pp-filter-footer) + var(--pp-s12)); width: var(--pp-s6); touch-action: none; cursor: pointer; }
+.filter-scroll-thumb { width: var(--pp-s6); height: var(--pp-filter-thumb); max-height: 100%; border-radius: var(--pp-s24); background: var(--pp-gray-7); }
