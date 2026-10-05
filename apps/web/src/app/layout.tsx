@@ -6,6 +6,7 @@ import "@fontsource/ibm-plex-serif/500.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import "../ui/agents.css";
 import "../ui/filters.css";
+import "../ui/research-workspace.css";
 
 export const metadata: Metadata = {
   title: "Agents · Paperpal",

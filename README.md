@@ -137,13 +137,19 @@ expansion, new-research reset, and recent queries for the current page session. 
 selection is local only; files are not uploaded. Voice input uses the browser's speech
 recognition when supported and needs the user's microphone permission.
 
-Search submission preserves a recent query and explicitly reports that live results are
-not available. Authentication, library storage, connectors, document checks, and billing
-are not connected to this static preview. The greeting uses the Figma example name Akash;
+Search submission opens the white Paperpal research workspace: a clearly labelled,
+curated example answer, citation previews, card/list/table references, source filtering,
+browser-local saves, CSV/BibTeX/RIS exports, and a five-tab paper reader. The reader includes
+an attributed open-access PDF with all 18 pages and passage highlights. Follow-up prompts
+and recent research are retained for the page session. Live search and AI follow-up answers
+are not connected. Authentication, server library storage, connectors, document checks,
+and billing are not connected to this static preview. The greeting uses the Figma example name Akash;
 it is not a signed-in identity. Source-menu catalog copy is retained from Figma, not a
 claim that an index has already been ingested. No research answers or papers are fabricated.
 
 Design provenance and component IDs: [docs/FIGMA-HANDOFF.md](docs/FIGMA-HANDOFF.md).
 Validation notes: [docs/UI-VALIDATION.md](docs/UI-VALIDATION.md).
+Recorded flow mapping, source attribution, and preview boundaries:
+[docs/RESEARCH-WORKSPACE.md](docs/RESEARCH-WORKSPACE.md).
 
 See [docs/BACKEND.md](docs/BACKEND.md) for architecture decisions and remaining M0 work.

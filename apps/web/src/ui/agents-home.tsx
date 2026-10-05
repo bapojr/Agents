@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FigmaAsset, Icon, icons, PaperpalLogo } from "./figma-assets";
+import { ResearchWorkspace, type ResearchSession } from "./research-workspace";
 import { Popover } from "./popover";
 import { FilterDialog } from "./filter-dialog";
 import { emptyFilters, filterSummary, type ResearchFilters } from "./research-filters";
@@ -21,7 +22,7 @@ const suggestions = [
   { label: "Ask questions", prompt: "What are the main mechanisms discussed across these papers on antibiotic resistance?", icon: icons.questions, mode: "chat" },
 ] as const;
 
-type Recent = { query: string; mode: ModeId; source: string; filter: ResearchFilters };
+type Recent = { query: string; mode: ModeId; source: string; filter: ResearchFilters; session?: ResearchSession };
 type SpeechSession = {
   lang: string; interimResults: boolean; continuous: boolean;
   onresult: ((event: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null;
@@ -33,6 +34,8 @@ type SpeechWindow = Window & { SpeechRecognition?: new () => SpeechSession; webk
 function Chevron() { return <FigmaAsset name="main-imgChevronDown" className="chevron" />; }
 
 export function AgentsHome() {
+  const [session, setSession] = useState<ResearchSession | null>(null);
+  const [paperScope, setPaperScope] = useState<string | null>(null);
   const [expanded, setExpanded] = useState(false);
   const [query, setQuery] = useState("");
   const [mode, setMode] = useState<ModeId>("search");
@@ -54,17 +57,25 @@ export function AgentsHome() {
 
   const notify = (text: string) => { setNotice(text); setOpen(null); };
   const reset = () => {
-    speech.current?.abort(); setListening(false); setQuery(""); setAttachments([]); setMode("search");
+    setSession(null); setPaperScope(null); speech.current?.abort(); setListening(false); setQuery(""); setAttachments([]); setMode("search");
     setSelectedSuggestion(0); setFilter(emptyFilters()); setSource("Public Research Papers"); setOpen(null); setNotice("");
     textarea.current?.focus();
   };
-  const submit = () => {
-    if (!query.trim()) return;
-    speech.current?.stop();
-    const item: Recent = { query: query.trim(), mode, source, filter };
-    setRecent((items) => [item, ...items.filter((previous) => previous.query !== item.query)].slice(0, 7));
-    notify("Your question is ready. Live research results are not available in this preview yet.");
+  const submitQuestion = (value: string) => {
+    if (!value.trim()) return;
+    speech.current?.stop(); setOpen(null); setNotice("");
+    if (session) {
+      const next = { ...session, followups: [...session.followups, { question: value.trim(), paperId: paperScope }] };
+      setSession(next); setRecent(items => items.map(item => item.query === session.query ? { ...item, session: next } : item));
+    }
+    else {
+      const item: Recent = { query: value.trim(), mode, source, filter };
+      setRecent(items => [item, ...items.filter(previous => previous.query !== item.query)].slice(0, 7));
+      setSession({ id: Date.now(), query: value.trim(), followups: [] });
+    }
+    setQuery("");
   };
+  const submit = () => submitQuestion(query);
   const voice = () => {
     if (listening) { speech.current?.stop(); return; }
     const Recognition = (window as SpeechWindow).SpeechRecognition || (window as SpeechWindow).webkitSpeechRecognition;
@@ -82,52 +93,10 @@ export function AgentsHome() {
   };
   const filterLabel = filterSummary(filter);
 
-  return <div className={`agents-shell ${expanded ? "sidebar-expanded" : ""}`}>
-    <a className="skip-link" href="#research-question">Skip to research question</a>
-    <aside className="sidebar" aria-label="Paperpal sidebar" data-node-id="119:38944">
-      <div className="sidebar-header">
-        <button className="logo-toggle" type="button" aria-label={expanded ? "Paperpal home" : "Expand sidebar"}
-          aria-expanded={expanded} onClick={() => expanded ? reset() : setExpanded(true)}>
-          <PaperpalLogo expanded={expanded} /><span className="logo-hover"><FigmaAsset name="main-imgSidebarFlip" /></span>
-        </button>
-        {expanded && <div className="sidebar-header-actions">
-          <button className="icon-button small" aria-label="Notifications" onClick={() => notify("You’re all caught up. No notifications yet.")}><FigmaAsset name="sidebar-imgBell" /></button>
-          <button className="icon-button small" aria-label="Collapse sidebar" aria-expanded="true" onClick={() => setExpanded(false)}><FigmaAsset name="sidebar-imgSidebarFlip" /></button>
-        </div>}
-      </div>
-      <nav className="sidebar-nav" aria-label="Main navigation">
-        <button className="nav-item create-new" onClick={reset} title="Start new research" aria-label="Start new research"><Icon name="main-imgFileCirclePlus" />{expanded && <span>Start New Research</span>}</button>
-        <button className={`nav-item ${expanded ? "current" : ""}`} onClick={reset} aria-label="Home" aria-current="page" title="Home"><Icon name={expanded ? "sidebar-imgHouse1" : "main-imgHouse"} />{expanded && <span>Home</span>}</button>
-        <button className="nav-item" onClick={() => notify("Document checks aren’t available in this preview yet.")} title="Checks" aria-label="Checks"><Icon name="main-imgBallotCheck" />{expanded && <><span>Checks</span><FigmaAsset name="sidebar-imgChevronRight" className="nav-chevron" /></>}</button>
-      </nav>
-      {expanded && recent.length > 0 && <section className="recents" aria-label="Recent research">
-        <h2>Recents</h2>{recent.map((item) => <button key={item.query} title={item.query} onClick={() => {
-          setQuery(item.query); setMode(item.mode); setSource(item.source); setFilter(item.filter); setSelectedSuggestion(null);
-          setNotice(""); textarea.current?.focus();
-        }}>{item.query}</button>)}
-      </section>}
-      <div className="sidebar-account">
-        {expanded ? <><button className="outline-button" onClick={() => notify("Sign-in isn’t available in this preview yet.")}>Login</button><button className="primary-button" onClick={() => notify("Account creation isn’t available in this preview yet.")}>Sign up for free</button></>
-          : <button className="account-avatar" aria-label="Open account" title="Account" onClick={() => { setExpanded(true); setOpen(null); }}>
-            <FigmaAsset name="main-imgEllipse19" /><FigmaAsset name="main-imgGroup1000005890" className="avatar-person" />
-          </button>}
-      </div>
-    </aside>
-
-    <div className="main-column">
-      <header className="topbar">
-        <nav className="breadcrumbs" aria-label="Breadcrumb"><button onClick={reset}>Home</button><FigmaAsset name="main-imgChevronRight" /><span aria-current="page">Agents</span></nav>
-        <button className="upgrade-button primary-button" onClick={() => notify("Prime upgrades aren’t available in this preview yet.")}><FigmaAsset name="main-imgGroup11097" /><span>Upgrade to Prime</span></button>
-      </header>
-      <main className="research-main">
-        <div className="agents-badge"><FigmaAsset name="main-imgSkywardIcons" /><span>Agents</span></div>
-        <div className="greeting"><h1>Hi Akash, let’s dive in.</h1><FigmaAsset name="main-imgSparkles" className="greeting-sparkle" /></div>
-        <p className="subtitle">What would you like to research today?</p>
-
-        <section className="composer-section" aria-label="Research composer">
+  const composer = (<section className="composer-section" aria-label="Research composer">
           <div className="composer" data-node-id="875:86062">
             <label className="sr-only" htmlFor="research-question">Research question</label>
-            <textarea ref={textarea} id="research-question" placeholder="Ask agents to..." value={query}
+            <textarea ref={textarea} id="research-question" placeholder={session ? "Ask a follow-up question…" : "Ask agents to..."} value={query}
               onChange={(event) => { setQuery(event.target.value); setNotice(""); }}
               onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); submit(); } }} />
             {attachments.length > 0 && <div className="attachments" aria-label="Selected PDFs">{attachments.map((file, index) => <span className="file-chip" key={`${file.name}-${index}`} title="Selected locally; not uploaded">
@@ -170,7 +139,51 @@ export function AgentsHome() {
           </div>
           {listening && <p className="listening-status" role="status">Listening… speak your question.</p>}
           {notice && <div className="notice" role="status"><span>{notice}</span><button aria-label="Dismiss message" onClick={() => setNotice("")}>×</button></div>}
-        </section>
+        </section>);
+
+  return <div className={`agents-shell ${expanded ? "sidebar-expanded" : ""}`}>
+    <a className="skip-link" href="#research-question">Skip to research question</a>
+    <aside className="sidebar" aria-label="Paperpal sidebar" data-node-id="119:38944">
+      <div className="sidebar-header">
+        <button className="logo-toggle" type="button" aria-label={expanded ? "Paperpal home" : "Expand sidebar"}
+          aria-expanded={expanded} onClick={() => expanded ? reset() : setExpanded(true)}>
+          <PaperpalLogo expanded={expanded} /><span className="logo-hover"><FigmaAsset name="main-imgSidebarFlip" /></span>
+        </button>
+        {expanded && <div className="sidebar-header-actions">
+          <button className="icon-button small" aria-label="Notifications" onClick={() => notify("You’re all caught up. No notifications yet.")}><FigmaAsset name="sidebar-imgBell" /></button>
+          <button className="icon-button small" aria-label="Collapse sidebar" aria-expanded="true" onClick={() => setExpanded(false)}><FigmaAsset name="sidebar-imgSidebarFlip" /></button>
+        </div>}
+      </div>
+      <nav className="sidebar-nav" aria-label="Main navigation">
+        <button className="nav-item create-new" onClick={reset} title="Start new research" aria-label="Start new research"><Icon name="main-imgFileCirclePlus" />{expanded && <span>Start New Research</span>}</button>
+        <button className={`nav-item ${expanded ? "current" : ""}`} onClick={reset} aria-label="Home" aria-current="page" title="Home"><Icon name={expanded ? "sidebar-imgHouse1" : "main-imgHouse"} />{expanded && <span>Home</span>}</button>
+        <button className="nav-item" onClick={() => notify("Document checks aren’t available in this preview yet.")} title="Checks" aria-label="Checks"><Icon name="main-imgBallotCheck" />{expanded && <><span>Checks</span><FigmaAsset name="sidebar-imgChevronRight" className="nav-chevron" /></>}</button>
+      </nav>
+      {expanded && recent.length > 0 && <section className="recents" aria-label="Recent research">
+        <h2>Recents</h2>{recent.map((item) => <button key={item.query} title={item.query} onClick={() => {
+          setSession(item.session || { id: Date.now(), query: item.query, followups: [] }); setPaperScope(null); setQuery(""); setMode(item.mode); setSource(item.source); setFilter(item.filter); setSelectedSuggestion(null);
+          setNotice(""); textarea.current?.focus();
+        }}>{item.query}</button>)}
+      </section>}
+      <div className="sidebar-account">
+        {expanded ? <><button className="outline-button" onClick={() => notify("Sign-in isn’t available in this preview yet.")}>Login</button><button className="primary-button" onClick={() => notify("Account creation isn’t available in this preview yet.")}>Sign up for free</button></>
+          : <button className="account-avatar" aria-label="Open account" title="Account" onClick={() => { setExpanded(true); setOpen(null); }}>
+            <FigmaAsset name="main-imgEllipse19" /><FigmaAsset name="main-imgGroup1000005890" className="avatar-person" />
+          </button>}
+      </div>
+    </aside>
+
+    <div className="main-column">
+      <header className="topbar">
+        <nav className="breadcrumbs" aria-label="Breadcrumb"><button onClick={reset}>Home</button><FigmaAsset name="main-imgChevronRight" /><span aria-current="page">Agents</span></nav>
+        <button className="upgrade-button primary-button" onClick={() => notify("Prime upgrades aren’t available in this preview yet.")}><FigmaAsset name="main-imgGroup11097" /><span>Upgrade to Prime</span></button>
+      </header>
+      {session ? <ResearchWorkspace key={session.id} session={session} composer={composer} filters={filter} onFilter={() => setOpen("filters")} onResetFilters={() => setFilter(emptyFilters())} onFollowup={submitQuestion} scope={paperScope} onScope={setPaperScope} modeLabel={selectedMode.label} source={source} /> : <main className="research-main">
+        <div className="agents-badge"><FigmaAsset name="main-imgSkywardIcons" /><span>Agents</span></div>
+        <div className="greeting"><h1>Hi Akash, let’s dive in.</h1><FigmaAsset name="main-imgSparkles" className="greeting-sparkle" /></div>
+        <p className="subtitle">What would you like to research today?</p>
+
+        {composer}
         <section className="suggestions" aria-label="Research starting points">
           {suggestions.map((item, index) => <button className={`suggestion ${selectedSuggestion === index ? "selected" : ""}`} key={item.label} aria-pressed={selectedSuggestion === index}
             onClick={() => { setQuery(item.prompt); setMode(item.mode); setSelectedSuggestion(index); setNotice(""); textarea.current?.focus(); }}>
@@ -178,7 +191,7 @@ export function AgentsHome() {
             <FigmaAsset name="main-imgStashArrowUpLight" className="suggestion-arrow" />
           </button>)}
         </section>
-      </main>
+      </main>}
       {open === "filters" && <FilterDialog value={filter} onClose={() => setOpen(null)} onApply={value => { setFilter(value); setOpen(null); }} />}
     </div>
   </div>;
