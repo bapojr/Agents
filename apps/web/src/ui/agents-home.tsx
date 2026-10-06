@@ -174,10 +174,10 @@ export function AgentsHome() {
     </aside>
 
     <div className="main-column">
-      <header className="topbar">
+      {!session && <header className="topbar">
         <nav className="breadcrumbs" aria-label="Breadcrumb"><button onClick={reset}>Home</button><FigmaAsset name="main-imgChevronRight" /><span aria-current="page">Agents</span></nav>
         <button className="upgrade-button primary-button" onClick={() => notify("Prime upgrades aren’t available in this preview yet.")}><FigmaAsset name="main-imgGroup11097" /><span>Upgrade to Prime</span></button>
-      </header>
+      </header>}
       {session ? <ResearchWorkspace key={session.id} session={session} composer={composer} filters={filter} onFilter={() => setOpen("filters")} onResetFilters={() => setFilter(emptyFilters())} onFollowup={submitQuestion} scope={paperScope} onScope={setPaperScope} modeLabel={selectedMode.label} source={source} /> : <main className="research-main">
         <div className="agents-badge"><FigmaAsset name="main-imgSkywardIcons" /><span>Agents</span></div>
         <div className="greeting"><h1>Hi Akash, let’s dive in.</h1><FigmaAsset name="main-imgSparkles" className="greeting-sparkle" /></div>

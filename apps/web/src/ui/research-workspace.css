@@ -1,5 +1,5 @@
 /* New research components composed exclusively from the approved Paperpal tokens. */
-.research-workspace { display: grid; grid-template-columns: minmax(0, 1fr); height: calc(100dvh - var(--pp-topbar-height)); border-top: var(--pp-border); background: var(--pp-white); }
+.research-workspace { display: grid; grid-template-columns: minmax(0, 1fr); height: 100dvh; background: var(--pp-white); }
 .research-workspace.has-panel { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); }
 .research-workspace button, .research-workspace a, .research-workspace select { transition: background-color .15s ease, border-color .15s ease; }
 .research-workspace a { color: var(--pp-blue-11); text-decoration: none; }
@@ -182,7 +182,7 @@
 @media (max-width: 1100px) { .answer-column { --conversation-gutter: var(--pp-s24); } .workspace-toolbar { padding-inline: var(--pp-s16); } .reader-tabs { gap: var(--pp-s12); } }
 @media (max-width: 900px) {
   .research-workspace.has-panel { grid-template-columns: minmax(0, 1fr); }
-  .references-panel, .paper-reader { position: fixed; z-index: 25; inset: var(--pp-topbar-height) 0 0 var(--pp-sidebar-width); box-shadow: var(--pp-menu-shadow); }
+  .references-panel, .paper-reader { position: fixed; z-index: 25; inset: 0 0 0 var(--pp-sidebar-width); box-shadow: var(--pp-menu-shadow); }
   .answer-column { --conversation-gutter: var(--pp-s16); }
   .workspace-composer .composer textarea { min-height: var(--pp-s32); }
   .full-paper-results { padding: var(--pp-s8); }
