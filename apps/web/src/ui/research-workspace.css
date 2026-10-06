@@ -11,6 +11,7 @@
 .research-workspace select { font: inherit; font-size: var(--pp-text-sm); border: var(--pp-border); border-radius: var(--pp-radius-6); background: var(--pp-white); padding: var(--pp-s6) var(--pp-s8); min-width: 0; max-width: 100%; color: var(--pp-gray-11); }
 .research-workspace select:focus-visible, .reader-content:focus-visible, .reference-table-wrap:focus-visible { outline: var(--pp-focus); outline-offset: calc(-1 * var(--pp-s2)); }
 .answer-column, .references-panel, .paper-reader { min-width: 0; min-height: 0; display: flex; flex-direction: column; }
+.answer-column { position: relative; --conversation-gutter: var(--pp-s32); --conversation-width: min(var(--pp-conversation-width), calc(100% - 2 * var(--conversation-gutter))); }
 .workspace-toolbar { flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--pp-s24); min-height: var(--pp-s56); border-bottom: var(--pp-border); gap: var(--pp-s8); }
 .workspace-tabs { display: flex; align-self: stretch; gap: var(--pp-s20); }
 .workspace-tabs > button { display: flex; align-items: center; gap: var(--pp-s6); border-bottom: var(--pp-s2) solid transparent; color: var(--pp-gray-11); font-weight: var(--pp-medium); }
@@ -23,7 +24,8 @@
 .rw-actions { display: flex; align-items: center; flex-wrap: wrap; gap: var(--pp-s2); }
 .rw-action .icon-slot { width: var(--pp-s16); height: var(--pp-s16); }
 .answer-scroll, .reference-scroll, .reader-content { overflow-y: auto; overscroll-behavior: contain; min-height: 0; flex: 1; scrollbar-width: thin; scrollbar-color: var(--pp-gray-8) transparent; scrollbar-gutter: stable; }
-.answer-document { width: min(100%, var(--pp-suggestion-width)); margin-inline: auto; padding: var(--pp-s24) var(--pp-s32) var(--pp-s36); }
+.answer-scroll { scrollbar-gutter: stable both-edges; padding-bottom: calc(var(--floating-composer-height, var(--pp-conversation-composer-height)) + var(--pp-s48)); scroll-padding-bottom: calc(var(--floating-composer-height, var(--pp-conversation-composer-height)) + var(--pp-s48)); }
+.answer-document { width: var(--conversation-width); margin-inline: auto; padding: var(--pp-s24) 0 var(--pp-s24); }
 .user-question { background: var(--pp-blue-2); border: var(--pp-border); border-radius: var(--pp-radius-12); padding: var(--pp-s16) var(--pp-s20); margin-left: var(--pp-s32); }
 .user-question p { margin-top: var(--pp-s4); line-height: var(--pp-leading-button); font-weight: var(--pp-medium); overflow-wrap: anywhere; }
 .preview-note { display: flex; align-items: baseline; gap: var(--pp-s8); color: var(--pp-gray-11); font-size: var(--pp-text-xs); line-height: var(--pp-leading-sm); margin: var(--pp-s16) 0; }
@@ -68,19 +70,20 @@
 .followup-suggestions > button { display: flex; width: 100%; align-items: center; justify-content: space-between; padding: var(--pp-s12) var(--pp-s16); border: var(--pp-border); border-radius: var(--pp-radius-8); margin-top: var(--pp-s8); text-align: left; gap: var(--pp-s16); font-size: var(--pp-text-sm); }
 .followup-suggestions > button:hover { background: var(--pp-blue-2); border-color: var(--pp-blue-9); }
 .followup-suggestions > button > span:last-child { color: var(--pp-blue-9); }
-.workspace-composer { flex-shrink: 0; background: var(--pp-white); padding: var(--pp-s12) var(--pp-s24) var(--pp-s8); border-top: var(--pp-border); }
+.workspace-composer { position: absolute; z-index: 20; bottom: var(--pp-s24); left: 50%; transform: translateX(-50%); width: var(--conversation-width); }
+.workspace-composer::before { content: ""; position: absolute; z-index: -1; pointer-events: none; inset: calc(-1 * var(--pp-s16)) calc(-1 * var(--pp-s8)) calc(-1 * var(--pp-s24)); background: linear-gradient(to bottom, transparent, var(--pp-white) var(--pp-s16)); }
 .workspace-composer .composer-section { margin: 0 auto; }
-.workspace-composer .composer { min-height: 0; box-shadow: none; padding: var(--pp-s12) var(--pp-s8) var(--pp-s8); border-color: var(--pp-gray-8); }
+.workspace-composer .composer { min-height: var(--pp-conversation-composer-height); box-shadow: var(--pp-menu-shadow); padding: var(--pp-s16); border-color: var(--pp-gray-5); }
 .workspace-composer .composer:focus-within { border-color: var(--pp-blue-9); }
-.workspace-composer .composer textarea { min-height: var(--pp-s32); height: var(--pp-s32); font-weight: var(--pp-regular); }
+.workspace-composer .composer textarea { min-height: var(--pp-s32); height: var(--pp-s32); padding: 0; font-weight: var(--pp-regular); }
 .workspace-composer .composer-toolbar { margin-top: var(--pp-s8); gap: var(--pp-s4); }
 .workspace-composer .composer .selector { border-color: transparent; padding-inline: var(--pp-s4); min-width: 0; }
 .workspace-composer .composer .selector .icon-slot { width: var(--pp-s16); }
 .workspace-composer .popover-panel { top: auto; bottom: calc(100% + var(--pp-s8)); }
 .workspace-composer .source-picker .selector > span:not(.icon-slot) { max-width: var(--pp-year-width); overflow: hidden; text-overflow: ellipsis; }
 .workspace-composer .notice { font-size: var(--pp-text-xs); padding: var(--pp-s8); margin-top: var(--pp-s8); }
-.composer-context { text-align: center; color: var(--pp-gray-11); font-size: var(--pp-text-xs); margin-top: var(--pp-s6) !important; }
-.ask-scope { display: flex; align-items: center; gap: var(--pp-s8); margin-bottom: var(--pp-s8); color: var(--pp-blue-11); font-size: var(--pp-text-xs); }
+.composer-context { width: fit-content; margin-inline: auto !important; background: var(--pp-white); border-radius: var(--pp-radius-4); padding-inline: var(--pp-s8); text-align: center; color: var(--pp-gray-11); font-size: var(--pp-text-xs); margin-top: var(--pp-s6) !important; }
+.ask-scope { background: var(--pp-white); border: var(--pp-border); border-radius: var(--pp-radius-8); padding: var(--pp-s8); display: flex; align-items: center; gap: var(--pp-s8); margin-bottom: var(--pp-s8); color: var(--pp-blue-11); font-size: var(--pp-text-xs); }
 .ask-scope > span:not(.icon-slot) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
 .ask-scope > button { font-size: var(--pp-text-lead); }
 .references-panel, .paper-reader { border-left: var(--pp-border); background: var(--pp-white); }
@@ -176,11 +179,11 @@
 .answer-loading span:last-child { width: 65%; }
 @keyframes research-pulse { to { opacity: .4; } }
 @media (prefers-reduced-motion: reduce) { .answer-loading span { animation: none; } .research-workspace * { scroll-behavior: auto !important; transition: none !important; } }
-@media (max-width: 1100px) { .answer-document { padding-inline: var(--pp-s20); } .workspace-composer { padding-inline: var(--pp-s12); } .workspace-toolbar { padding-inline: var(--pp-s16); } .reader-tabs { gap: var(--pp-s12); } }
+@media (max-width: 1100px) { .answer-column { --conversation-gutter: var(--pp-s24); } .workspace-toolbar { padding-inline: var(--pp-s16); } .reader-tabs { gap: var(--pp-s12); } }
 @media (max-width: 900px) {
   .research-workspace.has-panel { grid-template-columns: minmax(0, 1fr); }
   .references-panel, .paper-reader { position: fixed; z-index: 25; inset: var(--pp-topbar-height) 0 0 var(--pp-sidebar-width); box-shadow: var(--pp-menu-shadow); }
-  .answer-document { padding-inline: var(--pp-s16); }
+  .answer-column { --conversation-gutter: var(--pp-s16); }
   .workspace-composer .composer textarea { min-height: var(--pp-s32); }
   .full-paper-results { padding: var(--pp-s8); }
 }
@@ -188,7 +191,9 @@
   .workspace-toolbar { padding-inline: var(--pp-s8); }
   .workspace-tabs { gap: var(--pp-s8); font-size: var(--pp-text-sm); }
   .workspace-tabs .icon-slot { display: none; }
-  .workspace-composer { padding-inline: var(--pp-s8); }
+  .answer-column { --conversation-gutter: var(--pp-s8); }
+  .workspace-composer { bottom: var(--pp-s12); }
+  .workspace-composer .composer { padding: var(--pp-s12); }
   .user-question { margin-left: 0; padding: var(--pp-s12); }
   .citation-preview { width: min(calc(100vw - var(--pp-s16)), calc(var(--pp-menu-width) + var(--pp-s56))); }
   .reader-tabs { gap: var(--pp-s12); padding-inline: var(--pp-s12); }
@@ -205,6 +210,7 @@
   .sidebar, .topbar, .workspace-toolbar, .workspace-composer, .references-panel, .paper-reader, .preview-note, .research-activity, .answer-actions, .followup-suggestions, .workspace-toast, .citation-preview { display: none !important; }
   .main-column { margin: 0; }
   .research-workspace, .answer-column, .answer-scroll { display: block !important; height: auto !important; overflow: visible !important; }
+  .answer-scroll { padding-bottom: 0; }
   .answer-document { max-width: none; width: 100%; }
   .answer-section { break-inside: avoid; }
   .research-answer::after { content: "Example research preview. Sources: doi.org/10.1186/s13024-019-0333-5 · doi.org/10.1016/j.jalz.2018.02.018 · doi.org/10.3390/brainsci10080479"; display: block; margin-top: var(--pp-s24); }

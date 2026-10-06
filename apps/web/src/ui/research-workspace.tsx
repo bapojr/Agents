@@ -122,6 +122,18 @@ export function ResearchWorkspace({ session, composer, filters, onFilter, onRese
   const askScope = papers.find(p => p.id === scope);
   const workspace = useRef<HTMLElement>(null);
   const answerScroll = useRef<HTMLDivElement>(null);
+  const floatingComposer = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const composerElement = floatingComposer.current;
+    const column = composerElement?.parentElement;
+    if (!composerElement || !column) return;
+    // Keep the last turn reachable when attachments, notices or mobile controls grow the composer.
+    const measure = () => column.style.setProperty("--floating-composer-height", `${composerElement.getBoundingClientRect().height}px`);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(composerElement);
+    return () => observer.disconnect();
+  }, []);
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 900px)");
     setMobile(mq.matches); if (mq.matches) setPanel(false);
@@ -180,7 +192,7 @@ export function ResearchWorkspace({ session, composer, filters, onFilter, onRese
           {session.followups.map((q, i) => <section className="followup-turn" key={`${i}-${q.question}`}><div className="user-question"><span className="rw-eyebrow">FOLLOW-UP{q.paperId ? ` · ${papers.find(p => p.id === q.paperId)?.shortAuthor}` : ""}</span><p>{q.question}</p></div><div className="followup-preview"><span className="answer-brand"><Icon name={icons.research} />Paperpal</span><p>Your follow-up is captured in this preview. Live answers will appear here when research is connected. Meanwhile, explore the source passages and snapshots alongside the answer.</p><button className="outline-button" onClick={() => openPaper(papers.find(p => p.id === q.paperId) || papers[0], "Evidence")}>Explore {q.paperId ? "this paper’s" : "source"} evidence</button></div></section>)}
         </div>}
       </div>
-      <div className="workspace-composer">{askScope && <div className="ask-scope"><Icon name={icons.papers} /><span>Asking: {askScope.title}</span><button aria-label="Clear paper scope" onClick={() => onScope(null)}>×</button></div>}{composer}<p className="composer-context">{modeLabel} · {source} · Preview</p></div>
+      <div ref={floatingComposer} className="workspace-composer">{askScope && <div className="ask-scope"><Icon name={icons.papers} /><span>Asking: {askScope.title}</span><button aria-label="Clear paper scope" onClick={() => onScope(null)}>×</button></div>}{composer}<p className="composer-context">{modeLabel} · {source} · Preview</p></div>
     </section>
     {paper ? <PaperReader paper={paper} tab={tab} setTab={setTab} evidence={evidence} onEvidence={setEvidence} onBack={() => { setPaper(null); setEvidence(undefined); if (mainView === "papers") setPanel(false); }} onClose={closePanel} saved={saved} onSave={save} onCopy={copy} onAsk={p => { onScope(p.id); if (mobile) { setPaper(null); setPanel(false); } const input = document.getElementById("research-question") as HTMLTextAreaElement | null; requestAnimationFrame(() => input?.focus()); }} /> : panel && mainView === "answer" && <aside className="references-panel" aria-label="References">{referenceControls}<div className="reference-scroll">{results}</div><footer className="reference-footer">{items.length} of {papers.length} example papers · <button onClick={() => { setMainView("papers"); setPanel(false); }}>Expand results ↗</button></footer></aside>}
     {toast && <div className="workspace-toast" role="status"><Glyph icon={faCheck} />{toast}<button aria-label="Dismiss notification" onClick={() => setToast("")}>×</button></div>}
