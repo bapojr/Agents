@@ -153,3 +153,19 @@ Recorded flow mapping, source attribution, and preview boundaries:
 [docs/RESEARCH-WORKSPACE.md](docs/RESEARCH-WORKSPACE.md).
 
 See [docs/BACKEND.md](docs/BACKEND.md) for architecture decisions and remaining M0 work.
+
+### Resizing the research side panel
+
+Drag the divider between the conversation and references (or paper reader) to resize.
+The desktop panel is 320–720px wide, with a dynamic maximum that reserves at least
+480px for the conversation. The width is remembered in this browser. Double-click
+the divider to restore its default proportion. The divider supports pointer capture
+for mouse, pen and touch input, and keyboard Left/Right arrows (Shift for larger
+steps), Home/End for the limits, Enter to close, and Escape to cancel a drag.
+On screens up to 900px wide, or when both panes cannot fit, references use the
+existing overlay instead. Panel controls, cards and the composer respond to their
+container width; comparison tables retain horizontal scrolling.
+
+Validation: production static build and browser checks cover dragging to the maximum,
+minimum/maximum keyboard bounds, keyboard increments, reset, window resizing,
+mobile overlay, and the paper reader at minimum width.

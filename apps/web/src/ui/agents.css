@@ -27,6 +27,7 @@
   --pp-sidebar-width: 48px; --pp-sidebar-expanded: 282px; --pp-sidebar-header: 56px;
   --pp-topbar-height: 76px; --pp-composer-width: 963px; --pp-composer-height: 174px;
   /* Conversation dimensions from Illustrate’s current desktop prompt flow. */
+  --pp-panel-min-width: 320px; --pp-panel-max-width: 720px; --pp-answer-min-width: 480px;
   --pp-conversation-width: 720px; --pp-conversation-composer-height: 188px;
   --pp-suggestion-width: 750px; --pp-menu-width: 214px; --pp-menu-row-height: 50px;
   --pp-agent-width: 151px; --pp-source-width: 187px;

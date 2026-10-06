@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowUpRightFromSquare, faBookmark, faCheck, faChevronDown, faCopy, faDownload, faFilePdf, faList, faMagnifyingGlass, faTable, faTableCellsLarge, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { Icon, icons } from "./figma-assets";
 import { Popover } from "./popover";
+import { usePanelResize } from "./use-panel-resize";
 import { emptyFilters, filterSummary, type ResearchFilters } from "./research-filters";
 import { citation, downloadText, exampleQuestion, exportPapers, filterPapers, papers, type Evidence, type Paper } from "./research-preview";
 
@@ -85,7 +86,7 @@ function PaperReader({ paper, tab, setTab, evidence, onEvidence, onBack, onClose
     setPage(evidence.page);
     if (target) container.scrollTo({ top: container.scrollTop + target.getBoundingClientRect().top - container.getBoundingClientRect().top - container.clientHeight / 3 });
   }, [tab, evidence, zoom]);
-  return <aside className="paper-reader" aria-label="Paper reader">
+  return <aside id="research-side-panel" className="paper-reader" aria-label="Paper reader">
     <div className="rw-panel-heading"><button className="rw-action" onClick={onBack}><Glyph icon={faArrowLeft} />References</button><button className="icon-button" aria-label="Close paper reader" onClick={onClose}><Glyph icon={faXmark} /></button></div>
     <div className="reader-heading"><span className="rw-eyebrow">PAPER {papers.indexOf(paper) + 1} · {paper.type}</span><h2 ref={title} tabIndex={-1}>{paper.title}</h2><p className="rw-muted">{paper.shortAuthor} · {paper.year}</p></div>
     <div className="reader-tabs" role="tablist" aria-label="Paper details">{tabs.map(t => <button key={t} id={`reader-${t}`} role="tab" aria-selected={t === tab} aria-controls="reader-content" tabIndex={t === tab ? 0 : -1} onClick={() => setTab(t)} onKeyDown={e => { if (["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) { e.preventDefault(); const next = e.key === "Home" ? 0 : e.key === "End" ? tabs.length - 1 : (tabs.indexOf(t) + (e.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length; setTab(tabs[next]); document.getElementById(`reader-${tabs[next]}`)?.focus(); } }}>{t}{t === "Evidence" && <span>{paper.evidence.length}</span>}</button>)}</div>
@@ -104,7 +105,6 @@ function PaperReader({ paper, tab, setTab, evidence, onEvidence, onBack, onClose
 
 export function ResearchWorkspace({ session, composer, filters, onFilter, onResetFilters, onFollowup, scope, onScope, modeLabel, source }: { session: ResearchSession; composer: ReactNode; filters: ResearchFilters; onFilter: () => void; onResetFilters: () => void; onFollowup: (q: string) => void; scope: string | null; onScope: (id: string | null) => void; modeLabel: string; source: string }) {
   const [ready, setReady] = useState(false);
-  const [mobile, setMobile] = useState(false);
   const [panel, setPanel] = useState(true);
   const [paper, setPaper] = useState<Paper | null>(null);
   const [tab, setTab] = useState<Tab>("Overview");
@@ -121,6 +121,9 @@ export function ResearchWorkspace({ session, composer, filters, onFilter, onRese
   const [menu, setMenu] = useState<string | null>(null);
   const askScope = papers.find(p => p.id === scope);
   const workspace = useRef<HTMLElement>(null);
+  const resize = usePanelResize(workspace);
+  const mobile = resize.compact;
+  const initialLayout = useRef(false);
   const answerScroll = useRef<HTMLDivElement>(null);
   const floatingComposer = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
@@ -135,11 +138,10 @@ export function ResearchWorkspace({ session, composer, filters, onFilter, onRese
     return () => observer.disconnect();
   }, []);
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 900px)");
-    setMobile(mq.matches); if (mq.matches) setPanel(false);
-    const update = () => setMobile(mq.matches);
-    mq.addEventListener("change", update); return () => mq.removeEventListener("change", update);
-  }, []);
+    if (!resize.ready || initialLayout.current) return;
+    initialLayout.current = true;
+    if (resize.compact) setPanel(false);
+  }, [resize.ready, resize.compact]);
   const overlayOpen = mobile && (!!paper || panel && mainView === "answer");
   useEffect(() => {
     if (!overlayOpen) return;
@@ -175,7 +177,7 @@ export function ResearchWorkspace({ session, composer, filters, onFilter, onRese
     {filterSummary(filters) !== filterSummary(emptyFilters()) && <div className="active-filter-summary"><span>{filterSummary(filters)}</span><button onClick={onResetFilters}>Clear</button></div>}
     <div className="selection-bar"><label><input type="checkbox" aria-label="Select all visible references" checked={items.length > 0 && items.every(p => selected.includes(p.id))} onChange={() => setSelected(items.every(p => selected.includes(p.id)) ? selected.filter(id => !items.some(p => p.id === id)) : [...new Set([...selected, ...items.map(p => p.id)])])} />{selected.length ? `${selected.length} selected` : "Select all"}</label>{selected.length > 0 && <><button onClick={() => { const next = [...new Set([...saved, ...selected])]; setSaved(next); try { localStorage.setItem("agents-saved-example-papers", JSON.stringify(next)); setToast("Selected papers saved on this browser."); } catch { setToast("Selected papers saved for this session."); } }}>Save selected</button><button aria-pressed={selectedOnly} onClick={() => setSelectedOnly(!selectedOnly)}>{selectedOnly ? "Show all" : "Selected only"}</button><button aria-label="Clear selection" onClick={() => { setSelected([]); setSelectedOnly(false); }}>×</button></>}</div></>;
   const results = <ReferenceResults items={items} view={view} selected={selected} saved={saved} onSelect={toggleSelect} onSave={save} onOpen={openPaper} onCopy={copy} />;
-  return <main ref={workspace} className={`research-workspace ${panel && mainView === "answer" || paper ? "has-panel" : ""}`} onKeyDown={e => { if (e.key === "Escape" && !menu) closePanel(); }}>
+  return <main ref={workspace} className={`research-workspace ${panel && mainView === "answer" || paper ? "has-panel" : ""} ${mobile ? "is-compact" : ""} ${resize.dragging ? "is-resizing" : ""}`} style={resize.style} onKeyDown={e => { if (e.key === "Escape" && !menu) closePanel(); }}>
     <section className="answer-column" aria-label="Research workspace" inert={overlayOpen}>
       <div className="workspace-toolbar"><div className="workspace-tabs"><button className={mainView === "answer" ? "active" : ""} aria-pressed={mainView === "answer"} onClick={() => setMainView("answer")}><Icon name={icons.research} />Answer</button><button className={mainView === "papers" ? "active" : ""} aria-pressed={mainView === "papers"} onClick={() => { setMainView("papers"); setPaper(null); }}><Icon name={icons.papers} />Papers</button></div><button id="show-references" className="rw-action" onClick={() => { setMainView("answer"); setPaper(null); setPanel(!panel || !!paper); }} aria-expanded={panel && mainView === "answer"}>References <span className="count-badge">{papers.length}</span></button></div>
       <div ref={answerScroll} className="answer-scroll">
@@ -194,7 +196,15 @@ export function ResearchWorkspace({ session, composer, filters, onFilter, onRese
       </div>
       <div ref={floatingComposer} className="workspace-composer">{askScope && <div className="ask-scope"><Icon name={icons.papers} /><span>Asking: {askScope.title}</span><button aria-label="Clear paper scope" onClick={() => onScope(null)}>×</button></div>}{composer}<p className="composer-context">{modeLabel} · {source} · Preview</p></div>
     </section>
-    {paper ? <PaperReader paper={paper} tab={tab} setTab={setTab} evidence={evidence} onEvidence={setEvidence} onBack={() => { setPaper(null); setEvidence(undefined); if (mainView === "papers") setPanel(false); }} onClose={closePanel} saved={saved} onSave={save} onCopy={copy} onAsk={p => { onScope(p.id); if (mobile) { setPaper(null); setPanel(false); } const input = document.getElementById("research-question") as HTMLTextAreaElement | null; requestAnimationFrame(() => input?.focus()); }} /> : panel && mainView === "answer" && <aside className="references-panel" aria-label="References">{referenceControls}<div className="reference-scroll">{results}</div><footer className="reference-footer">{items.length} of {papers.length} example papers · <button onClick={() => { setMainView("papers"); setPanel(false); }}>Expand results ↗</button></footer></aside>}
+    {(paper || panel && mainView === "answer") && !mobile && <div
+      className="panel-resizer" role="separator" tabIndex={0} aria-label={paper ? "Paper reader width" : "References width"}
+      aria-orientation="vertical" aria-controls="research-side-panel" title="Drag to resize. Double-click to reset."
+      aria-valuemin={resize.min} aria-valuemax={resize.max} aria-valuenow={resize.width}
+      aria-valuetext={`${resize.width} pixels`} aria-describedby="panel-resize-help"
+      {...resize.separatorProps}
+      onKeyDown={event => { if (event.key === "Enter") { event.preventDefault(); closePanel(); } else resize.separatorProps.onKeyDown(event); }}
+    ><span aria-hidden="true" /><span id="panel-resize-help" className="sr-only">Drag or use Left and Right arrows to resize. Shift changes width faster. Home selects minimum width; End selects maximum. Enter closes the panel. Escape cancels an active drag. Double-click to reset.</span></div>}
+    {paper ? <PaperReader paper={paper} tab={tab} setTab={setTab} evidence={evidence} onEvidence={setEvidence} onBack={() => { setPaper(null); setEvidence(undefined); if (mainView === "papers") setPanel(false); }} onClose={closePanel} saved={saved} onSave={save} onCopy={copy} onAsk={p => { onScope(p.id); if (mobile) { setPaper(null); setPanel(false); } const input = document.getElementById("research-question") as HTMLTextAreaElement | null; requestAnimationFrame(() => input?.focus()); }} /> : panel && mainView === "answer" && <aside id="research-side-panel" className="references-panel" aria-label="References">{referenceControls}<div className="reference-scroll">{results}</div><footer className="reference-footer">{items.length} of {papers.length} example papers · <button onClick={() => { setMainView("papers"); setPanel(false); }}>Expand results ↗</button></footer></aside>}
     {toast && <div className="workspace-toast" role="status"><Glyph icon={faCheck} />{toast}<button aria-label="Dismiss notification" onClick={() => setToast("")}>×</button></div>}
   </main>;
 }
