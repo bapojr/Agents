@@ -169,3 +169,10 @@ container width; comparison tables retain horizontal scrolling.
 Validation: production static build and browser checks cover dragging to the maximum,
 minimum/maximum keyboard bounds, keyboard increments, reset, window resizing,
 mobile overlay, and the paper reader at minimum width.
+
+The reference toolbar groups Filters, Saved and Export immediately before the view
+switch when its content area is at least 520px wide; narrower panels keep the two-row
+layout. Shared dropdowns reuse Illustrate's white surface, 12px menu corners, 8px
+padding, soft shadow, 40px minimum option rows, and blue selected text. Sort, PDF page,
+zoom and quote selectors use the same Popover-based selection component, including
+keyboard navigation, selected-state announcements, and Escape dismissal.
