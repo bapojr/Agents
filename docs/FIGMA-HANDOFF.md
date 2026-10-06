@@ -80,6 +80,12 @@ Inspected the user-authorized reference at /Users/sushrut.baporikar/Documents/Ne
 
 ## Implementation boundary
 
+### Typography update — 2026-10-06
+
+- User requested IBM Plex Sans for all UI text and a minimum font size of 12px.
+- The smallest text token now aliases the existing 12px small token; the remaining 14/16/20/38px scale is retained.
+- Landing and research-answer headings use IBM Plex Sans, and the unused Serif font import is removed. Source PDF pages retain their original document typography.
+
 ### Filters update — 2026-10-05
 
 - Source frame `1592:121393`, dialog instance `1592:122518`, expanded/scroll variant `1592:8924`.

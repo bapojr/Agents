@@ -1,5 +1,6 @@
 /* Exact Paperpal styles and component measurements from Figma 349:48909.
-   Frame values were approved as reusable code tokens in the design handoff. */
+   Frame values were approved as reusable code tokens in the design handoff.
+   User typography override (2026-10-06): IBM Plex Sans throughout, minimum 12px. */
 :root {
   --pp-white: #ffffff; --pp-gray-2: #f8f9fd; --pp-gray-5: #e4eaf7;
   --pp-gray-6: #d8e0ee; --pp-gray-8: #bcc7dc; --pp-gray-9: #7d8aa1;
@@ -7,8 +8,8 @@
   --pp-blue-1: #fbfcff; --pp-blue-2: #f5f8ff; --pp-blue-3: #edf3ff;
   --pp-blue-9: #0062ff; --pp-blue-11: #1c4dc0; --pp-blue-12: #051e57;
   --pp-purple-10: #650fba; --pp-brand-black: #1f2937;
-  --pp-sans: "IBM Plex Sans", sans-serif; --pp-serif: "IBM Plex Serif", serif;
-  --pp-text-xs: 11px; --pp-text-sm: 12px; --pp-text-base: 14px;
+  --pp-sans: "IBM Plex Sans", sans-serif;
+  --pp-text-xs: var(--pp-text-sm); --pp-text-sm: 12px; --pp-text-base: 14px;
   --pp-text-button: 16px; --pp-text-lead: 20px; --pp-text-heading: 38px;
   --pp-regular: 400; --pp-medium: 500; --pp-semibold: 600;
   --pp-leading-sm: 16px; --pp-leading-base: 20px; --pp-leading-button: 24px; --pp-leading-lead: 28.54054px;
@@ -106,7 +107,7 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .research-main { display: flex; flex-direction: column; align-items: center; padding: var(--pp-s14) var(--pp-s24) var(--pp-s48); }
 .agents-badge { display: flex; align-items: center; justify-content: center; gap: var(--pp-s2); height: var(--pp-s32); border: var(--pp-border); padding: 0 var(--pp-s15); border-radius: var(--pp-radius-8); background: var(--pp-gray-2); font-weight: var(--pp-semibold); }
 .greeting { display: flex; align-items: center; justify-content: center; gap: var(--pp-s10); margin-top: var(--pp-hero-gap); }
-h1 { margin: 0; font-family: var(--pp-serif); font-size: var(--pp-text-heading); font-weight: var(--pp-medium); line-height: normal; color: var(--pp-blue-11); text-align: center; }
+h1 { margin: 0; font-family: var(--pp-sans); font-size: var(--pp-text-heading); font-weight: var(--pp-medium); line-height: normal; color: var(--pp-blue-11); text-align: center; }
 .greeting-sparkle { align-self: center; }
 .subtitle { margin: var(--pp-s6) 0 0; font-size: var(--pp-text-lead); line-height: var(--pp-leading-lead); color: var(--pp-gray-11); text-align: center; }
 .composer-section { margin-top: var(--pp-question-gap); width: min(100%, var(--pp-composer-width)); }

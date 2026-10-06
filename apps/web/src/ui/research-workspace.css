@@ -40,7 +40,7 @@
 .research-activity small { display: block; color: var(--pp-gray-11); font-size: var(--pp-text-xs); line-height: var(--pp-leading-base); }
 .answer-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--pp-s12); }
 .answer-brand { display: inline-flex; align-items: center; gap: var(--pp-s6); font-weight: var(--pp-medium); color: var(--pp-blue-12); }
-.research-answer h1 { font-family: var(--pp-serif); font-size: var(--pp-text-lead); line-height: var(--pp-leading-lead); font-weight: var(--pp-medium); text-align: left; color: var(--pp-blue-12); margin-bottom: var(--pp-s12); }
+.research-answer h1 { font-family: var(--pp-sans); font-size: var(--pp-text-lead); line-height: var(--pp-leading-lead); font-weight: var(--pp-medium); text-align: left; color: var(--pp-blue-12); margin-bottom: var(--pp-s12); }
 .research-answer .answer-intro { color: var(--pp-gray-11); line-height: var(--pp-leading-button); margin-bottom: var(--pp-s24); }
 .answer-section { margin: var(--pp-s24) 0; border-radius: var(--pp-radius-6); }
 .answer-section h2 { margin-bottom: var(--pp-s8); }

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "@fontsource/ibm-plex-sans/400.css";
 import "@fontsource/ibm-plex-sans/500.css";
 import "@fontsource/ibm-plex-sans/600.css";
-import "@fontsource/ibm-plex-serif/500.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import "../ui/agents.css";
 import "../ui/filters.css";
