@@ -6,6 +6,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import "../ui/agents.css";
 import "../ui/filters.css";
 import "../ui/research-workspace.css";
+import "../ui/references.css";
 
 export const metadata: Metadata = {
   title: "Agents · Paperpal",

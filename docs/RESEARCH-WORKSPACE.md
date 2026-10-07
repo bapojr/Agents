@@ -1,5 +1,7 @@
 # Research workspace preview
 
+> Search Papers was updated on 8 October 2026. See [SEARCH-PAPERS-REFERENCES.md](SEARCH-PAPERS-REFERENCES.md) for the current data flow and references UI. The preview boundary below describes the original implementation and remains applicable to other modes.
+
 The October 2026 UI implements the post-prompt flows in the two user-supplied Consensus recordings. The recordings remain local and are not distributed with this repository.
 
 ## Flow map

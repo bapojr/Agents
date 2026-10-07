@@ -1,0 +1,5 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="square-check">
+<path id="Primary" d="M12 1C13.1031 1 14 1.89688 14 3V13C14 14.1031 13.1031 15 12 15H2C0.896875 15 0 14.1031 0 13V3C0 1.89688 0.896875 1 2 1H12ZM2 2.5C1.725 2.5 1.5 2.725 1.5 3V13C1.5 13.275 1.725 13.5 2 13.5H12C12.275 13.5 12.5 13.275 12.5 13V3C12.5 2.725 12.275 2.5 12 2.5H2Z" fill="#CAD5E7"/>
+</g>
+</svg>

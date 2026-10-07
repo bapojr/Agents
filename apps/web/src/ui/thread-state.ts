@@ -49,10 +49,11 @@ function authorParts(author: string) {
   return { family, initials, suffix, inverted: `${family}, ${words.join(" ")}${suffix}` };
 }
 export function formatCitation(p: Paper, format: ExportFormat) {
+  if (format === "BibTeX") return exportPapers([p], "bib");
   const authors = p.authors.map(authorParts);
+  if (!authors.length || !p.year || !p.doi || !p.journal) return [p.authors.join(", "), p.year ? `(${p.year}).` : "(n.d.).", p.title + ".", p.journal, p.doi ? `https://doi.org/${p.doi}` : p.url].filter(Boolean).join(" ");
   const doi = `https://doi.org/${p.doi}`;
   const initials = authors.map(a => `${a.family}, ${a.initials}${a.suffix}`);
-  if (format === "BibTeX") return exportPapers([p], "bib");
   if (format === "APA") return `${initials.length > 1 ? `${initials.slice(0, -1).join(", ")}, & ${initials.at(-1)}` : initials[0]} (${p.year}). ${p.title}. ${p.journal}. ${doi}`;
   if (format === "MLA") return `${authors[0].inverted}${authors.length > 2 ? ", et al." : authors.length === 2 ? `, and ${p.authors[1]}.` : "."} “${p.title}.” ${p.journal}, ${p.year}, ${doi}.`;
   if (format === "Chicago") return `${authors[0].inverted}${authors.length > 1 ? `, ${p.authors.slice(1, -1).map(a => `${a}, `).join("")}and ${p.authors.at(-1)}` : ""}. “${p.title}.” ${p.journal} (${p.year}). ${doi}.`;

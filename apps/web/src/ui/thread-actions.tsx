@@ -8,9 +8,9 @@ import { UpgradeButton } from "./upgrade-button";
 import { emptyLibrary, exportFormats, readLibrary, saveThread, threadLink, type CitationPreferences, type ResearchSession, type ThreadLibrary } from "./thread-state";
 
 const libraryKey = "agents-thread-library-v1";
-export function ThreadActions({ session, preferences, onPreferences, referencesOpen, onReferences, onCopy, onNotice }: {
+export function ThreadActions({ session, preferences, onPreferences, referencesOpen, onReferences, onCopy, onNotice, onUpgrade }: {
   session: ResearchSession; preferences: CitationPreferences; onPreferences: (p: CitationPreferences) => void;
-  referencesOpen: boolean; onReferences: () => void; onCopy: (text: string) => void; onNotice: (message: string) => void;
+  onUpgrade?: () => void; referencesOpen: boolean; onReferences: () => void; onCopy: (text: string) => void; onNotice: (message: string) => void;
 }) {
   const [menu, setMenu] = useState<string | null>(null);
   const [formatsOpen, setFormatsOpen] = useState(false);
@@ -57,6 +57,6 @@ export function ThreadActions({ session, preferences, onPreferences, referencesO
       <button role="menuitem" className="menu-option thread-menu-action" onClick={() => { const url = new URL("https://x.com/intent/post"); url.searchParams.set("url", threadLink(window.location.href, session)); window.open(url.toString(), "_blank", "noopener,noreferrer"); close(); }}><span className="thread-x" aria-hidden="true">𝕏</span>Share to X</button>
       <button role="menuitem" className="menu-option thread-menu-action" onClick={() => { onCopy(threadLink(window.location.href, session)); close(); }}><FontAwesomeIcon icon={faLink} aria-hidden="true" />Copy thread link</button>
     </Popover>
-    <UpgradeButton onClick={() => onNotice("Prime upgrades aren’t available in this preview yet.")} />
+    <UpgradeButton onClick={onUpgrade || (() => onNotice("Prime upgrades aren’t available in this preview yet."))} />
   </div>;
 }

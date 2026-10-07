@@ -1,13 +1,9 @@
 import type { ResearchFilters } from "./research-filters";
 
-// Curated, source-checked fixtures. These are never represented as live search results.
-export type Evidence = { id: string; text: string; section: string; page?: number; rects?: number[][] };
-export type Paper = {
-  id: string; title: string; authors: string[]; shortAuthor: string; year: number;
-  journal: string; doi: string; url: string; type: string; summary: string; finding: string;
-  limitation: string; fields: string[]; openAccess: boolean; pdf?: string; pages?: number;
-  evidence: Evidence[]; citationCount?: number; quartile?: string;
-};
+import type { Paper } from "./paper-data";
+export type { Paper, Evidence } from "./paper-data";
+
+// Historical curated preview retained for existing non-search modes.
 export const exampleQuestion = "What is the relationship between Alzheimer’s disease and dementia? Can different types of dementia overlap?";
 export const papers: Paper[] = [
   {
@@ -50,8 +46,8 @@ export const papers: Paper[] = [
 export function filterPapers(items: Paper[], filters: ResearchFilters, search = "", now = new Date().getFullYear()) {
   return items.filter(p => {
     const y = filters.year;
-    if (y.kind === "custom" && (p.year < y.from || p.year > y.to)) return false;
-    if (y.kind === "last" && (p.year < now - y.years + 1 || p.year > now)) return false;
+    if (y.kind === "custom" && (p.year === undefined || p.year < y.from || p.year > y.to)) return false;
+    if (y.kind === "last" && (p.year === undefined || p.year < now - y.years + 1 || p.year > now)) return false;
     if (filters.hasPdf && !p.pdf) return false;
     if (filters.openAccess && !p.openAccess) return false;
     if (filters.minCitations !== null && (p.citationCount === undefined || p.citationCount < filters.minCitations)) return false;
@@ -63,9 +59,9 @@ export function filterPapers(items: Paper[], filters: ResearchFilters, search = 
 export const citation = (p: Paper) => `${p.authors.join(", ")} (${p.year}). ${p.title}. ${p.journal}. https://doi.org/${p.doi}`;
 const csvCell = (s: string) => `"${s.replace(/^[=+@-]/, "'$&").replaceAll('"', '""')}"`;
 export function exportPapers(items: Paper[], format: "csv" | "bib" | "ris") {
-  if (format === "csv") return [["Title", "Authors", "Year", "Journal", "DOI", "Key finding", "Study type"], ...items.map(p => [p.title, p.authors.join("; "), String(p.year), p.journal, p.doi, p.finding, p.type])].map(r => r.map(csvCell).join(",")).join("\r\n");
+  if (format === "csv") return [["Title", "Authors", "Year", "Journal", "DOI", "Key finding", "Study type"], ...items.map(p => [p.title, p.authors.join("; "), p.year ? String(p.year) : "", p.journal, p.doi, p.finding, p.type])].map(r => r.map(csvCell).join(",")).join("\r\n");
   if (format === "ris") return items.map(p => `TY  - JOUR\nTI  - ${p.title}\n${p.authors.map(a => `AU  - ${a}`).join("\n")}\nPY  - ${p.year}\nJO  - ${p.journal}\nDO  - ${p.doi}\nUR  - ${p.url}\nER  - `).join("\n\n");
-  return items.map(p => `@article{${p.id},\n  title = {${p.title}},\n  author = {${p.authors.join(" and ")}},\n  year = {${p.year}},\n  journal = {${p.journal}},\n  doi = {${p.doi}}\n}`).join("\n\n");
+  return items.map(p => `@article{${p.id},\n${Object.entries({ title: p.title, author: p.authors.join(" and "), year: p.year, journal: p.journal, doi: p.doi }).filter(([, value]) => value !== undefined && value !== "").map(([key, value]) => `  ${key} = {${value}}`).join(",\n")}\n}`).join("\n\n");
 }
 export function downloadText(name: string, text: string, type = "text/plain") {
   const url = URL.createObjectURL(new Blob([text], { type }));
