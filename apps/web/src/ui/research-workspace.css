@@ -1,5 +1,5 @@
 /* New research components composed exclusively from the approved Paperpal tokens. */
-.research-workspace { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); height: 100dvh; background: var(--pp-white); }
+.research-workspace { container: workspace / inline-size; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); height: 100dvh; background: var(--pp-white); }
 .research-workspace.has-panel { grid-template-columns: minmax(0, 1fr) var(--pp-s8) var(--reference-panel-width, 42.5%); }
 .research-workspace button, .research-workspace a, .research-workspace select { transition: background-color .15s ease, border-color .15s ease; }
 .research-workspace a { color: var(--pp-blue-11); text-decoration: none; }
@@ -279,14 +279,14 @@
 .thread-empty { padding: var(--pp-s12); }
 .thread-menu-footer form { display: grid; gap: var(--pp-s8); }
 .thread-menu-footer .rw-actions { justify-content: flex-end; }
-@media (max-width: 700px) {
+@container workspace (max-width: 700px) {
   .workspace-toolbar { flex-wrap: wrap; padding-top: var(--pp-s8); }
   .workspace-tabs { min-height: calc(var(--pp-s32) + var(--pp-s8)); order: 2; }
   .thread-actions { width: 100%; position: relative; }
   .thread-popover { position: static; }
   .thread-popover .popover-panel { max-height: calc(100dvh - var(--pp-s56) - var(--pp-s56)); }
 }
-@media (max-width: 520px) {
+@container workspace (max-width: 520px) {
   .thread-actions { gap: var(--pp-s6); }
   .thread-references > span, .thread-share > .selector > span { display: none; }
   .thread-references, .thread-share > .selector { width: var(--pp-s36); padding: var(--pp-s8); }
