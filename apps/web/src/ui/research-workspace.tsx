@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowUpRightFromSquare, faBookmark, faCheck, faChevronDown, faCopy, faDownload, faFilePdf, faList, faMagnifyingGlass, faTable, faTableCellsLarge, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { Icon, icons } from "./figma-assets";
@@ -8,9 +8,13 @@ import { Popover } from "./popover";
 import { SelectionDropdown } from "./selection-dropdown";
 import { usePanelResize } from "./use-panel-resize";
 import { emptyFilters, filterSummary, type ResearchFilters } from "./research-filters";
-import { citation, downloadText, exampleQuestion, exportPapers, filterPapers, papers, type Evidence, type Paper } from "./research-preview";
+import { downloadText, exampleQuestion, exportPapers, filterPapers, papers, type Evidence, type Paper } from "./research-preview";
 
-export type ResearchSession = { id: number; query: string; followups: { question: string; paperId: string | null }[] };
+import { ThreadActions } from "./thread-actions";
+import { defaultPreferences, formatCitation, readPreferences, type CitationPreferences, type ResearchSession } from "./thread-state";
+export type { ResearchSession } from "./thread-state";
+const CitationContext = createContext<CitationPreferences>(defaultPreferences);
+function useCitation() { const preferences = useContext(CitationContext); return (paper: Paper) => formatCitation(paper, preferences.exportFormat); }
 type Tab = "Overview" | "Snapshot" | "Attachment" | "Evidence" | "Metadata";
 type View = "cards" | "list" | "table";
 const base = process.env.NEXT_PUBLIC_BASE_PATH || "";
@@ -29,6 +33,8 @@ function SaveButton({ paper, saved, onSave }: { paper: Paper; saved: string[]; o
 }
 
 function CitationChip({ paper, evidence, onOpen, onSave, saved, onCopy }: { paper: Paper; evidence: Evidence; onOpen: (p: Paper, tab: Tab, e?: Evidence) => void; onSave: (id: string) => void; saved: string[]; onCopy: (text: string) => void }) {
+  const citation = useCitation();
+  const preferences = useContext(CitationContext);
   const [open, setOpen] = useState(false);
   const root = useRef<HTMLSpanElement>(null);
   const preview = useRef<HTMLSpanElement>(null);
@@ -49,7 +55,7 @@ function CitationChip({ paper, evidence, onOpen, onSave, saved, onCopy }: { pape
   }, [open]);
   useEffect(() => () => { if (timer.current) clearTimeout(timer.current); }, []);
   return <span ref={root} className="citation-wrap" onBlur={e => { if (!e.currentTarget.contains(e.relatedTarget)) setOpen(false); }} onMouseEnter={() => { if (timer.current) clearTimeout(timer.current); setOpen(true); }} onMouseLeave={() => { timer.current = setTimeout(() => setOpen(false), 180); }} onKeyDown={e => { if (e.key === "Escape") { setOpen(false); root.current?.querySelector("button")?.focus(); e.stopPropagation(); } }}>
-    <button className="citation-chip" aria-expanded={open} aria-label={`Preview citation: ${paper.shortAuthor}, ${paper.year}`} onClick={() => setOpen(true)}>{paper.shortAuthor}, {paper.year}</button>
+    <button className="citation-chip" aria-expanded={open} aria-label={`Preview citation: ${paper.shortAuthor}, ${paper.year}`} onClick={() => setOpen(true)}>{preferences.citationFormat === "numeric" ? `[${papers.findIndex(p => p.id === paper.id) + 1}]` : `${paper.shortAuthor}, ${paper.year}`}</button>
     {open && <span ref={preview} className="citation-preview" style={position} role="region" aria-label="Citation preview">
       <span className="rw-eyebrow">SOURCE · {evidence.section}{evidence.page ? ` · PAGE ${evidence.page}` : ""}</span>
       <button className="citation-title" onClick={() => { onOpen(paper, "Overview", evidence); setOpen(false); }}>{paper.title}</button>
@@ -61,6 +67,7 @@ function CitationChip({ paper, evidence, onOpen, onSave, saved, onCopy }: { pape
 }
 
 function ReferenceResults({ items, view, selected, saved, onSelect, onSave, onOpen, onCopy }: { items: Paper[]; view: View; selected: string[]; saved: string[]; onSelect: (id: string) => void; onSave: (id: string) => void; onOpen: (p: Paper, tab: Tab) => void; onCopy: (text: string) => void }) {
+  const citation = useCitation();
   if (!items.length) return <div className="rw-empty"><Icon name={icons.search} /><h3>No matching example papers</h3><p>Try removing filters or changing your reference search. Citation counts and SJR ratings are not available in this example set.</p></div>;
   const checkbox = (p: Paper) => <input type="checkbox" checked={selected.includes(p.id)} aria-label={`Select ${p.title}`} onChange={() => onSelect(p.id)} />;
   if (view === "table") return <div className="reference-table-wrap" tabIndex={0} role="region" aria-label="Scrollable paper comparison"><table className="reference-table"><thead><tr><th scope="col">Paper</th><th scope="col">Key finding</th><th scope="col">Study design</th><th scope="col">Population / sample</th><th scope="col">Limitations</th></tr></thead><tbody>{items.map(p => <tr key={p.id}><td><div className="paper-title-row">{checkbox(p)}<button onClick={() => onOpen(p, "Overview")}>{p.title}</button></div><span className="rw-muted">{p.shortAuthor} · {p.year}</span></td><td>{p.finding}<button className="table-evidence" onClick={() => onOpen(p, "Evidence")}>View evidence ↗</button></td><td>{p.type}</td><td>Not extracted</td><td>{p.limitation}</td></tr>)}</tbody></table></div>;
@@ -74,6 +81,7 @@ function ReferenceResults({ items, view, selected, saved, onSelect, onSave, onOp
 }
 
 function PaperReader({ paper, tab, setTab, evidence, onEvidence, onBack, onClose, onAsk, saved, onSave, onCopy }: { paper: Paper; tab: Tab; setTab: (t: Tab) => void; evidence?: Evidence; onEvidence: (e?: Evidence) => void; onBack: () => void; onClose: () => void; onAsk: (p: Paper) => void; saved: string[]; onSave: (id: string) => void; onCopy: (text: string) => void }) {
+  const citation = useCitation();
   const [page, setPage] = useState(1);
   const [zoom, setZoom] = useState(100);
   const scroll = useRef<HTMLDivElement>(null);
@@ -106,7 +114,11 @@ function PaperReader({ paper, tab, setTab, evidence, onEvidence, onBack, onClose
 
 export function ResearchWorkspace({ session, composer, filters, onFilter, onResetFilters, onFollowup, scope, onScope, modeLabel, source }: { session: ResearchSession; composer: ReactNode; filters: ResearchFilters; onFilter: () => void; onResetFilters: () => void; onFollowup: (q: string) => void; scope: string | null; onScope: (id: string | null) => void; modeLabel: string; source: string }) {
   const [ready, setReady] = useState(false);
-  const [panel, setPanel] = useState(true);
+  const [panel, setPanel] = useState(false);
+  const [preferences, setPreferences] = useState<CitationPreferences>(defaultPreferences);
+  useEffect(() => { try { setPreferences(readPreferences(JSON.parse(localStorage.getItem("agents-citation-preferences") || "null"))); } catch { /* Use defaults when storage is unavailable. */ } }, []);
+  const updatePreferences = (next: CitationPreferences) => { setPreferences(next); try { localStorage.setItem("agents-citation-preferences", JSON.stringify(next)); } catch { setToast("Citation preferences changed for this session only."); } };
+  const citation = (paper: Paper) => formatCitation(paper, preferences.exportFormat);
   const [paper, setPaper] = useState<Paper | null>(null);
   const [tab, setTab] = useState<Tab>("Overview");
   const [evidence, setEvidence] = useState<Evidence>();
@@ -124,7 +136,6 @@ export function ResearchWorkspace({ session, composer, filters, onFilter, onRese
   const workspace = useRef<HTMLElement>(null);
   const resize = usePanelResize(workspace);
   const mobile = resize.compact;
-  const initialLayout = useRef(false);
   const answerScroll = useRef<HTMLDivElement>(null);
   const floatingComposer = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
@@ -138,11 +149,6 @@ export function ResearchWorkspace({ session, composer, filters, onFilter, onRese
     observer.observe(composerElement);
     return () => observer.disconnect();
   }, []);
-  useEffect(() => {
-    if (!resize.ready || initialLayout.current) return;
-    initialLayout.current = true;
-    if (resize.compact) setPanel(false);
-  }, [resize.ready, resize.compact]);
   const overlayOpen = mobile && (!!paper || panel && mainView === "answer");
   useEffect(() => {
     if (!overlayOpen) return;
@@ -165,7 +171,7 @@ export function ResearchWorkspace({ session, composer, filters, onFilter, onRese
   const save = (id: string) => { const next = saved.includes(id) ? saved.filter(x => x !== id) : [...saved, id]; setSaved(next); try { localStorage.setItem("agents-saved-example-papers", JSON.stringify(next)); setToast(next.includes(id) ? "Saved on this browser." : "Removed from saved papers."); } catch { setToast("Saved for this session. Browser storage is unavailable."); } };
   const copy = async (text: string) => { try { await navigator.clipboard.writeText(text); setToast("Copied to clipboard."); } catch { downloadText("agents-copy.txt", text); setToast("Clipboard unavailable. Downloaded a text file instead."); } setMenu(null); };
   const openPaper = (p: Paper, t: Tab, e?: Evidence) => { returnFocus.current = document.activeElement as HTMLElement; setPaper(p); setTab(t); setEvidence(e); setPanel(true); };
-  const closePanel = () => { setPanel(false); setPaper(null); setEvidence(undefined); if (returnFocus.current?.isConnected) returnFocus.current.focus(); else document.getElementById("show-references")?.focus(); };
+  const closePanel = () => { setPanel(false); setPaper(null); setEvidence(undefined); requestAnimationFrame(() => { if (returnFocus.current?.isConnected) returnFocus.current.focus(); else document.getElementById("show-references")?.focus(); }); };
   const toggleSelect = (id: string) => setSelected(list => list.includes(id) ? list.filter(x => x !== id) : [...list, id]);
   const filtered = filterPapers(papers, filters, search).filter(p => (!savedOnly || saved.includes(p.id)) && (!selectedOnly || selected.includes(p.id)));
   const items = [...filtered].sort((a, b) => sort === "newest" ? b.year - a.year : sort === "oldest" ? a.year - b.year : 0);
@@ -174,13 +180,17 @@ export function ResearchWorkspace({ session, composer, filters, onFilter, onRese
   const answerText = `Example research — curated preview\n${exampleQuestion}\n\n${answerSections.map(s => `${s.title}\n${s.body}`).join("\n\n")}`;
   const referenceControls = <><div className="rw-panel-heading"><div><h2>References <span className="count-badge">{items.length}</span></h2><p className="rw-muted">Source-checked example papers</p></div>{mainView === "answer" && <button className="icon-button" aria-label="Close references" onClick={closePanel}><Glyph icon={faXmark} /></button>}</div>
     <div className="reference-controls"><label className="reference-search"><Glyph icon={faMagnifyingGlass} /><input aria-label="Search references" placeholder="Search references" value={search} onChange={e => setSearch(e.target.value)} /></label><div className="reference-toolbar"><SelectionDropdown className="reference-sort" label="Sort references" value={sort} onChange={setSort} options={[{ value: "relevance", label: "Source order" }, { value: "newest", label: "Newest first" }, { value: "oldest", label: "Oldest first" }]} />
-    <div className="reference-actions"><button className="rw-action" onClick={onFilter}><Icon name="filter-sliders" />Filters</button><button className={`rw-action ${savedOnly ? "is-active" : ""}`} aria-pressed={savedOnly} onClick={() => setSavedOnly(!savedOnly)}><Glyph icon={faBookmark} />Saved ({saved.length})</button><Popover label="Export references" open={menu === "export"} onOpenChange={v => setMenu(v ? "export" : null)} className="export-menu secondary-action" trigger={<><Glyph icon={faDownload} />Export<Glyph icon={faChevronDown} /></>}>{([['csv', 'CSV spreadsheet'], ['bib', 'BibTeX'], ['ris', 'RIS']] as const).map(([f, label]) => <button role="menuitem" className="menu-option compact" disabled={!exportItems.length} key={f} onClick={() => exportFile(f)}>{label}</button>)}</Popover></div><div className="view-switch" aria-label="Reference display">{([['cards', faTableCellsLarge, 'Card view'], ['list', faList, 'List view'], ['table', faTable, 'Table view']] as const).map(([v, icon, label]) => <button key={v} className={view === v ? "active" : ""} aria-label={label} aria-pressed={view === v} onClick={() => setView(v)}><Glyph icon={icon} /></button>)}</div></div></div>
+    <div className="reference-actions"><button className="rw-action" onClick={onFilter}><Icon name="filter-sliders" />Filters</button><button className={`rw-action ${savedOnly ? "is-active" : ""}`} aria-pressed={savedOnly} onClick={() => setSavedOnly(!savedOnly)}><Glyph icon={faBookmark} />Saved ({saved.length})</button><Popover label="Export references" open={menu === "export"} onOpenChange={v => setMenu(v ? "export" : null)} className="export-menu secondary-action" trigger={<><Glyph icon={faDownload} />Export<Glyph icon={faChevronDown} /></>}><button role="menuitem" className="menu-option compact" disabled={!exportItems.length} onClick={() => { downloadText(`agents-references.${preferences.exportFormat === "BibTeX" ? "bib" : "txt"}`, exportItems.map(citation).join("\n\n")); setMenu(null); }}>{preferences.exportFormat} references</button>{([['csv', 'CSV spreadsheet'], ['bib', 'BibTeX'], ['ris', 'RIS']] as const).map(([f, label]) => <button role="menuitem" className="menu-option compact" disabled={!exportItems.length} key={f} onClick={() => exportFile(f)}>{label}</button>)}</Popover></div><div className="view-switch" aria-label="Reference display">{([['cards', faTableCellsLarge, 'Card view'], ['list', faList, 'List view'], ['table', faTable, 'Table view']] as const).map(([v, icon, label]) => <button key={v} className={view === v ? "active" : ""} aria-label={label} aria-pressed={view === v} onClick={() => setView(v)}><Glyph icon={icon} /></button>)}</div></div></div>
     {filterSummary(filters) !== filterSummary(emptyFilters()) && <div className="active-filter-summary"><span>{filterSummary(filters)}</span><button onClick={onResetFilters}>Clear</button></div>}
     <div className="selection-bar"><label><input type="checkbox" aria-label="Select all visible references" checked={items.length > 0 && items.every(p => selected.includes(p.id))} onChange={() => setSelected(items.every(p => selected.includes(p.id)) ? selected.filter(id => !items.some(p => p.id === id)) : [...new Set([...selected, ...items.map(p => p.id)])])} />{selected.length ? `${selected.length} selected` : "Select all"}</label>{selected.length > 0 && <><button onClick={() => { const next = [...new Set([...saved, ...selected])]; setSaved(next); try { localStorage.setItem("agents-saved-example-papers", JSON.stringify(next)); setToast("Selected papers saved on this browser."); } catch { setToast("Selected papers saved for this session."); } }}>Save selected</button><button aria-pressed={selectedOnly} onClick={() => setSelectedOnly(!selectedOnly)}>{selectedOnly ? "Show all" : "Selected only"}</button><button aria-label="Clear selection" onClick={() => { setSelected([]); setSelectedOnly(false); }}>×</button></>}</div></>;
   const results = <ReferenceResults items={items} view={view} selected={selected} saved={saved} onSelect={toggleSelect} onSave={save} onOpen={openPaper} onCopy={copy} />;
-  return <main ref={workspace} className={`research-workspace ${panel && mainView === "answer" || paper ? "has-panel" : ""} ${mobile ? "is-compact" : ""} ${resize.dragging ? "is-resizing" : ""}`} style={resize.style} onKeyDown={e => { if (e.key === "Escape" && !menu) closePanel(); }}>
+  return <CitationContext.Provider value={preferences}><main ref={workspace} className={`research-workspace ${panel && mainView === "answer" || paper ? "has-panel" : ""} ${mobile ? "is-compact" : ""} ${resize.dragging ? "is-resizing" : ""}`} style={resize.style} onKeyDown={e => { if (e.key === "Escape" && !menu) closePanel(); }}>
+    <header className="workspace-toolbar" inert={overlayOpen}>
+      <div className="workspace-tabs"><button className={mainView === "answer" ? "active" : ""} aria-pressed={mainView === "answer"} onClick={() => setMainView("answer")}><Icon name={icons.research} />Answer</button><button className={mainView === "papers" ? "active" : ""} aria-pressed={mainView === "papers"} onClick={() => { setMainView("papers"); setPaper(null); }}><Icon name={icons.papers} />Papers</button></div>
+      <ThreadActions session={session} preferences={preferences} onPreferences={updatePreferences} referencesOpen={panel && mainView === "answer"} onReferences={() => { setMainView("answer"); setPaper(null); setPanel(!panel || !!paper); }} onCopy={copy} onNotice={setToast} />
+    </header>
     <section className="answer-column" aria-label="Research workspace" inert={overlayOpen}>
-      <div className="workspace-toolbar"><div className="workspace-tabs"><button className={mainView === "answer" ? "active" : ""} aria-pressed={mainView === "answer"} onClick={() => setMainView("answer")}><Icon name={icons.research} />Answer</button><button className={mainView === "papers" ? "active" : ""} aria-pressed={mainView === "papers"} onClick={() => { setMainView("papers"); setPaper(null); }}><Icon name={icons.papers} />Papers</button></div><button id="show-references" className="rw-action" onClick={() => { setMainView("answer"); setPaper(null); setPanel(!panel || !!paper); }} aria-expanded={panel && mainView === "answer"}>References <span className="count-badge">{papers.length}</span></button></div>
+
       <div ref={answerScroll} className="answer-scroll">
         {mainView === "papers" ? <div className="full-paper-results">{referenceControls}{results}</div> : <div className="answer-document">
           <div className="user-question" aria-label="Your question"><p>{session.query}</p></div>
@@ -189,7 +199,7 @@ export function ResearchWorkspace({ session, composer, filters, onFilter, onRese
           {!ready ? <div className="answer-loading" role="status" aria-label="Preparing example answer"><span /><span /><span /></div> : <article className="research-answer"><div className="answer-title-row"><span className="answer-brand"><Icon name={icons.research} />Paperpal</span><span className="rw-muted">Example synthesis</span></div><h1 ref={answerHeading} tabIndex={-1}>Understanding Alzheimer’s disease and dementia</h1><p className="answer-intro">Explore the relationship between the disease, cognitive decline, and overlapping pathologies through the selected literature.</p>
             {answerSections.map((s, i) => <section className={`answer-section ${evidence?.id === papers[s.paper].evidence[s.evidence].id ? "linked-claim" : ""}`} key={s.title}><h2>{s.title}</h2><p>{s.body} <CitationChip paper={papers[s.paper]} evidence={papers[s.paper].evidence[s.evidence]} onOpen={openPaper} onSave={save} saved={saved} onCopy={copy} /></p>{i === 1 && <div className="answer-comparison"><table><caption>Two different lenses in the cited framework</caption><thead><tr><th scope="col">Biological changes</th><th scope="col">Cognitive symptoms</th></tr></thead><tbody><tr><td>Amyloid, tau, and neurodegeneration</td><td>Severity of cognitive impairment</td></tr><tr><td>Characterize the disease process</td><td>Describe its clinical expression</td></tr></tbody></table><button className="table-evidence" onClick={() => openPaper(papers[1], "Evidence")}>Source: Jack et al., 2018 ↗</button></div>}</section>)}
             <div className="answer-takeaway"><strong>Reading the evidence</strong><p>These historical papers illustrate the research workflow. They are a small curated set, not a systematic review or current clinical guidance.</p></div>
-            <div className="answer-actions"><button className="rw-action" onClick={() => { setPanel(true); setPaper(null); }}>References ({papers.length})</button><button className="rw-action" onClick={onFilter}><Icon name="filter-sliders" />Filters</button><Popover className="secondary-action" label="Copy or export answer" open={menu === "copy"} onOpenChange={v => setMenu(v ? "copy" : null)} trigger={<><Glyph icon={faCopy} />Copy<Glyph icon={faChevronDown} /></>}><button role="menuitem" className="menu-option compact" onClick={() => copy(answerText)}>Copy text</button><button role="menuitem" className="menu-option compact" onClick={() => copy(`Example research — curated preview\n${exampleQuestion}\n\n${answerSections.map(s => `${s.title}\n${s.body} (${papers[s.paper].shortAuthor}, ${papers[s.paper].year})`).join("\n\n")}\n\nReferences\n${papers.map(citation).join("\n\n")}`)}>Copy with citations</button><button role="menuitem" className="menu-option compact" onClick={() => { setMenu(null); window.print(); }}>Print / Save as PDF</button></Popover></div>
+            <div className="answer-actions"><button className="rw-action" onClick={() => { setPanel(true); setPaper(null); }}>References ({papers.length})</button><button className="rw-action" onClick={onFilter}><Icon name="filter-sliders" />Filters</button><Popover className="secondary-action" label="Copy or export answer" open={menu === "copy"} onOpenChange={v => setMenu(v ? "copy" : null)} trigger={<><Glyph icon={faCopy} />Copy<Glyph icon={faChevronDown} /></>}><button role="menuitem" className="menu-option compact" onClick={() => copy(answerText)}>Copy text</button><button role="menuitem" className="menu-option compact" onClick={() => copy(`Example research — curated preview\n${exampleQuestion}\n\n${answerSections.map(s => `${s.title}\n${s.body} (${preferences.citationFormat === "numeric" ? s.paper + 1 : `${papers[s.paper].shortAuthor}, ${papers[s.paper].year}`})`).join("\n\n")}\n\nReferences\n${papers.map(citation).join("\n\n")}`)}>Copy with citations</button><button role="menuitem" className="menu-option compact" onClick={() => { setMenu(null); window.print(); }}>Print / Save as PDF</button></Popover></div>
             <section className="followup-suggestions"><h2>Explore further</h2>{["How do mixed pathologies affect dementia?", "What are the limitations of these papers?", "How is Alzheimer’s pathology assessed?"].map(q => <button onClick={() => onFollowup(q)} key={q}><span>{q}</span><span aria-hidden="true">↗</span></button>)}</section>
           </article>}
           {session.followups.map((q, i) => <section className="followup-turn" key={`${i}-${q.question}`}><div className="user-question" aria-label="Your follow-up">{q.paperId && <span className="rw-eyebrow">{papers.find(p => p.id === q.paperId)?.shortAuthor}</span>}<p>{q.question}</p></div><div className="followup-preview"><span className="answer-brand"><Icon name={icons.research} />Paperpal</span><p>Your follow-up is captured in this preview. Live answers will appear here when research is connected. Meanwhile, explore the source passages and snapshots alongside the answer.</p><button className="outline-button" onClick={() => openPaper(papers.find(p => p.id === q.paperId) || papers[0], "Evidence")}>Explore {q.paperId ? "this paper’s" : "source"} evidence</button></div></section>)}
@@ -207,5 +217,5 @@ export function ResearchWorkspace({ session, composer, filters, onFilter, onRese
     ><span aria-hidden="true" /><span id="panel-resize-help" className="sr-only">Drag or use Left and Right arrows to resize. Shift changes width faster. Home selects minimum width; End selects maximum. Enter closes the panel. Escape cancels an active drag. Double-click to reset.</span></div>}
     {paper ? <PaperReader paper={paper} tab={tab} setTab={setTab} evidence={evidence} onEvidence={setEvidence} onBack={() => { setPaper(null); setEvidence(undefined); if (mainView === "papers") setPanel(false); }} onClose={closePanel} saved={saved} onSave={save} onCopy={copy} onAsk={p => { onScope(p.id); if (mobile) { setPaper(null); setPanel(false); } const input = document.getElementById("research-question") as HTMLTextAreaElement | null; requestAnimationFrame(() => input?.focus()); }} /> : panel && mainView === "answer" && <aside id="research-side-panel" className="references-panel" aria-label="References">{referenceControls}<div className="reference-scroll">{results}</div><footer className="reference-footer">{items.length} of {papers.length} example papers · <button onClick={() => { setMainView("papers"); setPanel(false); }}>Expand results ↗</button></footer></aside>}
     {toast && <div className="workspace-toast" role="status"><Glyph icon={faCheck} />{toast}<button aria-label="Dismiss notification" onClick={() => setToast("")}>×</button></div>}
-  </main>;
+  </main></CitationContext.Provider>;
 }

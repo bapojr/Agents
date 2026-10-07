@@ -1,5 +1,5 @@
 /* New research components composed exclusively from the approved Paperpal tokens. */
-.research-workspace { display: grid; grid-template-columns: minmax(0, 1fr); height: 100dvh; background: var(--pp-white); }
+.research-workspace { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); height: 100dvh; background: var(--pp-white); }
 .research-workspace.has-panel { grid-template-columns: minmax(0, 1fr) var(--pp-s8) var(--reference-panel-width, 42.5%); }
 .research-workspace button, .research-workspace a, .research-workspace select { transition: background-color .15s ease, border-color .15s ease; }
 .research-workspace a { color: var(--pp-blue-11); text-decoration: none; }
@@ -12,7 +12,7 @@
 .research-workspace select:focus-visible, .reader-content:focus-visible, .reference-table-wrap:focus-visible { outline: var(--pp-focus); outline-offset: calc(-1 * var(--pp-s2)); }
 .answer-column, .references-panel, .paper-reader { min-width: 0; min-height: 0; display: flex; flex-direction: column; }
 .answer-column { container: conversation / inline-size; position: relative; --conversation-gutter: var(--pp-s32); --conversation-width: min(var(--pp-conversation-width), calc(100% - 2 * var(--conversation-gutter))); }
-.workspace-toolbar { flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--pp-s24); min-height: var(--pp-s56); border-bottom: var(--pp-border); gap: var(--pp-s8); }
+.workspace-toolbar { grid-column: 1 / -1; position: relative; z-index: 15; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--pp-s24); min-height: var(--pp-s56); border-bottom: var(--pp-border); gap: var(--pp-s8); }
 .workspace-tabs { display: flex; align-self: stretch; gap: var(--pp-s20); }
 .workspace-tabs > button { display: flex; align-items: center; gap: var(--pp-s6); border-bottom: var(--pp-s2) solid transparent; color: var(--pp-gray-11); font-weight: var(--pp-medium); }
 .workspace-tabs > button.active { border-color: var(--pp-blue-9); color: var(--pp-blue-11); }
@@ -247,4 +247,47 @@
   .answer-document { max-width: none; width: 100%; }
   .answer-section { break-inside: avoid; }
   .research-answer::after { content: "Example research preview. Sources: doi.org/10.1186/s13024-019-0333-5 · doi.org/10.1016/j.jalz.2018.02.018 · doi.org/10.3390/brainsci10080479"; display: block; margin-top: var(--pp-s24); }
+}
+
+/* Conversation controls reuse the Paperpal secondary button and Illustrate menu styles. */
+.thread-actions { display: flex; align-items: center; justify-content: flex-end; gap: var(--pp-s8); margin-left: auto; }
+.thread-actions svg { width: var(--pp-s16); height: var(--pp-s16); flex: none; }
+.thread-actions .outline-glyph path { fill: none; stroke: currentColor; stroke-width: 32; stroke-linejoin: round; }
+.thread-icon-menu > .selector { width: var(--pp-s36); height: var(--pp-s36); padding: var(--pp-s8); border: 0; border-radius: var(--pp-radius-8); justify-content: center; color: var(--pp-gray-11); }
+.thread-icon-menu > .selector:hover, .thread-icon-menu > .selector[aria-expanded=true], .thread-icon-menu.is-saved > .selector { background: var(--pp-gray-2); color: var(--pp-blue-11); }
+.thread-popover .popover-panel { left: auto; right: 0; width: var(--pp-panel-min-width); max-width: calc(100vw - var(--pp-sidebar-width) - var(--pp-s32)); max-height: calc(100dvh - var(--pp-s56) - var(--pp-s32)); }
+.thread-choice, .thread-format-trigger, .thread-menu-action, .thread-back { display: flex; align-items: center; gap: var(--pp-s12); }
+.thread-choice { justify-content: space-between; }
+.thread-choice[aria-checked=true] { color: var(--pp-gray-12); }
+.thread-radio { width: var(--pp-s20); height: var(--pp-s20); flex: none; border: var(--pp-s1) solid var(--pp-gray-8); border-radius: 50%; display: grid; place-items: center; }
+.thread-choice[aria-checked=true] .thread-radio { border: var(--pp-s2) solid var(--pp-blue-9); }
+.thread-choice[aria-checked=true] .thread-radio::after { content: ""; width: var(--pp-s10); height: var(--pp-s10); border-radius: 50%; background: var(--pp-blue-9); }
+.thread-format-trigger { padding-inline: var(--pp-s4); }
+.thread-format-trigger small { margin-left: auto; color: var(--pp-gray-11); font-size: var(--pp-text-sm); }
+.thread-menu-footer { border-top: var(--pp-border); margin-top: var(--pp-s8); padding-top: var(--pp-s8); }
+.thread-menu-footer > .outline-button { width: 100%; }
+.thread-menu-action { min-height: var(--pp-s48); }
+.thread-x { width: var(--pp-s16); font-size: var(--pp-text-lead); }
+.thread-library-row { display: flex; align-items: center; gap: var(--pp-s12); padding: var(--pp-s12) var(--pp-s8); cursor: pointer; border-radius: var(--pp-radius-8); }
+.thread-library-row:hover { background: var(--pp-gray-2); }
+.thread-library-row > span { flex: 1; min-width: 0; }
+.thread-library-row strong { font-weight: var(--pp-medium); overflow-wrap: anywhere; }
+.thread-library-row small { display: block; color: var(--pp-gray-11); font-size: var(--pp-text-sm); margin-top: var(--pp-s4); }
+.thread-library-search, .thread-menu-footer input { width: 100%; min-width: 0; padding: var(--pp-s10) var(--pp-s12); border: var(--pp-secondary-border); border-radius: var(--pp-radius-8); background: var(--pp-white); font-size: var(--pp-text-base); }
+.thread-collection-list { max-height: var(--pp-composer-height); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--pp-gray-8) transparent; }
+.thread-local-note { padding: var(--pp-s8) var(--pp-s4) 0; text-align: center; }
+.thread-empty { padding: var(--pp-s12); }
+.thread-menu-footer form { display: grid; gap: var(--pp-s8); }
+.thread-menu-footer .rw-actions { justify-content: flex-end; }
+@media (max-width: 700px) {
+  .workspace-toolbar { flex-wrap: wrap; padding-top: var(--pp-s8); }
+  .workspace-tabs { min-height: calc(var(--pp-s32) + var(--pp-s8)); order: 2; }
+  .thread-actions { width: 100%; position: relative; }
+  .thread-popover { position: static; }
+  .thread-popover .popover-panel { max-height: calc(100dvh - var(--pp-s56) - var(--pp-s56)); }
+}
+@media (max-width: 520px) {
+  .thread-actions { gap: var(--pp-s6); }
+  .thread-references > span, .thread-share > .selector > span { display: none; }
+  .thread-references, .thread-share > .selector { width: var(--pp-s36); padding: var(--pp-s8); }
 }

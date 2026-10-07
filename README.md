@@ -186,3 +186,25 @@ Submitted questions and follow-ups match Illustrate’s prompt-flow bubble: righ
 light grey, 12px corners, 16px/20px padding, and IBM Plex Sans 15px/22px medium text.
 The bubble fits its content up to 440px or 85% of the conversation width, wrapping
 long text and preserving entered line breaks. Paper-scoped follow-ups retain the source label.
+
+### Conversation toolbar
+
+The top-right toolbar provides a thread bookmark, citation settings, References,
+secondary-style Share, and the same Upgrade CTA as the landing page. New searches
+and shared preview threads start with references closed. The toolbar spans both
+conversation and reference panes, and condenses to labelled icon buttons on mobile.
+
+The bookmark dropdown saves the current thread to My Library or named collections,
+with search, My favorites, and inline collection creation. This preview stores
+threads and collections in this browser, not an account-backed library. Citation
+preferences persist locally: author/year or numeric inline citations, plus APA, MLA,
+Chicago, Harvard, BibTeX, or AMA/Numeric for citation copying and reference exports.
+Text citations use the curated records' available metadata.
+
+Share offers Copy thread link and Share to X (opens the X composer without posting).
+Preview links encode the question and follow-ups in the URL fragment and restore
+them on another browser; attachments and local library state are not included.
+Upgrade retains the existing preview notice until billing is connected.
+
+Validation covers share-link round trips and malformed input, library membership
+and removal, citation preferences/exports, and desktop/mobile dropdown interactions.

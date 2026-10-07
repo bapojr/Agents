@@ -4,6 +4,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { FigmaAsset, Icon, icons, PaperpalLogo } from "./figma-assets";
 import { ResearchWorkspace, type ResearchSession } from "./research-workspace";
 import { Popover } from "./popover";
+import { UpgradeButton } from "./upgrade-button";
+import { sessionFromHash } from "./thread-state";
 import { FilterDialog } from "./filter-dialog";
 import { emptyFilters, filterSummary, type ResearchFilters } from "./research-filters";
 
@@ -55,8 +57,13 @@ export function AgentsHome() {
   const toggleSource = useCallback((value: boolean) => setOpen(value ? "source" : null), []);
   useEffect(() => () => { speech.current?.abort(); }, []);
 
+  useEffect(() => {
+    const restore = () => { const shared = sessionFromHash(window.location.hash); if (shared) { setSession(shared); setQuery(""); setPaperScope(null); } };
+    restore(); window.addEventListener("hashchange", restore); return () => window.removeEventListener("hashchange", restore);
+  }, []);
   const notify = (text: string) => { setNotice(text); setOpen(null); };
   const reset = () => {
+    if (window.location.hash.startsWith("#thread=")) history.replaceState(null, "", window.location.pathname + window.location.search);
     setSession(null); setPaperScope(null); speech.current?.abort(); setListening(false); setQuery(""); setAttachments([]); setMode("search");
     setSelectedSuggestion(0); setFilter(emptyFilters()); setSource("Public Research Papers"); setOpen(null); setNotice("");
     textarea.current?.focus();
@@ -176,7 +183,7 @@ export function AgentsHome() {
     <div className="main-column">
       {!session && <header className="topbar">
         <nav className="breadcrumbs" aria-label="Breadcrumb"><button onClick={reset}>Home</button><FigmaAsset name="main-imgChevronRight" /><span aria-current="page">Agents</span></nav>
-        <button className="upgrade-button primary-button" onClick={() => notify("Prime upgrades aren’t available in this preview yet.")}><FigmaAsset name="main-imgGroup11097" /><span>Upgrade to Prime</span></button>
+        <UpgradeButton onClick={() => notify("Prime upgrades aren’t available in this preview yet.")} />
       </header>}
       {session ? <ResearchWorkspace key={session.id} session={session} composer={composer} filters={filter} onFilter={() => setOpen("filters")} onResetFilters={() => setFilter(emptyFilters())} onFollowup={submitQuestion} scope={paperScope} onScope={setPaperScope} modeLabel={selectedMode.label} source={source} /> : <main className="research-main">
         <div className="agents-badge"><FigmaAsset name="main-imgSkywardIcons" /><span>Agents</span></div>

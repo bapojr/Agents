@@ -119,7 +119,7 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .breadcrumbs button { color: var(--pp-gray-9); }
 .breadcrumbs button:hover { color: var(--pp-blue-11); }
 .breadcrumbs span { color: var(--pp-blue-12); }
-.upgrade-button { width: var(--pp-upgrade-width); height: var(--pp-s36); display: flex; align-items: center; justify-content: center; gap: var(--pp-s10); padding: 0 var(--pp-s16); font-size: var(--pp-text-button); line-height: var(--pp-leading-button); border-radius: var(--pp-radius-8); }
+.upgrade-button { width: auto; height: var(--pp-s36); display: flex; align-items: center; justify-content: center; gap: var(--pp-s10); padding: 0 var(--pp-s16); font-size: var(--pp-text-button); line-height: var(--pp-leading-button); border-radius: var(--pp-radius-8); }
 .research-main { display: flex; flex-direction: column; align-items: center; padding: var(--pp-s14) var(--pp-s24) var(--pp-s48); }
 .agents-badge { display: flex; align-items: center; justify-content: center; gap: var(--pp-s2); height: var(--pp-s32); border: var(--pp-border); padding: 0 var(--pp-s15); border-radius: var(--pp-radius-8); background: var(--pp-gray-2); font-weight: var(--pp-semibold); }
 .greeting { display: flex; align-items: center; justify-content: center; gap: var(--pp-s10); margin-top: var(--pp-hero-gap); }
