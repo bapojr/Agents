@@ -171,8 +171,13 @@ minimum/maximum keyboard bounds, keyboard increments, reset, window resizing,
 mobile overlay, and the paper reader at minimum width.
 
 The reference toolbar groups Filters, Saved and Export immediately before the view
-switch when its content area is at least 520px wide; narrower panels keep the two-row
+switch when its content area is at least 560px wide; narrower panels keep the two-row
 layout. Shared dropdowns reuse Illustrate's white surface, 12px menu corners, 8px
 padding, soft shadow, 40px minimum option rows, and blue selected text. Sort, PDF page,
 zoom and quote selectors use the same Popover-based selection component, including
 keyboard navigation, selected-state announcements, and Escape dismissal.
+
+Secondary CTAs share Illustrate's 36px minimum height, 8px corners and IBM Plex Sans
+14px medium text, using a grey outline and white fill. This includes References,
+Filters, Save, Evidence, PDF, Copy/Export action menus, and outlined secondary actions.
+Hover/pressed borders stay grey; primary actions retain their existing treatment.

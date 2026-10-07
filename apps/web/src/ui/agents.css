@@ -21,6 +21,8 @@
   --pp-radius-2: 2px; --pp-radius-4: 4px; --pp-radius-6: 6px;
   --pp-radius-8: 8px; --pp-radius-10: 10px; --pp-radius-12: 12px; --pp-radius-pill: 20px;
   --pp-border: var(--pp-s1) solid var(--pp-gray-5);
+  --pp-secondary-border: var(--pp-s1) solid var(--pp-gray-6);
+  --pp-secondary-text: var(--pp-gray-11);
   --pp-focus: var(--pp-s2) solid var(--pp-blue-9);
   --pp-composer-shadow: 0 0 64px rgb(28 77 192 / 32%);
   --pp-menu-shadow: 16px 8px 32px 16px #00000005, 4px 4px 16px 0 #00000014;
@@ -91,11 +93,20 @@ button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
 .sidebar-expanded .sidebar-account { display: flex; gap: var(--pp-s14); padding: var(--pp-s20); border-top: var(--pp-s1) solid var(--pp-gray-8); }
 .sidebar-account .outline-button { width: var(--pp-login-width); }
 .sidebar-account .primary-button { width: var(--pp-signup-width); }
-.primary-button, .outline-button { border: var(--pp-s1) solid var(--pp-blue-9); border-radius: var(--pp-radius-6); padding: var(--pp-s10) var(--pp-s20); min-height: var(--pp-s36); font-size: var(--pp-text-sm); line-height: var(--pp-leading-sm); font-weight: var(--pp-medium); white-space: nowrap; }
+.primary-button { border: var(--pp-s1) solid var(--pp-blue-9); border-radius: var(--pp-radius-6); padding: var(--pp-s10) var(--pp-s20); min-height: var(--pp-s36); font-size: var(--pp-text-sm); line-height: var(--pp-leading-sm); font-weight: var(--pp-medium); white-space: nowrap; }
 .primary-button { background: var(--pp-blue-9); color: var(--pp-white); }
 .primary-button:hover { background: var(--pp-blue-11); }
-.outline-button { color: var(--pp-blue-9); }
-.outline-button:hover { background: var(--pp-blue-3); }
+/* Illustrate secondary CTA proportions, with the requested neutral grey outline. */
+.outline-button, .rw-action, .secondary-action > .selector {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--pp-s8);
+  min-height: var(--pp-s36); min-width: var(--pp-s36); height: auto; padding: var(--pp-s6) var(--pp-s8);
+  border: var(--pp-secondary-border); border-radius: var(--pp-radius-8);
+  background: var(--pp-white); color: var(--pp-secondary-text);
+  font: var(--pp-medium) var(--pp-text-base)/var(--pp-leading-base) var(--pp-sans); white-space: nowrap;
+}
+.outline-button:hover:not(:disabled), .rw-action:hover:not(:disabled), .secondary-action > .selector:hover,
+.secondary-action > .selector[aria-expanded=true] { background: var(--pp-gray-2); border-color: var(--pp-gray-8); }
+.outline-button:disabled, .rw-action:disabled { color: var(--pp-gray-9); background: var(--pp-gray-2); }
 .recents { padding: var(--pp-s20) var(--pp-s16); overflow-y: auto; }
 .recents h2 { font-size: var(--pp-text-sm); font-weight: var(--pp-medium); color: var(--pp-gray-11); margin: 0 0 var(--pp-s8); }
 .recents button { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: var(--pp-s8); text-align: left; border-radius: var(--pp-radius-6); }
