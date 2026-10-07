@@ -20,7 +20,7 @@
 .rw-muted { color: var(--pp-gray-11); font-size: var(--pp-text-sm); line-height: var(--pp-leading-base); }
 .rw-eyebrow { display: block; color: var(--pp-gray-11); font-size: var(--pp-text-xs); font-weight: var(--pp-medium); line-height: var(--pp-leading-base); }
 .rw-action.is-active, .rw-action.is-active:hover { background: var(--pp-blue-3); color: var(--pp-blue-11); border-color: var(--pp-gray-8); }
-.research-workspace a.rw-action { color: var(--pp-secondary-text); text-decoration: none; }
+.research-workspace a.rw-action, .research-workspace a.outline-button { color: var(--pp-secondary-text); text-decoration: none; }
 .rw-actions { display: flex; align-items: center; flex-wrap: wrap; gap: var(--pp-s8); }
 .rw-action .icon-slot { width: var(--pp-s16); height: var(--pp-s16); }
 .answer-scroll, .reference-scroll, .reader-content { overflow-y: auto; overscroll-behavior: contain; min-height: 0; flex: 1; scrollbar-width: thin; scrollbar-color: var(--pp-gray-8) transparent; scrollbar-gutter: stable; }
