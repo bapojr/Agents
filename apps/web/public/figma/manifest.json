@@ -370,5 +370,19 @@
     "width": "13.3342",
     "height": "11.1111",
     "viewBox": "0 0 13.3342 11.1111"
+  },
+  {
+    "key": "followup-xmark",
+    "file": "followup-xmark.svg",
+    "width": "9",
+    "height": "12",
+    "viewBox": "0 0 9 12"
+  },
+  {
+    "key": "followup-chevron-left",
+    "file": "followup-chevron-left.svg",
+    "width": "20",
+    "height": "20",
+    "viewBox": "0 0 20 20"
   }
 ]

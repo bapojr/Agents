@@ -3,10 +3,10 @@
    User typography override (2026-10-06): IBM Plex Sans throughout, minimum 12px. */
 :root {
   --pp-white: #ffffff; --pp-gray-2: #f8f9fd; --pp-gray-5: #e4eaf7;
-  --pp-gray-6: #d8e0ee; --pp-gray-8: #bcc7dc; --pp-gray-9: #7d8aa1;
+  --pp-gray-6: #d8e0ee; --pp-gray-7: #cad5e7; --pp-gray-8: #bcc7dc; --pp-gray-9: #7d8aa1;
   --pp-gray-11: #5d6a81; --pp-gray-12: #13161b;
   --pp-blue-1: #fbfcff; --pp-blue-2: #f5f8ff; --pp-blue-3: #edf3ff;
-  --pp-blue-9: #0062ff; --pp-blue-11: #1c4dc0; --pp-blue-12: #051e57;
+  --pp-blue-9: #0062ff; --pp-blue-10: #0054f1; --pp-blue-11: #1c4dc0; --pp-blue-12: #051e57;
   --pp-purple-10: #650fba; --pp-brand-black: #1f2937;
   --pp-sans: "IBM Plex Sans", sans-serif;
   --pp-text-xs: var(--pp-text-sm); --pp-text-sm: 12px; --pp-text-base: 14px;
@@ -32,6 +32,8 @@
   --pp-panel-min-width: 320px; --pp-panel-max-width: 720px; --pp-answer-min-width: 480px;
   --pp-conversation-width: 720px; --pp-conversation-composer-height: 188px;
   --pp-prompt-width: 440px; --pp-prompt-max-width: 85%;
+  /* Follow-up tile radius from AI Chat Figma 1302:57178. */
+  --pp-followup-tile-radius: 9.818px;
   --pp-prompt-text: 15px; --pp-prompt-leading: 22px;
   --pp-suggestion-width: 750px; --pp-menu-width: 214px; --pp-menu-row-height: 50px;
   --pp-agent-width: 151px; --pp-source-width: 187px;

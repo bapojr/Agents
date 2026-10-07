@@ -208,3 +208,10 @@ Upgrade retains the existing preview notice until billing is connected.
 
 Validation covers share-link round trips and malformed input, library membership
 and removal, citation preferences/exports, and desktop/mobile dropdown interactions.
+
+Follow-up suggestions use AI Chat Figma `1302:57178`: a Blue 3–white gradient panel,
+Gray 7 outline, 12px corners, 16px padding/gaps, dismiss control, and 52px minimum
+white option rows. Width follows the research conversation; long questions wrap.
+Number tiles use the supplied 14×14 sparkle SVG in Illustrate Blue 10 (#0054F1).
+The original Figma close/chevron assets are stored locally; suggestions retain
+their existing research follow-up behavior, and dismiss returns focus to the composer.
