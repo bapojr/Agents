@@ -181,3 +181,8 @@ Secondary CTAs share Illustrate's 36px minimum height, 8px corners and IBM Plex 
 14px medium text, using a grey outline and white fill. This includes References,
 Filters, Save, Evidence, PDF, Copy/Export action menus, and outlined secondary actions.
 Hover/pressed borders stay grey; primary actions retain their existing treatment.
+
+Submitted questions and follow-ups match Illustrate’s prompt-flow bubble: right-aligned,
+light grey, 12px corners, 16px/20px padding, and IBM Plex Sans 15px/22px medium text.
+The bubble fits its content up to 440px or 85% of the conversation width, wrapping
+long text and preserving entered line breaks. Paper-scoped follow-ups retain the source label.
