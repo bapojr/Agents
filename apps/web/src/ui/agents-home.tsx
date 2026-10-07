@@ -187,7 +187,7 @@ export function AgentsHome() {
       </header>}
       {session ? <ResearchWorkspace key={session.id} session={session} composer={composer} filters={filter} onFilter={() => setOpen("filters")} onResetFilters={() => setFilter(emptyFilters())} onFollowup={submitQuestion} scope={paperScope} onScope={setPaperScope} modeLabel={selectedMode.label} source={source} /> : <main className="research-main">
         <div className="agents-badge"><FigmaAsset name="main-imgSkywardIcons" /><span>Agents</span></div>
-        <div className="greeting"><h1>Hi Akash, let’s dive in.</h1><FigmaAsset name="main-imgSparkles" className="greeting-sparkle" /></div>
+        <div className="greeting"><h1>Hi Sushrut, let’s dive in.</h1><FigmaAsset name="main-imgSparkles" className="greeting-sparkle" /></div>
         <p className="subtitle">What would you like to research today?</p>
 
         {composer}
