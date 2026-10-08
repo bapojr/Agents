@@ -24,13 +24,13 @@ export function usePanelResize(workspace: RefObject<HTMLElement | null>) {
     const styles = getComputedStyle(element);
     const token = (name: string) => parseFloat(styles.getPropertyValue(name));
     const min = token("--pp-panel-min-width");
-    const maximum = token("--pp-panel-max-width");
+    const screenRatio = token("--pp-panel-max-screen-ratio");
     const chatMin = token("--pp-answer-min-width");
     const divider = token("--pp-s8");
     step.current = divider;
     measure.current = () => {
       const available = element.getBoundingClientRect().width;
-      const max = Math.max(min, Math.floor(Math.min(maximum, available - chatMin - divider)));
+      const max = Math.max(min, Math.floor(Math.min(window.innerWidth * screenRatio, available - chatMin - divider)));
       const compact = window.matchMedia("(max-width: 900px)").matches || available < min + chatMin + divider;
       const width = Math.round(Math.max(min, Math.min(max, preferred.current ?? (available - divider) / 2.35)));
       const next = { width, min, max, compact, ready: true };

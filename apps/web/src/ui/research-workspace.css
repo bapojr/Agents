@@ -219,6 +219,13 @@
   .workspace-composer .composer { padding: var(--pp-s12); }
   .answer-actions { flex-wrap: wrap; }
 }
+@container conversation (max-width: 360px) {
+  .answer-title-row { flex-wrap: wrap; gap: var(--pp-s8); }
+  .research-answer { overflow-wrap: anywhere; }
+  .citation-chip { white-space: normal; }
+  .workspace-composer .selector > span:not(.icon-slot) { display: none; }
+  .composer-context { overflow-wrap: anywhere; }
+}
 @media (max-width: 1100px) { .answer-column { --conversation-gutter: var(--pp-s24); } .workspace-toolbar { padding-inline: var(--pp-s16); } .reader-tabs { gap: var(--pp-s12); } }
 @media (max-width: 900px) {
   .research-workspace.has-panel { grid-template-columns: minmax(0, 1fr); }
