@@ -2,7 +2,7 @@ import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {describe,it,expect} from 'vitest';
 import {TableReferences,StandardReference,REFERENCE_COLUMNS,DEFAULT_COLUMN_IDS} from '../src/ui/reference-components';
-import {normalizeCrossref} from '../src/ui/paper-data';
+import {normalizeCrossref} from '../src/ui/scholarly/crossref';
 const actions={saved:[],onSave:()=>{},onOpen:()=>{},onCopy:()=>{},onNotice:()=>{}};
 const items=(n:number)=>Array.from({length:n},(_,i)=>normalizeCrossref({DOI:`10.1234/render.${i}`,title:[`Dynamic paper ${i}`]})!);
 describe('reference presentation',()=>{
@@ -23,8 +23,8 @@ describe('reference presentation',()=>{
 import {SearchAnswer} from '../src/ui/search-answer';
 import {defaultPreferences} from '../src/ui/thread-state';
 describe('search response states',()=>{
- const props={query:'Research query',papers:[],loading:false,error:'',retry:()=>{},preferences:defaultPreferences,actions,onReferences:()=>{},onFilter:()=>{},onFollowup:()=>{},showFollowups:false,onDismiss:()=>{}};
- it('renders loading before an empty state',()=>{const html=renderToStaticMarkup(createElement(SearchAnswer,{...props,loading:true}));expect(html).toContain('Searching papers');expect(html).not.toContain('No papers found');});
+ const props={query:'Research query',provider:'OpenAlex',papers:[],loading:false,error:'',retry:()=>{},preferences:defaultPreferences,actions,onReferences:()=>{},onFilter:()=>{},onFollowup:()=>{},showFollowups:false,onDismiss:()=>{}};
+ it('renders loading before an empty state',()=>{const html=renderToStaticMarkup(createElement(SearchAnswer,{...props,loading:true}));expect(html).toContain('Searching papers');expect(html).not.toContain('No relevant papers found');});
  it('renders the API error with a retry action',()=>{const html=renderToStaticMarkup(createElement(SearchAnswer,{...props,error:'The provider is busy'}));expect(html).toContain('role="alert"');expect(html).toContain('Retry search');expect(html).not.toContain('Alzheimer');});
- it('handles a genuine zero-result search',()=>{const html=renderToStaticMarkup(createElement(SearchAnswer,props));expect(html).toContain('No papers found');expect(html).not.toContain('citation-chip');});
+ it('handles a genuine zero-result search',()=>{const html=renderToStaticMarkup(createElement(SearchAnswer,props));expect(html).toContain('No relevant papers found');expect(html).not.toContain('citation-chip');});
 });

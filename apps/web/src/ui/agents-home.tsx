@@ -71,13 +71,14 @@ export function AgentsHome() {
   const submitQuestion = (value: string) => {
     if (!value.trim()) return;
     speech.current?.stop(); setOpen(null); setNotice("");
-    if (session) {
+    if (session && mode !== "search") {
       const next = { ...session, followups: [...session.followups, { question: value.trim(), paperId: paperScope }] };
       setSession(next); setRecent(items => items.map(item => item.query === session.query ? { ...item, session: next } : item));
     }
     else {
       const item: Recent = { query: value.trim(), mode, source, filter };
       setRecent(items => [item, ...items.filter(previous => previous.query !== item.query)].slice(0, 7));
+      setPaperScope(null);
       setSession({ id: Date.now(), query: value.trim(), followups: [] });
     }
     setQuery("");

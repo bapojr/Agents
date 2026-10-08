@@ -1,0 +1,945 @@
+{
+  "id": "https://openalex.org/W3179054865",
+  "doi": "https://doi.org/10.1016/j.jaci.2021.05.026",
+  "title": "Call to action: Air pollution, asthma, and allergy in the exposome era",
+  "display_name": "Call to action: Air pollution, asthma, and allergy in the exposome era",
+  "relevance_score": 176.39449,
+  "publication_year": 2021,
+  "publication_date": "2021-07-01",
+  "ids": {
+    "openalex": "https://openalex.org/W3179054865",
+    "doi": "https://doi.org/10.1016/j.jaci.2021.05.026",
+    "mag": "3179054865",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/34238507"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1016/j.jaci.2021.05.026",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1016/j.jaci.2021.05.026",
+    "pdf_url": "http://www.jacionline.org/article/S0091674921008319/pdf",
+    "source": {
+      "id": "https://openalex.org/S108525051",
+      "display_name": "Journal of Allergy and Clinical Immunology",
+      "issn_l": "0091-6749",
+      "issn": [
+        "0091-6749",
+        "1085-8725",
+        "1097-6825"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "listed_in": [
+        "cwts-core",
+        "doyens",
+        "jufo-3",
+        "ki-jl-3",
+        "medline",
+        "norway-2"
+      ],
+      "host_organization": "https://openalex.org/P4310320990",
+      "host_organization_name": "Elsevier BV",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320990"
+      ],
+      "host_organization_lineage_names": [
+        "Elsevier BV"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Journal of Allergy and Clinical Immunology",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "http://www.jacionline.org/article/S0091674921008319/pdf",
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5045819426",
+        "display_name": "Isabella Annesi‐Maesano",
+        "orcid": "https://orcid.org/0000-0002-6340-9300",
+        "observed_orcids": [
+          "https://orcid.org/0000-0002-6340-9300"
+        ]
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I154526488",
+          "display_name": "Inserm",
+          "ror": "https://ror.org/02vjkv261",
+          "country_code": "FR",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I154526488"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I19894307",
+          "display_name": "Université de Montpellier",
+          "ror": "https://ror.org/051escj72",
+          "country_code": "FR",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I19894307"
+          ]
+        }
+      ],
+      "countries": [
+        "FR"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Isabella Annesi-Maesano",
+      "raw_affiliation_strings": [
+        "Desbrest Institute of Epidemiology and Public Health, INSERM, and Montpellier University, Montpellier, France. Electronic address: isabella.annesi-maesano@inserm.fr",
+        "Desbrest Institute of Epidemiology and Public Health, INSERM, and Montpellier University, Montpellier, France"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Desbrest Institute of Epidemiology and Public Health, INSERM, and Montpellier University, Montpellier, France. Electronic address: isabella.annesi-maesano@inserm.fr",
+          "institution_ids": [
+            "https://openalex.org/I154526488",
+            "https://openalex.org/I19894307"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Desbrest Institute of Epidemiology and Public Health, INSERM, and Montpellier University, Montpellier, France",
+          "institution_ids": [
+            "https://openalex.org/I154526488",
+            "https://openalex.org/I19894307"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5016028954",
+        "display_name": "Cara Nichole Maesano",
+        "orcid": "https://orcid.org/0000-0001-7704-1749",
+        "observed_orcids": [
+          "https://orcid.org/0000-0001-7704-1749"
+        ]
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I154526488",
+          "display_name": "Inserm",
+          "ror": "https://ror.org/02vjkv261",
+          "country_code": "FR",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I154526488"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I19894307",
+          "display_name": "Université de Montpellier",
+          "ror": "https://ror.org/051escj72",
+          "country_code": "FR",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I19894307"
+          ]
+        }
+      ],
+      "countries": [
+        "FR"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Cara Nichole Maesano",
+      "raw_affiliation_strings": [
+        "Desbrest Institute of Epidemiology and Public Health, INSERM, and Montpellier University, Montpellier, France"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Desbrest Institute of Epidemiology and Public Health, INSERM, and Montpellier University, Montpellier, France",
+          "institution_ids": [
+            "https://openalex.org/I154526488",
+            "https://openalex.org/I19894307"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5046298044",
+        "display_name": "Benedetta Biagioni",
+        "orcid": "https://orcid.org/0000-0002-5152-0626",
+        "observed_orcids": [
+          "https://orcid.org/0000-0002-5152-0626"
+        ]
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Benedetta Biagioni",
+      "raw_affiliation_strings": [
+        "Allergy Outpatient Clinic, Division of Internal Medicine, IRCCS Azienda Ospedaliera Universitaria Bologna, Bologna, Italy"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Allergy Outpatient Clinic, Division of Internal Medicine, IRCCS Azienda Ospedaliera Universitaria Bologna, Bologna, Italy",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5059081126",
+        "display_name": "Gennaro D’Amato",
+        "orcid": "https://orcid.org/0000-0002-0503-9428",
+        "observed_orcids": [
+          "https://orcid.org/0000-0002-0503-9428"
+        ]
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210117450",
+          "display_name": "Federico II University Hospital",
+          "ror": "https://ror.org/02jr6tp70",
+          "country_code": "IT",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210117450",
+            "https://openalex.org/I71267560"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I71267560",
+          "display_name": "University of Naples Federico II",
+          "ror": "https://ror.org/05290cv24",
+          "country_code": "IT",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I71267560"
+          ]
+        }
+      ],
+      "countries": [
+        "IT"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Gennaro D’Amato",
+      "raw_affiliation_strings": [
+        "Division of Respiratory and Allergic Diseases, Department of Chest Diseases, High Specialty A, Cardarelli Hospital, and Medical School of Specialization in Respiratory Diseases, University of Naples Federico II, Naples, Italy"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Division of Respiratory and Allergic Diseases, Department of Chest Diseases, High Specialty A, Cardarelli Hospital, and Medical School of Specialization in Respiratory Diseases, University of Naples Federico II, Naples, Italy",
+          "institution_ids": [
+            "https://openalex.org/I4210117450",
+            "https://openalex.org/I71267560"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5030494163",
+        "display_name": "Lorenzo Cecchi",
+        "orcid": "https://orcid.org/0000-0002-0658-2449",
+        "observed_orcids": [
+          "https://orcid.org/0000-0002-0658-2449"
+        ]
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I45084792",
+          "display_name": "University of Florence",
+          "ror": "https://ror.org/04jr1s763",
+          "country_code": "IT",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I45084792"
+          ]
+        }
+      ],
+      "countries": [
+        "IT"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Lorenzo Cecchi",
+      "raw_affiliation_strings": [
+        "Centre of Bioclimatology, University of Florence, Florence, Italy"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Centre of Bioclimatology, University of Florence, Florence, Italy",
+          "institution_ids": [
+            "https://openalex.org/I45084792"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 2,
+  "institutions_distinct_count": 5,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5045819426"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I154526488",
+    "https://openalex.org/I19894307"
+  ],
+  "apc_list": {
+    "value": 3700,
+    "currency": "USD",
+    "value_usd": 3700
+  },
+  "apc_paid": null,
+  "fwci": 1.8007,
+  "has_fulltext": true,
+  "cited_by_count": 26,
+  "citation_normalized_percentile": {
+    "value": 0.83312844,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": false
+  },
+  "cited_by_percentile_year": {
+    "min": 93,
+    "max": 99
+  },
+  "biblio": {
+    "volume": "148",
+    "issue": "1",
+    "first_page": "70",
+    "last_page": "72"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10190",
+    "display_name": "Air Quality and Health Impacts",
+    "score": 0.9351000189781189,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2307",
+      "display_name": "Health, Toxicology and Mutagenesis"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/23",
+      "display_name": "Environmental Science"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/3",
+      "display_name": "Physical Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10190",
+      "display_name": "Air Quality and Health Impacts",
+      "score": 0.9351000189781189,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2307",
+        "display_name": "Health, Toxicology and Mutagenesis"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/23",
+        "display_name": "Environmental Science"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10051",
+      "display_name": "Asthma and respiratory diseases",
+      "score": 0.060600001364946365,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2737",
+        "display_name": "Physiology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11002",
+      "display_name": "Indoor Air Quality and Microbial Exposure",
+      "score": 0.0017000000225380063,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2307",
+        "display_name": "Health, Toxicology and Mutagenesis"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/23",
+        "display_name": "Environmental Science"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/air-pollution",
+      "display_name": "air pollution",
+      "score": 1.0
+    },
+    {
+      "id": "https://openalex.org/keywords/asthma",
+      "display_name": "asthma",
+      "score": 0.9990000128746033
+    },
+    {
+      "id": "https://openalex.org/keywords/allergy",
+      "display_name": "allergy",
+      "score": 0.9620000123977661
+    },
+    {
+      "id": "https://openalex.org/keywords/exposome",
+      "display_name": "exposome",
+      "score": 0.9980000257492065
+    },
+    {
+      "id": "https://openalex.org/keywords/environmental-exposure",
+      "display_name": "environmental exposure",
+      "score": 0.6850000023841858
+    },
+    {
+      "id": "https://openalex.org/keywords/disease-incidence",
+      "display_name": "disease incidence",
+      "score": 0.7089999914169312
+    },
+    {
+      "id": "https://openalex.org/keywords/risk-factors",
+      "display_name": "risk factors",
+      "score": 0.5960000157356262
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C119709500",
+      "wikidata": "https://www.wikidata.org/wiki/Q2142347",
+      "display_name": "Exposome",
+      "level": 2,
+      "score": 0.6343488693237305
+    },
+    {
+      "id": "https://openalex.org/C99454951",
+      "wikidata": "https://www.wikidata.org/wiki/Q932068",
+      "display_name": "Environmental health",
+      "level": 1,
+      "score": 0.5458730459213257
+    },
+    {
+      "id": "https://openalex.org/C559116025",
+      "wikidata": "https://www.wikidata.org/wiki/Q131123",
+      "display_name": "Air pollution",
+      "level": 2,
+      "score": 0.5410491228103638
+    },
+    {
+      "id": "https://openalex.org/C126314574",
+      "wikidata": "https://www.wikidata.org/wiki/Q2364111",
+      "display_name": "Air quality index",
+      "level": 2,
+      "score": 0.5242241621017456
+    },
+    {
+      "id": "https://openalex.org/C2776042228",
+      "wikidata": "https://www.wikidata.org/wiki/Q35869",
+      "display_name": "Asthma",
+      "level": 2,
+      "score": 0.4878871440887451
+    },
+    {
+      "id": "https://openalex.org/C24245907",
+      "wikidata": "https://www.wikidata.org/wiki/Q498957",
+      "display_name": "Particulates",
+      "level": 2,
+      "score": 0.4396355152130127
+    },
+    {
+      "id": "https://openalex.org/C39432304",
+      "wikidata": "https://www.wikidata.org/wiki/Q188847",
+      "display_name": "Environmental science",
+      "level": 0,
+      "score": 0.3628658056259155
+    },
+    {
+      "id": "https://openalex.org/C526734887",
+      "wikidata": "https://www.wikidata.org/wiki/Q832237",
+      "display_name": "Environmental protection",
+      "level": 1,
+      "score": 0.3598005175590515
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.3386409878730774
+    },
+    {
+      "id": "https://openalex.org/C205649164",
+      "wikidata": "https://www.wikidata.org/wiki/Q1071",
+      "display_name": "Geography",
+      "level": 0,
+      "score": 0.29323726892471313
+    },
+    {
+      "id": "https://openalex.org/C153294291",
+      "wikidata": "https://www.wikidata.org/wiki/Q25261",
+      "display_name": "Meteorology",
+      "level": 1,
+      "score": 0.15976670384407043
+    },
+    {
+      "id": "https://openalex.org/C18903297",
+      "wikidata": "https://www.wikidata.org/wiki/Q7150",
+      "display_name": "Ecology",
+      "level": 1,
+      "score": 0.12898758053779602
+    },
+    {
+      "id": "https://openalex.org/C203014093",
+      "wikidata": "https://www.wikidata.org/wiki/Q101929",
+      "display_name": "Immunology",
+      "level": 1,
+      "score": 0.10699933767318726
+    },
+    {
+      "id": "https://openalex.org/C86803240",
+      "wikidata": "https://www.wikidata.org/wiki/Q420",
+      "display_name": "Biology",
+      "level": 0,
+      "score": 0.0966973602771759
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000081413",
+      "descriptor_name": "Exposome",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000081413",
+      "descriptor_name": "Exposome",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000081413",
+      "descriptor_name": "Exposome",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000393",
+      "descriptor_name": "Air Pollutants",
+      "qualifier_ui": "Q000276",
+      "qualifier_name": "immunology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000393",
+      "descriptor_name": "Air Pollutants",
+      "qualifier_ui": "Q000276",
+      "qualifier_name": "immunology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000393",
+      "descriptor_name": "Air Pollutants",
+      "qualifier_ui": "Q000276",
+      "qualifier_name": "immunology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000397",
+      "descriptor_name": "Air Pollution",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000397",
+      "descriptor_name": "Air Pollution",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000397",
+      "descriptor_name": "Air Pollution",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001249",
+      "descriptor_name": "Asthma",
+      "qualifier_ui": "Q000276",
+      "qualifier_name": "immunology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001249",
+      "descriptor_name": "Asthma",
+      "qualifier_ui": "Q000276",
+      "qualifier_name": "immunology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001249",
+      "descriptor_name": "Asthma",
+      "qualifier_ui": "Q000276",
+      "qualifier_name": "immunology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004781",
+      "descriptor_name": "Environmental Exposure",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004781",
+      "descriptor_name": "Environmental Exposure",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004781",
+      "descriptor_name": "Environmental Exposure",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006967",
+      "descriptor_name": "Hypersensitivity",
+      "qualifier_ui": "Q000276",
+      "qualifier_name": "immunology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006967",
+      "descriptor_name": "Hypersensitivity",
+      "qualifier_ui": "Q000276",
+      "qualifier_name": "immunology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006967",
+      "descriptor_name": "Hypersensitivity",
+      "qualifier_ui": "Q000276",
+      "qualifier_name": "immunology",
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 3,
+  "locations": [
+    {
+      "id": "doi:10.1016/j.jaci.2021.05.026",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1016/j.jaci.2021.05.026",
+      "pdf_url": "http://www.jacionline.org/article/S0091674921008319/pdf",
+      "source": {
+        "id": "https://openalex.org/S108525051",
+        "display_name": "Journal of Allergy and Clinical Immunology",
+        "issn_l": "0091-6749",
+        "issn": [
+          "0091-6749",
+          "1085-8725",
+          "1097-6825"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "listed_in": [
+          "cwts-core",
+          "doyens",
+          "jufo-3",
+          "ki-jl-3",
+          "medline",
+          "norway-2"
+        ],
+        "host_organization": "https://openalex.org/P4310320990",
+        "host_organization_name": "Elsevier BV",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320990"
+        ],
+        "host_organization_lineage_names": [
+          "Elsevier BV"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Journal of Allergy and Clinical Immunology",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:34238507",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/34238507",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "listed_in": [],
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The Journal of allergy and clinical immunology",
+      "raw_type": "Editorial"
+    },
+    {
+      "id": "pmh:oai:HAL:hal-03713552v1",
+      "is_oa": false,
+      "landing_page_url": "https://hal.science/hal-03713552",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402512",
+        "display_name": "HAL (Le Centre pour la Communication Scientifique Directe)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "listed_in": [],
+        "host_organization": "https://openalex.org/I1294671590",
+        "host_organization_name": "Centre National de la Recherche Scientifique",
+        "host_organization_lineage": [
+          "https://openalex.org/I1294671590"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Journal of Allergy and Clinical Immunology, 2021, 148 (1), pp.70-72. &#x27E8;10.1016/j.jaci.2021.05.026&#x27E9;",
+      "raw_type": "info:eu-repo/semantics/article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1016/j.jaci.2021.05.026",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1016/j.jaci.2021.05.026",
+    "pdf_url": "http://www.jacionline.org/article/S0091674921008319/pdf",
+    "source": {
+      "id": "https://openalex.org/S108525051",
+      "display_name": "Journal of Allergy and Clinical Immunology",
+      "issn_l": "0091-6749",
+      "issn": [
+        "0091-6749",
+        "1085-8725",
+        "1097-6825"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "listed_in": [
+        "cwts-core",
+        "doyens",
+        "jufo-3",
+        "ki-jl-3",
+        "medline",
+        "norway-2"
+      ],
+      "host_organization": "https://openalex.org/P4310320990",
+      "host_organization_name": "Elsevier BV",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320990"
+      ],
+      "host_organization_lineage_names": [
+        "Elsevier BV"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Journal of Allergy and Clinical Immunology",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "score": 1.0,
+      "display_name": "Good health and well-being",
+      "id": "https://metadata.un.org/sdg/3"
+    }
+  ],
+  "sustainable_development_goals_aurora": [
+    {
+      "score": 0.800000011920929,
+      "display_name": "Sustainable cities and communities",
+      "id": "https://metadata.un.org/sdg/11"
+    }
+  ],
+  "study_designs": [],
+  "awards": [
+    {
+      "id": "https://openalex.org/G434337789",
+      "display_name": null,
+      "funder_award_id": "HORIZON2020",
+      "funder_id": "https://openalex.org/F4320320300",
+      "funder_display_name": "European Commission"
+    }
+  ],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320320300",
+      "display_name": "European Commission",
+      "ror": "https://ror.org/00k4n6c32"
+    },
+    {
+      "id": "https://openalex.org/F4320332999",
+      "display_name": "Horizon 2020 Framework Programme",
+      "ror": "https://ror.org/00k4n6c32"
+    },
+    {
+      "id": "https://openalex.org/F4320338463",
+      "display_name": "CHIST-ERA",
+      "ror": "https://ror.org/00rbzpz17"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W3179054865.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W3179054865.grobid-xml"
+  },
+  "referenced_works_count": 11,
+  "referenced_works": [
+    "https://openalex.org/W1990819855",
+    "https://openalex.org/W2089853915",
+    "https://openalex.org/W2103269612",
+    "https://openalex.org/W2759510758",
+    "https://openalex.org/W2789345746",
+    "https://openalex.org/W2792596323",
+    "https://openalex.org/W2802472922",
+    "https://openalex.org/W3014923306",
+    "https://openalex.org/W3085117317",
+    "https://openalex.org/W3094464619",
+    "https://openalex.org/W3136983945"
+  ],
+  "related_works": [
+    "https://openalex.org/W2070677502",
+    "https://openalex.org/W2991488401",
+    "https://openalex.org/W1603912562",
+    "https://openalex.org/W3080344894",
+    "https://openalex.org/W4318499393",
+    "https://openalex.org/W2066546759",
+    "https://openalex.org/W2733363865",
+    "https://openalex.org/W2082703639",
+    "https://openalex.org/W2512873846",
+    "https://openalex.org/W2120024962"
+  ],
+  "abstract_inverted_index": null,
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 9
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 4
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 2
+    }
+  ],
+  "updated_date": "2026-09-29T14:09:16.559479",
+  "created_date": "2025-10-10T00:00:00"
+}

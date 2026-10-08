@@ -31,7 +31,7 @@ export function StandardReference({paper,number,selected,onSelect,actions}:{pape
   return <article className="standard-reference" data-paper-id={paper.id} aria-label={`Reference ${number}`}>
     <div className="source-title-row"><input type="checkbox" checked={selected} onChange={onSelect} aria-label={`Select ${paper.title}`}/><button className="source-title" onClick={()=>actions.onOpen(paper)}><span className="sr-only">{number}. </span>{paper.title}</button></div>
     <PaperMetadata paper={paper}/>
-    {paper.provider&&<a className="source-provider" href={paper.url} target="_blank" rel="noreferrer">{paper.provider}<FigmaAsset name="ref-imgArrowUpRightFromSquare"/></a>}
+    {paper.provider&&<a className="source-provider" href={paper.sources?.find(s=>s.provider===paper.provider)?.recordUrl || paper.url} target="_blank" rel="noreferrer">{paper.provider}<FigmaAsset name="ref-imgArrowUpRightFromSquare"/></a>}
     <PaperActions paper={paper} actions={actions}/>
   </article>;
 }
@@ -64,7 +64,7 @@ export function SourceCitation({paper,number,label,actions}:{paper:Paper;number:
   return <span className="citation-wrap"><button ref={trigger} className="citation-chip" aria-label={`Preview citation ${number}: ${paper.title}`} aria-expanded={open} aria-controls={open?id:undefined} onPointerEnter={stay} onPointerLeave={leave} onFocus={()=>{if(!restoringFocus.current)stay();}} onBlur={leave} onClick={stay} onKeyDown={e=>{if(e.key==='ArrowDown'&&open){e.preventDefault();card.current?.querySelector<HTMLButtonElement>('button')?.focus();}}}>{label}</button>
     {open&&createPortal(<div ref={card} id={id} role="dialog" aria-label={`Source ${number}`} className="source-hover" style={position} onPointerEnter={stay} onPointerLeave={leave} onFocus={stay} onBlur={leave}>
       <button className="source-title" onClick={()=>{actions.onOpen(paper);setOpen(false);}}>{paper.title}</button>
-      {paper.provider&&<a className="source-provider" href={paper.url} target="_blank" rel="noreferrer">{paper.provider}<FigmaAsset name="source-imgArrowUpRightFromSquare"/></a>}
+      {paper.provider&&<a className="source-provider" href={paper.sources?.find(s=>s.provider===paper.provider)?.recordUrl || paper.url} target="_blank" rel="noreferrer">{paper.provider}<FigmaAsset name="source-imgArrowUpRightFromSquare"/></a>}
       <div className="source-abstract"><strong>ABSTRACT</strong><p className={expanded?'':'is-clamped'}>{paper.abstract||'Abstract not available from this source.'}</p>{paper.abstract&&paper.abstract.length>240&&<button onClick={()=>setExpanded(!expanded)}>{expanded?'Read less':'Read more'}</button>}</div>
       <PaperMetadata paper={paper} prefix="source"/><PaperActions paper={paper} actions={actions} prefix="source" hover/>
     </div>,document.body)}

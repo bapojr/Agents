@@ -260,7 +260,6 @@
   .answer-scroll { padding-bottom: 0; }
   .answer-document { max-width: none; width: 100%; }
   .answer-section { break-inside: avoid; }
-  .research-answer::after { content: "Example research preview. Sources: doi.org/10.1186/s13024-019-0333-5 · doi.org/10.1016/j.jalz.2018.02.018 · doi.org/10.3390/brainsci10080479"; display: block; margin-top: var(--pp-s24); }
 }
 
 /* Conversation controls reuse the Paperpal secondary button and Illustrate menu styles. */

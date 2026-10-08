@@ -6,9 +6,9 @@ PDF conversations, and extraction tables. Requirements are in [docs/PRD.md](docs
 ## Current status
 
 **M0 foundation in progress.** The first Agents screen uses the approved Paperpal Figma
-frame and reusable UI components. Search pipelines and generated research answers are not built.
+frame and reusable UI components. The user-authorized Search Papers slice now retrieves live OpenAlex records through a provider adapter. AI synthesis and enhanced extraction remain unconnected.
 M0 is not complete until sign-up, login, and the approved empty dashboard work together.
-Later milestones remain blocked by the PRD's milestone gate.
+Other milestones retain the PRD's milestone gate. See [live scholarly search](docs/LIVE-SCHOLARLY-SEARCH.md) for the approved search integration.
 
 Implemented:
 
@@ -137,15 +137,9 @@ expansion, new-research reset, and recent queries for the current page session. 
 selection is local only; files are not uploaded. Voice input uses the browser's speech
 recognition when supported and needs the user's microphone permission.
 
-Search submission opens the white Paperpal research workspace: a clearly labelled,
-curated example answer, citation previews, card/list/table references, source filtering,
-browser-local saves, CSV/BibTeX/RIS exports, and a five-tab paper reader. The reader includes
-an attributed open-access PDF with all 18 pages and passage highlights. Follow-up prompts
-and recent research are retained for the page session. Live search and AI follow-up answers
-are not connected. Authentication, server library storage, connectors, document checks,
-and billing are not connected to this static preview. The greeting uses the Figma example name Akash;
-it is not a signed-in identity. Source-menu catalog copy is retained from Figma, not a
-claim that an index has already been ingested. No research answers or papers are fabricated.
+Search Papers submissions (including new prompts from the conversation composer) request live OpenAlex results. All result cards, source hover cards, citations, the reader, and References share those normalized records. Empty searches remain empty; provider errors show retry, with no demo fallback. References opens in table view: first 20 rows, then an upgrade nudge and standard cards for remaining results. Load more retrieves further provider pages. Export opens the paywall for free users. Other research modes retain their clearly labelled previews.
+
+AI synthesis, enhanced/custom extraction, authentication UI, server library storage, connectors, document checks, and billing are not connected to this static deployment. Uploaded files stay local. The greeting Sushrut is a configured display name, not a signed-in identity. Search metadata is never invented. See [docs/LIVE-SCHOLARLY-SEARCH.md](docs/LIVE-SCHOLARLY-SEARCH.md) for provider access, query handling, provenance, and verification.
 
 Design provenance and component IDs: [docs/FIGMA-HANDOFF.md](docs/FIGMA-HANDOFF.md).
 Validation notes: [docs/UI-VALIDATION.md](docs/UI-VALIDATION.md).
@@ -157,8 +151,8 @@ See [docs/BACKEND.md](docs/BACKEND.md) for architecture decisions and remaining 
 ### Resizing the research side panel
 
 Drag the divider between the conversation and references (or paper reader) to resize.
-The desktop panel is 320–720px wide, with a dynamic maximum that reserves at least
-480px for the conversation. The width is remembered in this browser. Double-click
+The desktop panel starts at a 320px minimum and can expand up to 80% of the screen,
+reserving a compact conversation area when the sidebar limits available space. The width is remembered in this browser. Double-click
 the divider to restore its default proportion. The divider supports pointer capture
 for mouse, pen and touch input, and keyboard Left/Right arrows (Shift for larger
 steps), Home/End for the limits, Enter to close, and Escape to cancel a drag.

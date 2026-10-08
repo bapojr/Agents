@@ -1,5 +1,7 @@
 # Search Papers references (8 October 2026)
 
+The provider integration below is historical. OpenAlex has replaced the direct Crossref search path; see [Live scholarly search](LIVE-SCHOLARLY-SEARCH.md). The reference UI and entitlement behavior remain current.
+
 ## Scope and architecture
 
 This iteration replaces the fixed Alzheimer example **only for Search papers** with query-dependent Crossref retrieval. Other research modes retain their explicitly labelled preview. The user authorized this slice ahead of the original PRD milestones; it is not completion of the full ingestion/RAG/billing backend.

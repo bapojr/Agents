@@ -1,5 +1,6 @@
 import {describe,it,expect,vi} from 'vitest';
-import {normalizeCrossref,parseSearchPage,searchPapers,searchUrl,mergePapers,abstractExcerpt,plainText,type Paper} from '../src/ui/paper-data';
+import {normalizeCrossref,parseSearchPage,searchPapers,searchUrl} from '../src/ui/scholarly/crossref';
+import {mergePapers,abstractExcerpt,plainText,type Paper} from '../src/ui/paper-data';
 import {FREE_ENTITLEMENTS,FREE_TABULAR_REFERENCE_LIMIT,REFERENCE_COLUMNS,referencePartition,requestReferenceExport,columnValue,addReferenceColumn} from '../src/ui/reference-model';
 import {filterPapers} from '../src/ui/research-preview';
 import {emptyFilters} from '../src/ui/research-filters';
@@ -17,7 +18,7 @@ describe('one normalized source record',()=>{
   expect(p.title.length).toBeGreaterThan(2000);expect(p.authors).toHaveLength(200);expect(p.abstract).toBe('A & B');expect(p.evidence[0].text).toBe(p.abstract);expect(p.citationCount).toBe(0);expect(p.year).toBe(2024);
  });
  it('rejects invalid records and malformed API responses',()=>{expect(normalizeCrossref({title:['X']})).toBeNull();expect(()=>parseSearchPage({})).toThrow('invalid response');expect(plainText('&#99999999;')).toBe('');});
- it('updates matching records without duplicating references',()=>{const old=paper(1),next={...old,title:'Updated metadata'};const merged=mergePapers([old],[next,paper(2)]);expect(merged).toHaveLength(2);expect(merged[0]).toBe(next);});
+ it('updates matching records without duplicating references',()=>{const old=paper(1),next={...old,title:'Updated metadata'};const merged=mergePapers([old],[next,paper(2)]);expect(merged).toHaveLength(2);expect(merged[0].title).toBe(next.title);});
  it('handles empty response and cursor pagination',()=>{expect(parseSearchPage({message:{items:[],'total-results':0}})).toEqual({papers:[],total:0,nextCursor:undefined});const items=Array.from({length:50},(_,n)=>({DOI:`10.1234/${n}`,title:[`Title ${n}`]}));expect(parseSearchPage({message:{items,'total-results':500,'next-cursor':'next'}}).nextCursor).toBe('next');expect(parseSearchPage({message:{items:items.slice(0,1),'total-results':1,'next-cursor':'next'}}).nextCursor).toBeUndefined();});
  it('passes research queries as encoded data, not URL parameters',()=>{const u=new URL(searchUrl('climate &rows=1#x'));expect(u.searchParams.get('query.bibliographic')).toBe('climate &rows=1#x');expect(u.searchParams.get('rows')).toBe('50');});
  it('reports rate limiting and API errors without example fallback',async()=>{const request=vi.fn().mockResolvedValue({ok:false,status:429});await expect(searchPapers('query',new AbortController().signal,'*',request)).rejects.toThrow('busy');expect(request).toHaveBeenCalledOnce();});
