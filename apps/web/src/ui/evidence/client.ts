@@ -3,16 +3,21 @@ import type {ReferenceColumn} from '../reference-model';
 export type SourceDocument={id:string;workId:string;title:string;sourceUrl?:string;sourceType:'full_text'|'abstract'|'none';pdfStatus:'available'|'unavailable'|'failed';message:string;pages:{number:number;width:number;height:number}[];passages:{id:string;text:string;sourceType:'full_text'|'abstract';pageNumber?:number}[]};
 export type Analysis={documentId:string;sourceUrl?:string|null;question:string;sourceType:'full_text'|'abstract'|'none';model:string;cells:Record<string,{claimId:string;value:string;status:'supported'|'not_reported';evidenceIds:string[]}>;evidence:Evidence[]};
 const base=process.env.NEXT_PUBLIC_RESEARCH_API_URL || (process.env.NEXT_PUBLIC_BASE_PATH?'':'/api/evidence');
+const documentBase=process.env.NEXT_PUBLIC_DOCUMENT_API_URL || base;
 export const evidenceConfigured=!!base;
+export const documentCredentials:RequestCredentials=process.env.NEXT_PUBLIC_DOCUMENT_API_URL?'omit':'include';
+export function documentUrl(path:string){return `${documentBase.replace(/\/$/,'')}/${path}`;}
 export function evidenceUrl(path:string){return `${base.replace(/\/$/,'')}/${path}`;}
 const requests=new Map<string,Promise<unknown>>();
 export async function evidenceRequest<T>(path:string,body?:unknown,retry=false):Promise<T>{
-  if(!base)throw new Error('Live document analysis needs a connected research backend.');
-  const key=path+JSON.stringify(body??null);
+  const isDocument=path.startsWith('documents/');
+  if(!(isDocument?documentBase:base))throw new Error('Live document analysis needs a connected research backend.');
+  const url=isDocument?documentUrl(path):evidenceUrl(path);
+  const key=url+JSON.stringify(body??null);
   if(retry)requests.delete(key);
   if(!requests.has(key)){
     const pending=(async()=>{
-      const response=await fetch(evidenceUrl(path)+(retry&&path.startsWith('documents/')?'?retry=true':''),{credentials:'include',method:body?'POST':'GET',headers:body?{'Content-Type':'application/json'}:undefined,body:body?JSON.stringify(body):undefined,signal:AbortSignal.timeout(245000)});
+      const response=await fetch(url+(retry&&path.startsWith('documents/')?'?retry=true':''),{credentials:isDocument?documentCredentials:'include',method:body?'POST':'GET',headers:body?{'Content-Type':'application/json'}:undefined,body:body?JSON.stringify(body):undefined,signal:AbortSignal.timeout(245000)});
       if(!response.ok){const error=await response.json().catch(()=>({}));throw new Error(error.error||error.detail||'The document service is unavailable. Please retry.');}
       return response.json();
     })();

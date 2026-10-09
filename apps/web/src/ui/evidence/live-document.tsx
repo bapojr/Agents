@@ -1,7 +1,7 @@
 'use client';
 import {useEffect,useRef,useState} from 'react';
 import type {Evidence,Paper} from '../paper-data';
-import {loadDocument,evidenceUrl,type SourceDocument} from './client';
+import {loadDocument,documentUrl,documentCredentials,type SourceDocument} from './client';
 import {SelectionDropdown} from '../selection-dropdown';
 function PageImage({document,page,evidence}:{document:SourceDocument;page:number;evidence?:Evidence}){
   const figure=useRef<HTMLElement>(null);
@@ -9,7 +9,7 @@ function PageImage({document,page,evidence}:{document:SourceDocument;page:number
   const [url,setUrl]=useState(''),[error,setError]=useState(''),[retry,setRetry]=useState(0);
   useEffect(()=>{if(url)requestAnimationFrame(reveal);},[evidence,url]);
   useEffect(()=>{let active=true,objectUrl='';setError('');setUrl('');const abort=new AbortController();
-    void fetch(evidenceUrl(`documents/${document.workId}/pages/${page}?version=${document.id}`),{credentials:'include',signal:abort.signal}).then(async r=>{if(!r.ok||!r.headers.get('content-type')?.startsWith('image/png'))throw new Error('This page could not load.');const blob=await r.blob();if(active){objectUrl=URL.createObjectURL(blob);setUrl(objectUrl);}}).catch(e=>{if(active&&!abort.signal.aborted)setError(e.message);});
+    void fetch(documentUrl(`documents/${document.workId}/pages/${page}?version=${document.id}`),{credentials:documentCredentials,signal:abort.signal}).then(async r=>{if(!r.ok||!r.headers.get('content-type')?.startsWith('image/png'))throw new Error('This page could not load.');const blob=await r.blob();if(active){objectUrl=URL.createObjectURL(blob);setUrl(objectUrl);}}).catch(e=>{if(active&&!abort.signal.aborted)setError(e.message);});
     return()=>{active=false;abort.abort();if(objectUrl)URL.revokeObjectURL(objectUrl);};
   },[document.workId,document.id,page,retry]);
   return <figure ref={figure} className="pdf-page" data-pdf-page={page}>{error?<div className="rw-empty" role="alert"><p>{error}</p><button className="outline-button" onClick={()=>setRetry(v=>v+1)}>Retry page</button></div>:!url?<div className="rw-empty" role="status">Loading PDF page…</div>:<img src={url} width={document.pages[page-1]?.width} height={document.pages[page-1]?.height} onLoad={reveal} alt={`Page ${page} of ${document.title}`} onError={()=>setError('This PDF page could not be displayed.')}/>} {url&&evidence?.documentId===document.id&&evidence.page===page&&evidence.rects?.map(([x,y,w,h],i)=><span key={i} aria-hidden="true" className="pdf-highlight" style={{left:`${x}%`,top:`${y}%`,width:`${w}%`,height:`${h}%`}}/>)}<figcaption>Page {page} of {document.pages.length}</figcaption></figure>;

@@ -2,9 +2,10 @@
 
 ## Deployment status
 
-Implementation is feature-gated by a connected authenticated backend. **Live AI extraction
+PDF viewing can now use a separate public OA document service, independent of AI and account sign-in.
+The hosted service URL is not configured yet. **Live AI extraction
 has not been verified: no model API key/model or public backend is configured in this workspace.**
-Do not enable the GitHub repository `RESEARCH_API_URL` variable until the backend, authentication,
+Do not enable the AI GitHub repository `RESEARCH_API_URL` variable until the backend, authentication,
 model credentials, and live claim verification below pass. GitHub Pages cannot execute these services.
 The existing OpenAlex search runs independently and remains available without them.
 
@@ -31,6 +32,29 @@ The existing OpenAlex search runs independently and remains available without th
 - The same enriched Paper object powers table, list, citation popovers, reader and SearchAnswer.
   Claim buttons and table evidence links select the same evidence objects as the Evidence tab.
   Cross-paper synthesis and scoped follow-up generation remain explicitly unconnected.
+
+## PDF-only deployment (no AI credentials)
+
+Deploy the existing repository using `services/research/Dockerfile.documents`, from the repository
+root as build context. It runs the shared secure OA document loader and page renderer in a separate
+FastAPI entry point. No PostgreSQL, Redis, account login, internal token or OpenAI key is required.
+It exposes only public scholarly document metadata and page images; no private uploads or AI routes.
+The existing authenticated extraction API remains protected and unchanged.
+
+- Container port: `PORT` supplied by the host, default `8000`; health endpoint: `/health`.
+- Set `DOCUMENT_ALLOWED_ORIGINS=https://bapojr.github.io` (comma-separated exact origins).
+- Optional `RESEARCH_OPENALEX_API_KEY` stays server-side.
+- Use one process/worker. Downloads/parsing/rendering are serialized; busy requests return retryable
+  429 errors, with a bounded request limiter (60/minute per direct peer, 120/minute globally).
+  Forwarded client headers are deliberately not trusted. On a reverse-proxied deployment, the
+  per-peer limit can apply to the proxy as a whole. This is a conservative preview limit.
+- After the hosted service passes real-document verification, set GitHub repository variable
+  `DOCUMENT_API_URL` to its HTTPS origin. Pages builds map it to `NEXT_PUBLIC_DOCUMENT_API_URL`.
+- Keep `RESEARCH_API_URL` unset until AI/backend authentication is ready. Public document requests
+  omit cookies and use their own URL; they never send model inputs or call the extraction route.
+- Verify a real OpenAlex work returns `pdfStatus: available`, a versioned page URL returns an actual
+  PNG, and the live Pages Attachment tab renders that page. Verify a blocked PDF reports its real
+  failure. The host must permit outbound public HTTPS and Python subprocesses.
 
 ## API and configuration
 
@@ -86,8 +110,12 @@ HTML masquerading as PDF, failed acquisition fallback, service authorization, un
 cache reuse, real bundled PDF parsing regression, UI claim highlighting, and the 20/21 boundary.
 Model test doubles exist only in tests and are not live verification or product data.
 
-Validation: 125 frontend tests passed (7 opt-in live tests skipped), 31 Python tests passed,
+Validation: 127 frontend tests passed (7 opt-in live tests skipped), 38 Python tests passed,
 TypeScript, Ruff and strict mypy passed, and both Next.js and GitHub Pages builds passed.
+
+The PDF-only service was also exercised against live OpenAlex work `W3150543191`: seven
+pages returned, page two served as a real PNG, Pages CORS allowed, and extraction remained false.
+Container deployment and hosted/live-website verification are pending the hosting account.
 
 Live document checks on 2026-10-09:
 - Query: climate change coral reef biodiversity. OpenAlex `W3150543191` returned the real
