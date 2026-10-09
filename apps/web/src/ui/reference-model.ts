@@ -23,11 +23,12 @@ export const REFERENCE_COLUMNS: ReferenceColumn[] = [
 export const DEFAULT_COLUMN_IDS = REFERENCE_COLUMNS.filter(c=>c.group==='suggested').map(c=>c.id);
 export function columnValue(paper: Paper, column: ReferenceColumn): {text:string;evidence?:string;url?:string} {
   const extraction = paper.extractions?.[column.id];
+  if (extraction?.status === 'not_reported') return {text:'Not reported'};
   if (extraction?.value && extraction.evidence && /^https?:\/\//.test(extraction.sourceUrl)) return {text:extraction.value,evidence:extraction.evidence,url:extraction.sourceUrl};
   if (column.id === 'evidenceType' && paper.type) return {text:`Publication type: ${paper.type}`};
   if (column.id === 'dimension' && paper.fields.length) return {text:paper.fields.join(', ')};
   if (column.id === 'summary' && paper.abstract) return {text:`Abstract excerpt: ${abstractExcerpt(paper)}`,evidence:paper.abstract,url:paper.url};
-  return {text:'Not extracted'};
+  return {text:paper.analysisStatus==='loading'?'Extracting…':paper.analysisStatus==='failed'?'Extraction failed':paper.analysisSource==='none'?'Source text unavailable':'Not extracted'};
 }
 export function addReferenceColumn(columns: ReferenceColumn[], name: string, question: string): ReferenceColumn[] {
   const label = name.trim(), prompt = question.trim();

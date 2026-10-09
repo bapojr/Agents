@@ -37,7 +37,7 @@ describe('OpenAlex normalization from a captured real record',()=>{
     for(const value of [null,{Gap:[2]},{Bad:[-1]},{TooBig:[50001]},{Duplicate:[0],Collision:[0]},{Invalid:['0']},{Incomplete:[0,3]}])expect(reconstructAbstract(value)).toBeUndefined();
   });
   it('rejects unsafe source links and preserves zero/false metadata',()=>{
-    const paper=normalizeOpenAlex({...work,cited_by_count:0,open_access:{is_oa:false},primary_location:{pdf_url:'javascript:alert(1)'},best_oa_location:null})!;
+    const paper=normalizeOpenAlex({...work,cited_by_count:0,open_access:{is_oa:false},locations:[],primary_location:{pdf_url:'javascript:alert(1)'},best_oa_location:null})!;
     expect(paper.citationCount).toBe(0);expect(paper.openAccess).toBe(false);expect(paper.pdf).toBeUndefined();
   });
   it('distinguishes malformed records from a genuine empty result',()=>{

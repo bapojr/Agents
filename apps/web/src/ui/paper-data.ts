@@ -1,6 +1,6 @@
 /** One normalized record shared by search, citations, cards, reader and table. */
-export type Evidence = { id: string; text: string; section: string; page?: number; rects?: number[][] };
-export type Extraction = { value: string; evidence: string; sourceUrl: string };
+export type Evidence = { id: string; text: string; section: string; page?: number; rects?: number[][]; claimId?:string; documentId?:string; passageId?:string; sourceType?:"abstract"|"full_text"; startOffset?:number; endOffset?:number };
+export type Extraction = { value: string; evidence: string; sourceUrl: string; status?:"supported"|"not_reported"; claimId?:string; evidenceIds?:string[]; sourceType?:string };
 export type Paper = {
   id: string; title: string; authors: string[]; shortAuthor: string; year?: number;
   journal: string; doi: string; url: string; type: string; summary: string; finding: string;
@@ -8,6 +8,8 @@ export type Paper = {
   evidence: Evidence[]; citationCount?: number; quartile?: string;
   provider?: string; sourceId?: string; abstract?: string; verified?: boolean;
   extractions?: Record<string, Extraction>;
+  analysisStatus?: "loading"|"ready"|"failed"; analysisError?:string; analysisSource?:string;
+  locations?: {pdfUrl?:string;landingPageUrl?:string;openAccess?:boolean;license?:string}[];
   providerId?: string; publicationDate?: string; publicationType?: string;
   openAccessUrl?: string; landingPageUrl?: string; pdfUrl?: string;
   topics?: string[]; concepts?: string[];

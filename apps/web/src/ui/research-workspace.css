@@ -304,3 +304,6 @@
   .thread-references > span, .thread-share > .selector > span { display: none; }
   .thread-references, .thread-share > .selector { width: var(--pp-s36); padding: var(--pp-s8); }
 }
+
+/* Live controls sit inside the reader scroll area; open menus into that area. */
+.live-pdf-controls > .selection-dropdown .popover-panel { left: var(--pp-s0); right: auto; }

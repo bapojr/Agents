@@ -34,7 +34,8 @@ export function normalizeOpenAlex(value: unknown): Paper | null {
   const authors = array(work.authorships).map(a => plainText(record(record(a).author).display_name)).filter(Boolean);
   const primary = record(work.primary_location), bestOA = record(work.best_oa_location), oa = record(work.open_access);
   const landingPageUrl = safeUrl(primary.landing_page_url);
-  const pdfUrl = safeUrl(bestOA.pdf_url) || safeUrl(primary.pdf_url);
+  const locations=array(work.locations).map(value=>{const l=record(value);return {pdfUrl:safeUrl(l.pdf_url),landingPageUrl:safeUrl(l.landing_page_url),openAccess:typeof l.is_oa==='boolean'?l.is_oa:undefined,license:typeof l.license==='string'?l.license:undefined};});
+  const pdfUrl = safeUrl(bestOA.pdf_url) || locations.find(l=>l.openAccess&&l.pdfUrl)?.pdfUrl || safeUrl(primary.pdf_url);
   const abstract = reconstructAbstract(work.abstract_inverted_index);
   const topics = array(work.topics).map(t => plainText(record(t).display_name)).filter(Boolean);
   const concepts = array(work.concepts).map(c => plainText(record(c).display_name)).filter(Boolean);
@@ -51,10 +52,10 @@ export function normalizeOpenAlex(value: unknown): Paper | null {
     citationCount, openAccess:typeof oa.is_oa === 'boolean' ? oa.is_oa : undefined,
     openAccessUrl:safeUrl(oa.oa_url), landingPageUrl, pdfUrl, pdf:pdfUrl,
     url:doi ? `https://doi.org/${doi}` : landingPageUrl || recordUrl,
-    fields, topics, concepts, summary:'', finding:'', limitation:'',
+    fields, topics, concepts, locations, summary:'', finding:'', limitation:'',
     identifiers:{openalex:providerId, ...(doi ? {doi} : {}), ...(pmid ? {pmid} : {})},
     sources:[{provider:'OpenAlex',providerId,recordUrl}], retrievedAt:new Date().toISOString(),
-    evidence:abstract ? [{id:`${id}:abstract`,text:abstract,section:'Source abstract'}] : [],
+    evidence:abstract ? [{id:`${id}:abstract`,text:abstract,section:'Source abstract',sourceType:'abstract'}] : [],
   };
 }
 

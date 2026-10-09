@@ -21,6 +21,9 @@ jobs:
       - run: pnpm check
       - run: pnpm test
       - run: pnpm build:pages
+        env:
+          NEXT_PUBLIC_RESEARCH_API_URL: ${{ vars.RESEARCH_API_URL }}
+          NEXT_PUBLIC_DOCUMENT_API_URL: ${{ vars.DOCUMENT_API_URL }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: apps/web/.pages/out

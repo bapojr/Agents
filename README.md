@@ -6,7 +6,7 @@ PDF conversations, and extraction tables. Requirements are in [docs/PRD.md](docs
 ## Current status
 
 **M0 foundation in progress.** The first Agents screen uses the approved Paperpal Figma
-frame and reusable UI components. The user-authorized Search Papers slice now retrieves live OpenAlex records through a provider adapter. AI synthesis and enhanced extraction remain unconnected.
+frame and reusable UI components. The user-authorized Search Papers slice now retrieves live OpenAlex records through a provider adapter. AI synthesis remains unconnected. Live document processing and grounded extraction are implemented behind a protected backend configuration; AI activation and end-to-end model verification are pending. See [live evidence](docs/LIVE-EVIDENCE.md).
 M0 is not complete until sign-up, login, and the approved empty dashboard work together.
 Other milestones retain the PRD's milestone gate. See [live scholarly search](docs/LIVE-SCHOLARLY-SEARCH.md) for the approved search integration.
 
