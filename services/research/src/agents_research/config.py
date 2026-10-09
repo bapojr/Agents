@@ -13,6 +13,9 @@ class Settings(BaseSettings):
     database_url: SecretStr
     redis_url: SecretStr
     internal_token: SecretStr
+    openai_api_key: SecretStr = SecretStr("")
+    extraction_model: str = ""
+    openalex_api_key: SecretStr = SecretStr("")
 
     @field_validator("internal_token")
     @classmethod

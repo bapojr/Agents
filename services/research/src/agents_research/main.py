@@ -13,6 +13,7 @@ from redis import Redis
 from starlette.concurrency import run_in_threadpool
 
 from agents_research.config import Settings
+from agents_research.evidence.routes import evidence_router
 
 logger = logging.getLogger(__name__)
 bearer = HTTPBearer(auto_error=False)
@@ -79,4 +80,12 @@ def create_app(
             status_code=200 if available else 503,
         )
 
+    app.include_router(
+        evidence_router(
+            require_service_token,
+            api_key=config.openai_api_key.get_secret_value(),
+            model=config.extraction_model,
+            openalex_key=config.openalex_api_key.get_secret_value(),
+        )
+    )
     return app

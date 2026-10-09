@@ -23,7 +23,7 @@ describe('reference presentation',()=>{
 import {SearchAnswer} from '../src/ui/search-answer';
 import {defaultPreferences} from '../src/ui/thread-state';
 describe('search response states',()=>{
- const props={query:'Research query',provider:'OpenAlex',papers:[],loading:false,error:'',retry:()=>{},preferences:defaultPreferences,actions,onReferences:()=>{},onFilter:()=>{},onFollowup:()=>{},showFollowups:false,onDismiss:()=>{}};
+ const props={analysisMessage:'',onRetryExtraction:()=>{},onEvidence:()=>{},query:'Research query',provider:'OpenAlex',papers:[],loading:false,error:'',retry:()=>{},preferences:defaultPreferences,actions,onReferences:()=>{},onFilter:()=>{},onFollowup:()=>{},showFollowups:false,onDismiss:()=>{}};
  it('renders loading before an empty state',()=>{const html=renderToStaticMarkup(createElement(SearchAnswer,{...props,loading:true}));expect(html).toContain('Searching papers');expect(html).not.toContain('No relevant papers found');});
  it('renders the API error with a retry action',()=>{const html=renderToStaticMarkup(createElement(SearchAnswer,{...props,error:'The provider is busy'}));expect(html).toContain('role="alert"');expect(html).toContain('Retry search');expect(html).not.toContain('Alzheimer');});
  it('handles a genuine zero-result search',()=>{const html=renderToStaticMarkup(createElement(SearchAnswer,props));expect(html).toContain('No relevant papers found');expect(html).not.toContain('citation-chip');});
