@@ -4,6 +4,7 @@ import {describe,it,expect,vi} from 'vitest';
 import {SnapshotContent} from '../src/ui/snapshot/paper-snapshot';
 import {normalizeSnapshot,readSnapshotUsage,SNAPSHOT_COLUMNS,SNAPSHOT_QUESTION,UNKNOWN_USAGE} from '../src/ui/snapshot/model';
 import {createSnapshotService} from '../src/ui/snapshot/service';
+import {SAMPLE_SNAPSHOT,SNAPSHOT_PREVIEW_COPY} from '../src/ui/snapshot/sample';
 import type {Paper} from '../src/ui/paper-data';
 // Test doubles exercise the API contract only; never imported into the product.
 const paper=(id='W1')=>({id,providerId:id,identifiers:{openalex:id}} as Paper);
@@ -14,6 +15,18 @@ function response(text='A test-only source reports its study objective.',sourceT
 }
 const render=(state:Parameters<typeof SnapshotContent>[0]['state'],usage=UNKNOWN_USAGE)=>renderToStaticMarkup(createElement(SnapshotContent,{state,usage,message:'',onGenerate:()=>{},onUpgrade:()=>{}}));
 describe('Snapshot display and grounding',()=>{
+ it('uses the requested placeholder copy in all eight blurred sections',()=>{
+  const html=render({status:'idle'});
+  for(const copy of Object.values(SNAPSHOT_PREVIEW_COPY))expect(html).toContain(copy);
+ });
+ it('shows a clearly labelled filled sample without blur or fabricated source evidence',()=>{
+  const html=render({status:'ready',sample:true});
+  for(const copy of Object.values(SAMPLE_SNAPSHOT.cells))expect(html).toContain(copy);
+  expect(html).toContain('Fictional example for design preview only');
+  expect(html).not.toContain('snapshot-preview');expect(html).not.toContain('Supporting source');
+  expect(html).not.toContain('Generate Snapshot');expect(html).not.toContain('Based on the available abstract');
+ });
+
  it('shows both generation controls and blurred, non-research previews with readable field labels',()=>{
   const html=render({status:'idle'});
   for(const column of SNAPSHOT_COLUMNS)expect(html).toContain(column.label);
@@ -52,7 +65,7 @@ describe('Snapshot display and grounding',()=>{
 describe('Snapshot service and cache',()=>{
  it('has an honest disconnected state and performs no fake API request',async()=>{
   const fetcher=vi.fn();const service=createSnapshotService('',fetcher);
-  expect((await service.access()).available).toBe(false);await expect(service.generate(paper())).rejects.toThrow('connected');expect(fetcher).not.toHaveBeenCalled();
+  expect(await service.access()).toMatchObject({available:false,previewAvailable:true});await expect(service.generate(paper())).rejects.toThrow('connected');expect(fetcher).not.toHaveBeenCalled();
  });
  it('coalesces double clicks, caches after reopening/reloading, and separates papers',async()=>{
   let stored:string|null=null;
@@ -80,7 +93,11 @@ describe('Snapshot service and cache',()=>{
   const fetcher=vi.fn().mockResolvedValue(Response.json({extraction:true,snapshotUsage:{remaining:4,unlimited:false,refillAt:null,refillAmount:null}}));
   expect(await createSnapshotService('https://service.test',fetcher).access()).toMatchObject({available:true,usage:{remaining:4}});
  });
- it('requires a real canonical work ID',async()=>{
+ it('never silently enables samples when a configured backend fails',async()=>{
+  const service=createSnapshotService('https://service.test',vi.fn().mockResolvedValue(new Response('',{status:503})));
+  await expect(service.access()).rejects.toThrow('unavailable');
+ });
+ it('requires a real canonical work ID' ,async()=>{
   const fetcher=vi.fn();await expect(createSnapshotService('https://service.test',fetcher).generate(paper('demo'))).rejects.toThrow('OpenAlex');expect(fetcher).not.toHaveBeenCalled();
  });
 });

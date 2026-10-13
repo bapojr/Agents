@@ -16,8 +16,6 @@
 .snapshot-row dd { margin: 0; min-width: 0; color: var(--pp-gray-11); }
 .snapshot-summary { padding: var(--pp-s20); color: var(--pp-gray-11); }
 .snapshot-preview { user-select: none; pointer-events: none; filter: blur(var(--pp-s4)); overflow: hidden; }
-.snapshot-preview-line { display: block; white-space: nowrap; overflow: hidden; height: var(--pp-leading-button); }
-.snapshot-preview .line-0 { width: 94%; }.snapshot-preview .line-1 { width: 82%; }.snapshot-preview .line-2 { width: 67%; }.snapshot-preview .line-3 { width: 89%; }.snapshot-preview .line-4 { width: 54%; }
 .snapshot-preview.is-loading { animation: snapshot-pulse 1.5s ease-in-out infinite alternate; }
 @keyframes snapshot-pulse { to { opacity: .35; } }
 @media (prefers-reduced-motion: reduce) { .snapshot-preview.is-loading { animation: none; } }
@@ -29,4 +27,11 @@
 .snapshot-status { color: var(--pp-gray-11); font-size: var(--pp-text-sm); }
 .snapshot-error { padding: var(--pp-s12); border: var(--pp-secondary-border); border-radius: var(--pp-radius-6); background: var(--pp-gray-2); }
 @container (max-width: 420px) { .snapshot-row { grid-template-columns: minmax(0, 1fr); gap: var(--pp-s8); padding: var(--pp-s16); }.snapshot-usage,.snapshot-summary,.snapshot-card > h3 { padding: var(--pp-s16); } }
-.snapshot-row:nth-child(4) .snapshot-preview-line { width: 30%; }
+
+
+/* Illustrate prompt-flow-prime CTA: exact component values mapped to local tokens. */
+.paper-snapshot { --pp-snapshot-upgrade-leading: 18px; --pp-snapshot-upgrade-icon-width: 18px; }
+.snapshot-actions .snapshot-upgrade { height: var(--pp-s36); padding: 0 var(--pp-s14); gap: var(--pp-s8); border-radius: var(--pp-radius-6); font-size: var(--pp-text-base); line-height: var(--pp-snapshot-upgrade-leading); font-weight: var(--pp-medium); }
+.snapshot-upgrade .figma-asset { width: var(--pp-snapshot-upgrade-icon-width); height: var(--pp-s16); object-fit: contain; }
+.snapshot-sample-notice { padding: var(--pp-s12) var(--pp-s16); border: var(--pp-border); border-radius: var(--pp-radius-6); background: var(--pp-blue-2); color: var(--pp-gray-11); font-size: var(--pp-text-sm); line-height: var(--pp-leading-base); }
+.snapshot-sample-notice strong { display: block; margin-bottom: var(--pp-s4); color: var(--pp-blue-12); }

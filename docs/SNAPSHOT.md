@@ -3,9 +3,9 @@
 Scope: only the existing Paper → Snapshot tab. The Paper navigation, Overview, Attachment,
 Evidence, Metadata, References, live search and existing PDF behavior are untouched.
 
-The tab contains usage/generation controls, decorative blurred value previews with readable
+The tab contains usage/generation controls, user-supplied blurred placeholder copy with readable
 labels, seven study fields and a separate AI Summary. Values stack below labels in narrow
-panels. Blur contains only generic UI preview language, not hidden research claims. Preview
+panels. Blur contains the user-specified field placeholders, not hidden research claims. Preview
 content is excluded from the accessibility tree; generation progress, failure and retry are
 announced. Reduced-motion preferences disable the loading pulse.
 
@@ -40,8 +40,9 @@ This is not a cross-device library or an entitlement database.
 
 The live repository has no `RESEARCH_API_URL` configured. Backend hosting/AI credentials remain
 paused. Therefore the UI and adapter are implementable now, but real AI generation on two live
-papers cannot yet be verified or advertised as active. Clicking Generate reports this limitation;
-it never substitutes sample results. Do not remove the existing site's unconnected-AI notice.
+papers cannot yet be verified or advertised as active. While no API URL is configured, clicking Generate now reveals an explicitly labelled fictional
+Snapshot for design review, as requested by the user. Once an API URL is configured, the real
+service path is used and errors never silently substitute sample results. Do not remove the existing site's unconnected-AI notice.
 
 Automated tests cover preview/loading/generated/error states, dynamic/unknown/exhausted usage,
 missing/invalid provenance, no source text, incomplete output, canonical IDs, retry, concurrent
@@ -52,5 +53,19 @@ Validation for this iteration: 133 frontend tests passed (7 opt-in live-provider
 TypeScript and the GitHub Pages export passed. Browser checks used the live OpenAlex result
 W2100190428, verified initial/failed-generation states, all seven labels and AI Summary, desktop
 and 390px layouts with no Snapshot horizontal overflow, minimum 12px IBM Plex Sans, and
-keyboard dismissal/focus restoration for the Snapshot upgrade dialog. Generated/cached values
-were checked through test-only service responses; this is not real-model verification.
+keyboard dismissal/focus restoration for the Snapshot upgrade dialog. Generated/cached real-result handling was checked through test-only service responses; this is not real-model verification.
+
+
+## Requested visual sample mode (2026-10-13)
+
+With no research API URL configured, Generate Snapshot displays filled sample copy about
+walking breaks and concentration. It is explicitly labelled fictional and unrelated to the
+open paper. The sample state is separate from `Snapshot`, real result persistence, reference
+metadata, citations and evidence. It is retained per paper while the app remains open and
+resets on reload. Connecting the API URL disables this mode; backend errors never activate it.
+
+The blurred preview uses the exact eight strings requested by the user. Snapshot's Upgrade
+CTA reuses UpgradeButton and its existing Prime artwork, with the Illustrate
+`prompt-flow-prime` dimensions: 36px high, 14px horizontal padding, 8px gap, 6px radius,
+IBM Plex Sans Medium 14px/18px, Blue 9 fill. The local line-height/icon-width tokens map the
+inspected Illustrate source values. Other Upgrade buttons retain their existing appearance.

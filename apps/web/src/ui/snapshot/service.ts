@@ -1,7 +1,7 @@
 import type {Paper} from '../paper-data';
 import {normalizeSnapshot,readSnapshotUsage,SNAPSHOT_COLUMNS,SNAPSHOT_QUESTION,snapshotWorkId,UNKNOWN_USAGE,type Snapshot,type SnapshotUsage} from './model';
 
-export type SnapshotAccess = {available:boolean;message:string;usage:SnapshotUsage};
+export type SnapshotAccess = {available:boolean;message:string;usage:SnapshotUsage;previewAvailable?:boolean};
 export type SnapshotService = {access:()=>Promise<SnapshotAccess>;generate:(paper:Paper)=>Promise<Snapshot>;cached:(paper:Paper)=>Snapshot|undefined;inFlight:(paper:Paper)=>Promise<Snapshot>|undefined};
 const endpoint=process.env.NEXT_PUBLIC_RESEARCH_API_URL || '';
 const STORAGE_KEY='agents-study-snapshots-v1';
@@ -32,7 +32,7 @@ export function createSnapshotService(base:string,request:typeof fetch=fetch,sto
   }
   return {
     async access(){
-      if(!base)return {available:false,message:unavailable,usage:UNKNOWN_USAGE};
+      if(!base)return {available:false,previewAvailable:true,message:'Preview mode: Generate Snapshot displays sample content until AI generation is connected.',usage:UNKNOWN_USAGE};
       const value=await api('capabilities') as {extraction?:boolean;snapshotUsage?:unknown};
       return {available:value?.extraction===true,message:value?.extraction===true?'':'AI Snapshot generation is not configured on the research service.',usage:readSnapshotUsage(value?.snapshotUsage)};
     },
